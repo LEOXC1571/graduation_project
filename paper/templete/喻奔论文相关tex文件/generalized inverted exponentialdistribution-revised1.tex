@@ -1,0 +1,491 @@
+
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx,psfrag,epsf}
+\usepackage{enumerate}
+\usepackage{natbib}
+\usepackage{CJK}
+\usepackage{indentfirst}
+\usepackage[titletoc]{appendix}
+\usepackage{multirow}
+\usepackage{fixltx2e}
+\usepackage{caption}
+\setlength{\parindent}{2em}
+% NOTE: To produce blinded version, replace "0" with "1" below.
+\newcommand{\blind}{1}
+
+\DeclareMathOperator\dif{d\!}
+\addtolength{\oddsidemargin}{-.75in}%
+\addtolength{\evensidemargin}{-.75in}%
+\addtolength{\textwidth}{1.5in}%
+\addtolength{\textheight}{1.3in}%
+\addtolength{\topmargin}{-.8in}%
+\newtheorem {lemma}{Lemma}
+\newtheorem {theorem}{Theorem}
+
+\begin{document}
+%\begin{CJK*}{GBK}{song}
+
+%\bibliographystyle{natbib}
+
+\def\spacingset#1{\renewcommand{\baselinestretch}%
+{#1}\small\normalsize} \spacingset{1}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed
+\title{Interval estimation for the generalized inverted exponential distribution under progressive first failure censoring}
+\author{Bing Xing Wang \footnote{Corresponding author.  E-mail address: wangbingxing@163.com}, Qian Yu\\
+\normalsize{Department of Statistics, Zhejiang Gongshang University, P.R. China}}
+
+\maketitle
+
+\bigskip
+\begin{abstract}
+In this paper, we consider the inferential procedures for the generalized inverted exponential distribution under progressive first failure censoring. The exact confidence interval for the scale parameter is derived. The generalized confidence intervals (GCIs) for the shape parameter and reliability characteristics of interest are explored. Then the proposed procedure is extended to the prediction interval for the future measurement. The GCIs for the reliability of the stress-strength model are discussed under both equal scale and unequal scale scenarios. Extensive simulations are used to demonstrate the performance of the proposed GCIs and prediction interval. Finally, an example is used to illustrate the proposed methods.
+\end{abstract}
+
+\noindent%
+{\it Keywords:}  progressive first failure censoring; generalized confidence interval; prediction interval; stress-strength model.
+
+	`
+\spacingset{1.45} % DON'T change the spacing!
+
+\section{Introduction}
+Censoring schemes are very common in life tests. The type-I and type-II censoring schemes are the most common censoring schemes, but the conventional type-I and type-II censoring schemes do not have the flexibility of allowing the removal of units at points other than the terminal point of the experiment. The progressive censoring scheme, which includes conventional type-I and type-II censoring as special cases, is of importance in the field of reliability and life-testing experiments. It allows the experimenter to remove units from a life test at various stages during the experiment. A book dedicated to progressive censoring was published by Balakrishnan and Aggarwala \cite{balakrishnan2000progressive}. Besides the progressive censoring scheme, there is another censoring scheme called first failure censoring scheme. Under such censoring scheme, experimenters group the test units into several sets, then perform all the test units simultaneously until the occurrence of the first failure in each set, see Johnson \cite{ johnson1964theory} and Balasooriya et al. \cite{ balasooriya2000progressively}.
+
+In order to combine the advantages of progressive censoring and first failure censoring, Wu and Kus \cite{wu2009estimation} proposed a mixed censoring called progressive first failure censoring. The progressive first failure censoring scheme can be implemented as follows: suppose that $n$ independent groups with $k$ items in each group are put on a life test simultaneously at the initial time $t_0 = 0$. At the first failure time $X_{1:m:n:k}$, $R_1$ groups are randomly selected and removed along with the group which contains the first failure item. At the second failure time $X_{2:m:n:k}$, $R_2$ groups are randomly selected and removed along with the group which contains the second failure item and so on, until the $m$th failure time $X_{m:m:n:k}$ observed in the remaining groups, and then all the remaining $R_{m + 1}$ groups are removed. The observed failure times, $X_{1:m:n:k} < X_{2:m:n:k} <\dots< X_{m:m:n:k}$, are called progressively first failure-censored sample with the progressive censoring scheme $R = (R_1,R_2,\dots, R_m)$. Here, $n = m + R_1 + R_2 +\dots+R_m$, and $(m, n, k, R)$ must be pre-specified. It is obvious that if $R_1=R_2=\ldots=R_m=0$, the progressively first-failure censoring reduces to first failure censoring scheme; if $k=1$, the scheme becomes progressively type II censoring scheme; if $k=1$ and $R_1=R_2=\ldots =R_{m-1}=0,R_m=n-m$, the scheme reduces to type II censoring scheme.
+
+The generalized inverted exponential distribution (GIED) was proposed by Abouammoh and Alshingiti \cite{abouammoh2009reliability}. The probability density function (PDF) and cumulative distribution function of the GIED are given by
+\begin{equation}\label{eq2}
+f(x)=\frac{\alpha\lambda}{x^2}e^{-\lambda/x}(1-e^{-\lambda/x})^{\alpha-1}, \quad   x>0,
+\end{equation}
+and
+\begin{equation}\label{eq1}
+F(x)=1-(1-e^{-\lambda/x})^\alpha,  \quad   x>0,
+\end{equation}
+respectively. Here, $\alpha>0$ and $\lambda>0$ are the shape and scale parameters, respectively. The GIED (\ref{eq1}) will be denoted by $\mbox{GIED}(\alpha,\lambda)$. It has been observed that the GIED can be quite effective to analyze skewed data set and is a good alternative to other skewed distribution, such as the Weibull distribution, the gamma distribution, the generalized exponential distribution, etc.
+Abouammoh and Alshingiti \cite{abouammoh2009reliability} found that the GIED has good statistical and reliability properties. They obtained maximum likelihood estimators (MLEs) and least square estimators for the GIED based on a complete sample. For the complete sample, Dey and Dey \cite{dey2014generalized2} compared the performance of different estimators by Monte Carlo simulation. Kishna and Kumar \cite{krishna2013reliability} discussed the point estimation for the GIED based on a progressively type-II censored sample. Dey and Pradhan \cite{dey2014generalized1} derived the MLEs and Bayes estimates for the GIED under hybrid censoring scheme. Singh et al. \cite{singh2015sampling} proposed a two-stage group acceptance sampling plan for the GIED under truncated life test. Dey et al. \cite{dey2016bayesian} considered Bayesian inference for the GIED under type-II censoring scheme.
+Ahmed \cite{ahmed2017estimation} obtained the MLEs, Bayes estimates and prediction interval for the GIED under progressive first failure censoring.
+Krishna et al. \cite{krishna2017estimation} discussed point estimation and interval estimation for the GIED stress-strength model based on the progressively first failure censored samples. % from the GIEDs.
+%Hussian\cite{hussian2014estimation} gave the stress-strength parameter $P(Y<X)$ of GIED under the assumption that $X$ and $Y$ are independent generalized inverted exponential random variables. This article used simple random sampling $(SRS)$ and ranked set sampling $(RSS)$ approaches to get the MLEs of $R$.
+
+Considering the significant role of stress-strength model in reliability engineering, we discuss the stress-strength reliability $\delta=P(Y<X)$ when the strength $X$ of a system and the stress $Y$ have the GIEDs. The stress-strength model was first introduced by Birnbaum \cite{birnbaum1956use}. Henceforward this model has been used in many areas such as mechanical, aerospace system and reliability engineering. Kotz et al. \cite{kotz2003stress} provided some excellent information on past and current developments in the area.
+
+%The purpose of this paper is two fold. Firstly we obtain the inference for parameters including point estimation and interval estimation. In point estimation part we propose a useful approach called inverse estimation and compare it with MLEs. In interval estimation part we propose generalized interval estimation using substitution method. Then we think of the stress-strength model $P(Y<X)$ and give the inference by proposed approaches.
+
+The rest of this paper is organized as follows. In Section 2, we derive the exact interval for the scale parameter. we also obtain the generalized confidence intervals (GCIs) for the shape parameter, the $p$th quantile and reliability function of the GIED. Moreover, the generalized prediction interval (GPI) for the future measurement is derived. The performance of the proposed GCIs and GPI is assessed by Monte Carlo simulation. In Section 3, we consider the GIED stress-strength model and propose the generalized interval estimation procedures for the reliability of the stress-strength model. A simulation study is provided to evaluate the performance of the proposed GCIs. Finally, a real example is used to illustrate the proposed methods.
+
+\section{Estimation of the GIED}
+
+In this section, %the inverse estimators (IE) for $\alpha$ and $\lambda$ are first derived in the presence of progressively first failure censoring scheme. Then
+the exact confidence interval for the scale parameter $\lambda$ of the $\mbox{GIED}(\alpha,\lambda)$ is derived in the presence of progressively first failure censoring scheme. Then the GCIs for the shape parameter $\alpha$ and other quantities of the GIED, such as its quantiles and reliability function are introduced. The prediction interval for the new future measure is also obtained.
+
+
+%In the scheme, $k$ is the item size in each group, $n$ is the size of groups, and $m$ is the size of censored scheme.
+
+In order to derive interval estimation of the GIED, the following
+results are needed. Lemmas 2 and 3 can be found in Yu et al. \cite{yu2013new}, respectively.
+
+\begin{lemma}
+Suppose that $\textbf{X}=(X_{1:m:n:k}^R,X_{2:m:n:k}^R, \dots,X_{m:m:n:k}^R)$ is a progressively first failure censored sample from the standard exponential distribution $\mbox{EXP}(1)$ with censoring scheme $R=(R_1,\ldots,R_m)$. Let $W_1=knX_{1:m:n:k}^R$, $W_i=k[n-\sum_{j=1}^{i-1}(R_i+1)](X_{i:m:n:k}^R-X_{i-1:m:n:k}^R), i=2,...,m$. Then $W_1, W_2, \dots, W_m$ are independent standard exponential random variates.
+\end{lemma}
+{\bf Proof.}\,\,
+ From Wu and Kus \cite{wu2009estimation}, we have that the joint PDF of the sample $\textbf{X}$ is
+\begin{eqnarray}
+f(\textbf{x}%x_{1:m:n:k}^R,x_{2:m:n:k}^R,\ldots,x_{m:m:n:k}^R
+)&=&Ck^m\prod_{j=1}^m f(x_{j:m:n:k}^R){[1-F(x_{j:m:n:k}^R)]^{k(R_j+1)-1}} \label{eq5}\\
+&=&Ck^m \exp\left(\sum_{i=1}^m k(R_i+1)x_{i:m:n:k}^R\right), \,x_{m:m:n:k}^R>\dots>x_{1:m:n:k}^R>0,\nonumber
+\end{eqnarray}
+%\begin{equation*}%\label{eq5}
+%f(\textbf{x}%x_{1:m:n:k}^R,x_{2:m:n:k}^R,\ldots,x_{m:m:n:k}^R)=Ck^m \exp\left(\sum_{i=1}^m k(R_i+1)x_{i:m:n:k}^R\right), \,x_{m:m:n:k}^R>\dots>x_{1:m:n:k}^R>0,
+%\end{equation*}
+where $C=n\prod_{i=2}^m\left[n-\sum_{j=1}^{i-1}(R_j+1)\right]$.
+
+Notice that the Jacobian of the transformation $W_1, W_2,\dots, W_m$ is $C k^m$, the joint PDF of $W_1, W_2,\dots, W_m$ is then given by
+$$f_{W_1,\dots,W_m}(w_1,w_2,\dots,w_m)=\exp(-\sum_{i=1}^m w_i),\, w_1>0,\dots,w_m>0.$$
+Therefore, $W_1, W_2, \dots, W_m$ are independent standard exponential random variates.
+
+{\bf Remark 1:} It can be observed from the equation (\ref{eq5}) that the progressive first failure censoring with the progressive censoring scheme $R = (R_1,R_2,\dots, R_m)$ is equivalent to the following progressive type II censoring: $n k$ units are placed on test at time $t_0=0$. When the first observed failure occurs, $k R_1+k-1$ surviving units are removed from the test at random. Then, immediately following the second observed failure, $k R_2+k-1$ surviving units are removed from the test at random. This process continues until, at the time of the $m^{th}$ observed failure, the remaining $k R_m+k-1$ units are all removed from the experiment. In addition, Wu, Kus \cite{wu2009estimation} and Wu, Huang  \cite{wu2012progressively} found that $\textbf{X}$ can be viewed as a progressively type II censored sample from a population with distribution function $1-(1-F(x))^k$.
+
+
+
+\begin{lemma} Suppose that $Z_1, ..., Z_n$ is a random sample from the exponential distribution with mean $\theta$. Let
+$S_i=\sum_{j=1}^i Z_j,\,i=1,...,n$, and $T=2\sum_{i=1}^{n-1}\log(S_n/S_i)$. Then (1) $T$ and $S_n$ are independent; (2) $T \sim \chi^2(2n-2)$
+and $2 S_n/\theta \sim \chi^2(2n)$.
+\end{lemma}
+
+\begin{lemma}
+Let $g(\lambda)=\log(1-e^{-b\lambda})/\log(1-e^{-a\lambda})$, where $b>a>0$ are constants. Then $g(\lambda)$ is strictly
+decreasing on $(0,+\infty)$.
+\end{lemma}
+
+\subsection{Interval estimation}
+
+Let $\textbf{X}=(X_{1:m:n:k}^R,X_{2:m:n:k}^R, \ldots,X_{m:m:n:k}^R)$ be a progressively first failure censored sample from the $\mbox{GIED}(\alpha, \lambda)$ with censoring scheme  $R=(R_1,\ldots,R_m)$, and $\textbf{x}=(x_{1:m:n:k}^R,x_{2:m:n:k}^R, \ldots, x_{m:m:n:k}^R)$ be the observed value of $\textbf{X}$. Then %$F(X_{1:m:n:k}^R), F(X_{2:m:n:k}^R), \ldots, F(X_{m:m:n:k}^R)$ is a progressively first failure censored sample from the standard uniform distribution $U(0, 1)$. As a consequence,
+\begin{equation*}
+V_{i:m:n:k}^R=-\log(1-F(X_{i:m:n:k}^R))=-\alpha\log{(1-e^{{-\lambda}/{x_{i:m:n:k}^R}})},\,i=1,2,\dots,m
+\end{equation*}
+is a progressively first failure censored sample from the standard exponential distribution. % with sample size n and k items in each group.
+
+ Let
+\begin{equation}\label{eq14}
+W_1=k n V_{1:m:n:k},\quad W_i=k[n-\sum_{j=1}^{i-1}(R_j+1)](V_{i:m:n:k}^R-V_{{i-1}:m:n:k}^R),i=2,\ldots,m.
+\end{equation}
+Then we have from Lemma 1 that $W_1,\ldots,W_m$ are independent standard exponential random variates.
+Further, let
+$$S_i=\sum_{j=1}^i{W_j}=\sum\limits_{j=1}^i{k(R_j+1)\log(1-e^{-\lambda/x_{j:m:n:k}^R}})+k[n-\sum\limits_{j=1}^i (R_j+1)] \log(1-e^{{-\lambda}/{x_{i:m:n:k}^R}}).$$
+Then from Lemma 2, we have
+\begin{equation}\label{eq15}
+T(\lambda)=2\sum_{i=1}^{m-1}\log\frac{S_m}{S_i} \sim \chi^2(2m-2).
+\end{equation}
+%Notice that $T(\lambda)/(2m-4)$ converges to 1 with probability one, then we can obtain a point estimator $\hat{\lambda}$ of $\lambda$ from $T(\lambda)=2(m-2)$ or the following equation:
+%\begin{equation}\label{est1}   \sum_{i=1}^{m-1}\log \frac{S_m}{S_i}=m-2. \end{equation}
+Let $Q(j,i)=\ln{(1-e^{{-\lambda}/{x_{j:m:n:k}^R}})}/\ln{(1-e^{{-\lambda}/{x_{i:m:m:k}^R}})}$.
+Notice that
+\begin{equation}\label{eq19}
+\frac{S_m}{S_i}=1+\frac{\sum_{j=i+1}^{m}{(R_j+1)Q_{(j,i)}}-[n-{\sum_{j=1}^i{(R_j+1)}}]}{ \sum_{j=1}^{i}{(R_j+1)Q_{(j,i)}}+n-{\sum_{j=1}^i{(R_j+1)}}},
+\end{equation}
+we have from Lemma 3 that $T(\lambda)$ is strictly increasing on $(0,+\infty)$, and
+$$\lim_{\lambda \rightarrow 0+}T(\lambda)=0, \lim_{\lambda \rightarrow +\infty}T(\lambda)=+\infty.$$
+%Therefore, the equation (\ref{est1}) has the unique solution. The solution of the equation $T(\lambda)=t(>0)$ can be obtained by the bisection method. %Similarly, since $-2\alpha S_m \sim \chi^2(2m)$, we obtain estimator $\hat{\alpha}$ of $\alpha$ from the following equation:
+%\begin{equation}\label{est2} \hat{\alpha}=-\frac{m-1}{\sum_{i=1}^m k(R_i+1)\log(1-e^{-\hat{\lambda}/x_{i:m:m:k}^R})}. \end{equation}
+%The estimators  given by (\ref{est1}) and (\ref{est2}) are a type of inverse estimators (IE) of parameters (Wang et al., 2010). We shall study the performance of the proposed estimators in Section 2.3.
+%\subsection{Interval estimation}
+%Because $T(\lambda)\sim \chi^2(2m-2)$ and $T(\lambda)$ is strictly increasing on $(0,+\infty)$,
+Therefore, the $1-\gamma$ exact confidence interval (CI) for $\lambda$ is given by
+$$\left[ T^{-1}\{\chi_{\gamma/2}^2(2m-2)\},\quad T^{-1}\{\chi_{1-\gamma/2}^2(2m-2)\} \right],$$
+where $\chi_{\gamma}^2(v)$ is the $\gamma$ percentile of the $\chi^2(v)$, and $T^{-1}(t)$ is the solution of the equation $T(\lambda)=t(>0)$.
+
+%{\bf Remark 2:} It is observed from the equations (\ref{eq15}) and (\ref{eq19}) that the CI of $\lambda$ does not depend on $k$.
+
+Now we derive the GCI for $\alpha$. Let $g(T_0,\textbf{X})$ be the unique solution of the equation $T(\lambda)=T_0$, where $T_0\sim \chi^2(2m-2)$.
+Since $V=-2\alpha S_m\sim \chi^2(2m)$, we get the equation $\alpha=-V/(2S_m)$. Based on the substitution method given by Weerahandi \cite{weerahandi2004generalized}, we substitute $g(T_0,\textbf{X})$ for $\lambda$ in the expression of $\alpha$ and obtain the following generalized pivotal quantity for $\alpha$:
+\begin{equation}\label{eq22}
+Y_1=-\frac{V}{2k\sum_{i=1}^m(R_i+1)\log({1-e^{{-g(T_0,\textbf{x})}/{x_{i:m:n:k}^R}})}}
+\end{equation}
+If $Y_{1,\gamma}$ denotes the $\gamma$ percentile of $Y_1$, then $Y_{1,\gamma}$ and $Y_{1,1-\gamma}$ are the $1-\gamma$ generalized lower and upper confidence limits for $\alpha$, respectively.
+
+Notice that the $p$th quantile ($0 < p < 1$) and reliability function of the GIED are given by $x_p=-\lambda/\log{[1-(1-p)^{1/\alpha}]}$ and
+$R(x_0)=\left[1-\exp\left({-\lambda/x_0}\right)\right]^\alpha$, along the same lines as the derivation
+of $Y_1$ for $\lambda$, the generalized pivotal quantities $Y_2$ and $Y_3$ for $x_p$ and $R(x_0)$ are given by
+\begin{eqnarray}
+Y_2&=&-\frac{g(T_0,\textbf{x})}{\log{\left[1-(1-p)^{1/{Y_1}}\right]}},\label{eq23}\\
+Y_3&=&\left(1-e^{-g(T_0,\textbf{x})/x_0}\right)^{Y_1},\label{eq24}
+\end{eqnarray}
+respectively.
+
+Let $Y_{2,\gamma}$ and $Y_{3,\gamma}$ be the $\gamma$ percentiles of $Y_2$ and $Y_3$. Then $Y_{2,\gamma}$ and $Y_{3,\gamma}$ are the $1-\gamma$ lower confidence limits for $x_p$ and $R(x_0)$, respectively.
+The percentiles of $Y_1$, $Y_2$ and $Y_3$ can be obtained by the following Monte Carlo algorithm.
+
+{\bf Algorithm 1: The percentiles for $Y_1, Y_2$ and $Y_3$.}
+
+(1) For a given data set $(m, n, k, R, \textbf{x})$, generate $T_0 \sim \chi^2(2m-2)$ and $ V
+\sim \chi^2(2m)$, independently. Using these values, compute $g(T_0,\textbf{x})$ from the equation $T(\lambda)=T_0$.
+
+(2) Compute values of $Y_1, Y_2$ and $Y_3$ using (\ref{eq22})--(\ref{eq24}).
+
+(3) Repeat the steps 1-2 $B(\ge 10000)$ times. Then there are the $B$ values of $Y_i, i=1,2,3$.
+
+(4) Arrange all $Y_i$ values in ascending order: $Y_{i,(1)}<Y_{i,(2)}<...<Y_{i,(B)}$. Then $Y_{i, \gamma}$ can be estimated by $Y_{i, (B\gamma)}$.
+
+\subsection{Prediction interval}
+
+In this subsection, we extend the proposed generalized confidence interval procedure to construct prediction interval for a single
+future measurement.
+
+Suppose that $X_{new}$ is a future measurement from the same GIED. Notice that $F(X_{new})\sim U(0,1)$, then for a given $U\sim U(0, 1)$, $X_{new}=-\lambda/\log(1-U^{1/\alpha})$. Therefore, using the substitution method given by Weerahandi \cite{weerahandi2004generalized}, we obtain the following generalized prediction quantity:
+\begin{equation}\label{eq02}
+Y_4=-\frac{g(T_0,\textbf{x})}{\log(1-U^{1/Y_1})}.
+\end{equation}
+
+
+Let $Y_{4,\gamma}$ denote the $\gamma$ percentile of $Y_4$. Then $[Y_{4,\gamma/2},\,\,Y_{4,1-\gamma/2}]$ is a $1-\gamma$ generalized prediction
+interval (GPI) for $X_{new}$. Similar to the shape parameter $\alpha$ case, the percentiles of $Y_4$ can be obtained by the Monte Carlo simulation
+algorithm.
+
+{\bf Algorithm 2:} The percentiles for $X_{new}$.
+
+(1) For a given data set $(m, n, k, R, \textbf{x})$, generate $T_0 \sim \chi^2(2m-2)$ and $ V
+\sim \chi^2(2m)$, independently. Using these values, compute $g(T_0,\textbf{x})$ from the equation $T(\lambda)=T_0$.
+
+(2) Compute value of $Y_1$ using (\ref{eq22}).
+
+(3) Generate $U\sim U(0,1)$. Then compute $Y_4$ based on the equation (\ref{eq02}).
+
+(4) Repeat the steps 1-3 $B(\ge 10000)$ times. Then there are the $B$ values of $Y_4$.
+
+(5) Arrange all $Y_4$ values in ascending order: $Y_{4,(1)}<Y_{4,(2)}<...<Y_{4,(B)}$. Then $Y_{4, \gamma}$ can be estimated by $Y_{4, (B\gamma)}$.
+
+
+\subsection{Simulation study}
+
+In order to evaluate the performance of the proposed interval estimation and prediction interval, a Monte Carlo simulation is conducted to %compare the relative biases and the relative mean square errors (MSE) of the proposed IEs with MLEs and
+study the coverage probabilities and the interval lengths of the proposed GCIs and GPIs.
+
+Because $\lambda$ is the scale parameter, without loss of generality, we take $\lambda=1$ in our simulation study. The shape parameter $¦Á$ considers 2, 4. The confidence level considers 0.9 and 0.95. Notice that $1-(1-F(x))^k=1-[1-\exp(-\lambda/x)]^{k\alpha}$, then we have from Remark that $\textbf{X}$ is a progressively type II censored sample from the generalized inverted exponential distribution $\mbox{GIED}(k \alpha, \lambda)$. Hence, without loss of generality, we take $k=1$. For different progressively first failure censoring schemes, we generated progressively first failure censored samples from the GIED by using the equation (\ref{eq14}). %Tables 1 and 2 report the average relative biases and average relative mean square errors (MSEs) in point estimation of $\alpha$ and $\lambda$ over 10,000 replications for each progressively first failure censored scheme. It can be observed from Tables 1 and 2 that for each censoring scheme, the average relative biases and RMSEs of IEs are smaller than those of MLEs. Thus, the proposed IEs outperform the MLEs in terms of the bias and MSE.
+Table 1 reports the simulation results of the CI for the parameter $\lambda$. Tables 2 and 3 provide the simulation results of the proposed GCIs. All the results are based on 5,000 replications with $B=10,000$.
+
+
+
+{\scriptsize
+\begin{center}
+{Table 1: The coverage percentages and the average lengths (in parentheses) of the CI for $\lambda$ \\with nominal levels 0.9, 0.95, based on 5000 replications}\\[5pt]
+\begin{tabular}{cccccccccc}\hline
+     &     &\multicolumn{2}{c}{$\alpha=2$} && \multicolumn{2}{c}{$\alpha=4$}&&\multicolumn{2}{c}{$\alpha=6$}\\\cline{3-4} \cline{6-7} \cline{9-10}
+$(m,n)$ & $R$                 & 0.9     &0.95     && 0.9     &0.95     && 0.9     &0.95      \\ \hline
+(10,15) & (0,\dots,0,5)       & 0.8936  &  0.9474 && 0.9070  &  0.9532 && 0.9024  &  0.9526           \\
+        &                     &(1.3141) & (1.5655)&&(1.2105) & (1.4438)&&(1.1807) & (1.4092) \\
+        & (0,1,\ldots,0,1)    & 0.9014  &  0.9526 && 0.8972  &  0.9492 && 0.8950  &  0.9494                  \\
+        &                     &(1.2189) & (1.4508)&&(1.1110) & (1.3235)&&(1.0776) & (1.2843) \\
+        & (5,0,\dots,0)       & 0.8994  &  0.9488 && 0.8944  &  0.9500 && 0.8986  &  0.9500             \\
+        &                     &(1.1606) & (1.3846)&&(1.0405) & (1.2417)&&(0.9925) & (1.1847) \\
+
+
+
+(10,20) & (0,\dots,0,10)      & 0.9076  &  0.9510 && 0.9002  &  0.9512 && 0.9086  &  0.9550              \\
+        &                     &(1.3038) & (1.5545)&&(1.2250) & (1.4624)&&(1.1924) & (1.4243) \\
+        & (1,\dots,1)         & 0.8936  &  0.9468 && 0.9018  &  0.9516 && 0.9018  &  0.9532                  \\
+        &                     &(1.1567) & (1.3772)&&(1.0780) & (1.2846)&&(1.0415) & (1.2416) \\
+        & (10,0,\dots,0)      & 0.8996  &  0.9486 && 0.9020  &  0.9546 && 0.9034  &  0.9490                  \\
+        &                     &(1.0771) & (1.2870)&&(0.9750) & (1.1650)&&(0.9333) & (1.1153) \\
+
+(15,20) & (0,\dots,0,5)       & 0.8998  &  0.9524 && 0.8918  &  0.9498 && 0.9024  &  0.9518          \\
+        &                     &(1.0230) & (1.2184)&&(0.9345) & (1.1140)&&(0.9091) & (1.0841) \\
+        &(1,1,0,\dots,0,1,1,1)& 0.9016  &  0.9510 && 0.8992  &  0.9500 && 0.9086  &  0.9560          \\
+        &                     &(0.9920) & (1.1817)&&(0.8977) & (1.0700)&&(0.8591) & (1.0243) \\
+        & (5,0,\dots,0)       & 0.8938  &  0.9464 && 0.9012  &  0.9520 && 0.8984  &  0.9466                  \\
+        &                     &(0.9551) & (1.1383)&&(0.8481) & (1.0109)&&(0.8124) & (0.9685) \\\hline
+\end{tabular}
+\end{center}}
+
+
+{\scriptsize
+\begin{center}
+{Table 2: The coverage percentages and the average lengths (in parentheses) of the GCIs for $1/\alpha, x_{0.1}, R(1.2)$ and $X_{new}$ \\with nominal levels 0.9, 0.95 when $\alpha=2$, based on 5000 replications}\\[5pt]
+\begin{tabular}{ccccccccccccc}\hline
+     &     &\multicolumn{2}{c}{$1/\alpha$} && \multicolumn{2}{c}{$x_{0.1}$} &&\multicolumn{2}{c}{$R(1.2)$}&&\multicolumn{2}{c}{$X_{new}$}\\\cline{3-4} \cline{6-7} \cline{9-10}\cline{12-13}
+$(m,n)$ & $R$                 & 0.9     &0.95     && 0.9     &0.95     && 0.9     &0.95     && 0.9     &0.95\\ \hline
+(10,15) & (0,\dots,0,5)       & 0.9070  &  0.9536 && 0.9016  &  0.9522 && 0.9004  &  0.9530 && 0.8980  &  0.9508\\
+        &                     &(1.2420) & (1.5880)&&(0.2558) & (0.3057)&&(0.3679) & (0.4316)&&(10.2636)& (36.2443)\\
+        & (0,1,\ldots,0,1)    & 0.9070  &  0.9534 && 0.9008  &  0.9516 && 0.8990  &  0.9524 && 0.8992  &  0.9498\\
+        &                     &(1.1379) & (1.4537)&&(0.2551) & (0.3055)&&(0.3612) & (0.4244)&&(8.8577) & (26.7809)\\
+        & (5,0,\dots,0)       & 0.9066  &  0.9530 && 0.9020  &  0.9522 && 0.8998  &  0.9482 && 0.9006  &  0.9500\\
+        &                     &(0.9827) & (1.2487)&&(0.2701) & (0.3234)&&(0.3573) & (0.4201)&&(7.2783) & (17.9154)\\
+
+(10,20) & (0,\dots,0,10)      & 0.9062  &  0.9520 && 0.9020  &  0.9502 && 0.9024  &  0.9532 && 0.8994  &  0.9512\\
+        &                     &(1.4231) & (1.8288)&&(0.2244) & (0.2690)&&(0.3948) & (0.4608)&&(15.8147)& (84.5349)\\
+        & (1,\dots,1)         & 0.9058  &  0.9542 && 0.9022  &  0.9506 && 0.9014  &  0.9532 && 0.8988  &  0.9508\\
+        &                     &(1.2214) & (1.5667)&&(0.2263) & (0.2718)&&(0.3734) & (0.4378)&&(10.6488)& (38.3008)\\
+        & (10,0,\dots,0)      & 0.9070  &  0.9534 && 0.9030  &  0.9514 && 0.8978  &  0.9488 && 0.8992  &  0.9496\\
+        &                     &(0.9661) & (1.2274)&&(0.2507) & (0.3005)&&(0.3569) & (0.4197)&&(7.3278) & (17.9753)\\
+
+(15,20) & (0,\dots,0,5)       & 0.8980  &  0.9474 && 0.9064  &  0.9544 && 0.8956  &  0.9468 && 0.8982  &  0.9468\\
+        &                     &(0.8702) & (1.0843)&&(0.2165) & (0.2583)&&(0.3012) & (0.3553)&&(6.1658) & (13.2799)\\
+        &(1,1,0,\dots,0,1,1,1)& 0.8978  &  0.9484 && 0.9064  &  0.9548 && 0.8976  &  0.9464 && 0.8988  &  0.9464\\
+        &                     &(0.8170) & (1.0168)&&(0.2186) & (0.2611)&&(0.2984) & (0.3522)&&(5.8693) & (12.1136)\\
+        & (5,0,\dots,0)       & 0.8974  &  0.9482 && 0.9062  &  0.9552 && 0.8962  &  0.9464 && 0.8998  &  0.9468\\
+        &                     &(0.7379) & (0.9163)&&(0.2265) & (0.2705)&&(0.2984) & (0.3522)&&(5.5045) & (10.7415)\\\hline
+\end{tabular}
+\end{center}}
+
+\newpage
+
+It is observed from Tables 1, 2 and 3 that %for different combinations of censoring schemes and sample sizes,
+the coverage percentages of these intervals are quite close to the nominal coverage probabilities, even for small sample sizes.
+The simulation results also show that for a fixed $n$, the average interval lengths decrease as $m$ increases, as one would expect. %It can be observed that the censoring scheme $R_1=n-m, R_2=\dots=R_m=0$ provides the smallest average interval lengths for the proposed GICs and GPI.
+These findings show that proposed CI, GCIs and GPI work well.
+
+{\scriptsize
+\begin{center}
+{Table 3: The coverage percentages and the average lengths (in parentheses) of the GCIs for $1/\alpha, x_{0.1}, R(1.2)$ and $X_{new}$ \\with nominal levels 0.9, 0.95 when $\alpha=4$, based on 5000 replications}\\[5pt]
+\begin{tabular}{ccccccccccccc}\hline
+     &     &\multicolumn{2}{c}{$1/\alpha$} && \multicolumn{2}{c}{$x_{0.1}$} &&\multicolumn{2}{c}{$R(1.2)$}&&\multicolumn{2}{c}{$X_{new}$}\\\cline{3-4} \cline{6-7} \cline{9-10}\cline{12-13}
+$(m,n)$ & $R$                 & 0.9    &0.95     && 0.9    &0.95    && 0.9    &0.95    && 0.9    &0.95\\ \hline
+(10,15) & (0,\dots,0,5)       &0.9066  &  0.9512 &&0.9008  & 0.9516 &&0.9066  &0.9526  &&0.8992  & 0.9508\\
+        &                     &(0.7847)& (1.0154)&&(0.1689)&(0.2019)&&(0.2879)&(0.3449)&&(2.3643)&(4.7300)\\
+        & (0,1,\ldots,0,1)    &0.9076  &  0.9530 &&0.9004  & 0.9518 &&0.9046  & 0.9520 &&0.8998  & 0.9504\\
+        &                     &(0.7043)& (0.9102)&&(0.1678)&(0.2009)&&(0.2760)&(0.3317)&&(2.1563)&(3.9730)\\
+        & (5,0,\dots,0)       &0.9064  &  0.9540 &&0.9020  & 0.9510 &&0.9036  & 0.9544 &&0.8994  & 0.9498\\
+        &                     &(0.5887)& (0.7550)&&(0.1761)&(0.2106)&&(0.2573)&(0.3102)&&(1.9169)&(3.1828)\\
+
+(10,20) & (0,\dots,0,10)      &0.9062  &  0.9502 &&0.9012  & 0.9498 &&0.9094  &0.9532  &&0.8990  & 0.9516 \\
+        &                     &(0.9136) & (1.1905)&&(0.1495)&(0.1793)&&(0.3182)&(0.3789)&&(3.0073)&(7.4310)\\
+        & (1,\dots,1)         &0.9062  &  0.9518 &&0.9016  & 0.9500 &&0.9058  & 0.9532 &&0.8992  & 0.9522 \\
+        &                     &(0.7612)& (0.9889)&&(0.1500)&(0.1800)&&(0.2936)&(0.3520)&&(2.3888)&(4.7631)\\
+        & (10,0,\dots,0)      &0.9064  &  0.9534 &&0.9030  & 0.9510 &&0.9036  & 0.9548 &&0.8988  & 0.9498\\
+        &                     &(0.5739)& (0.7355)&&(0.1644)&(0.1966)&&(0.2593 &(0.3126)&&(1.9202)&(3.1794)\\
+
+(15,20) & (0,\dots,0,5)       &0.9004  &  0.9478 &&0.9058  & 0.9544 &&0.8932  & 0.9490 &&0.8974  & 0.9466 \\
+        &                     &(0.5363)& (0.6737)&&(0.1429)&(0.1706)&&(0.2269)&(0.2717)&&(1.7902)&(2.8542)\\
+        &(1,1,0,\dots,0,1,1,1)&0.8994  &  0.9474 &&0.9060  & 0.9548 &&0.8932  & 0.9488 &&0.8984  & 0.9464\\
+        &                     &(0.4969)& (0.6232)&&(0.1439)&(0.1718)&&(0.2190)&(0.2628)&&(1.7330)&(2.6932)\\
+        & (5,0,\dots,0)       &0.8978  &  0.9462 &&0.9052  & 0.9550 &&0.8952  & 0.9480 &&0.8994  & 0.9464\\
+        &                     &(0.4383)& (0.5477)&&(0.1482)&(0.1768)&&(0.2082)&(0.2501)&&(1.6616)&(2.4966)\\\hline
+\end{tabular}
+\end{center}}
+
+{\bf Remark 2:} We found from the simulation results that the expectation of the length of the GCI for $\alpha$ maybe not exist. Thus we provide the average interval lengths of the proposed GCI for $1/\alpha$.
+
+\section{Inference for the stress-strength model}
+In this section, we discuss the inferential procedure for the stress-strength model $P(X_1<X_2)$ when the stress $X_1$ and the strength $X_2$ are independent and $X_i\sim{\mbox{GIED}(\alpha_i,\lambda_i)}, i=1,2$. The reliability of the stress-strength model is given by
+\begin{eqnarray}
+\delta&=&P(X_1<X_2)=E[P(X_1<X_2|X_2)]\nonumber\\
+&=&1-\int_0^\infty\frac{\alpha_2\lambda_2}{x^2}e^{-\lambda_2/x}(1-e^{-\lambda_2/x})^{\alpha_2-1}(1-e^{-\lambda_1/x})^{\alpha_1}dx \nonumber\\
+&=&1-\alpha_2 \int_0^1(1-t)^{\alpha_2-1}(1-t^{\lambda_1/\lambda_2})^{\alpha_1}dt. \label{eq25}
+%&=\int_0^{+\infty}{\frac{{\alpha}{\lambda}}{x^2}{e^{{-\lambda}/{x}}}{(1-e^{{-\lambda}/{x}})^{\alpha-1}}\left[{\int_0^x {{\frac{\beta}{\theta}}{y^2}{e^{{-\theta}/{y}}}{(1-e^{{-\theta}/{y}})^{\beta-1}}}dy}\right]}dx\\&=1-{\alpha}{\int_0^1{{(1-t)^{\alpha-1}}{(1-t^{{\theta}/{\lambda}})^\beta}}dt}
+\end{eqnarray}
+In particular, when $\lambda_1=\lambda_2$, the above equation can be simplified as
+\begin{equation*}%\label{eq26}
+\delta=\frac{\alpha_1}{\alpha_1+\alpha_2}.
+\end{equation*}
+Since it is easy to obtain the maximum likelihood estimation (MLE) of $\delta$, the main aim of this section is to obtain the GCI for $\delta$.
+
+\subsection{The GCIs for $\delta$}
+Suppose that $\textbf{X}_i=(X_{1:m_i:n_i:k_i}, X_{2:m_i:n_i:k_i},\ldots, X_{m_i:m_i:n_i:k_i})$ is the progressively first failure censored sample from the $\mbox{GIED}(\alpha_i,\lambda_i)$ with the censoring scheme $R_i=(R_{i,1},R_{i,2},\ldots,R_{i,m_i})$, and that $\textbf{x}_i=(x_{1:m_i:n_i:k_i},x_{2:m_i:n_i:k_i},\ldots,x_{m_i:m_i:n_i:k_i})$ be the observed value of $\textbf{X}_i$. %Suppose that the pre-specified scheme is, where $m_i$ is the censoring scheme size of $X_i$, $k_i$ is the items size in each group.
+Furthermore, let
+$$S_{i,j}=\sum_{l=1}^j k_i(R_{i,l}+1)\log(1-e^{-\lambda/x_{l:m_i:n_i:k_i}^{R_i}})+k_i[n_i-\sum\limits_{l=1}^j (R_{i,l}+1)] \log(1-e^{-\lambda_i}/x_{j:m_i:n_i:k_i}^{R_i}).$$
+$$T_i(\lambda_i)=2\sum_{j=1}^{m_i-1}\log\frac{S_{i,m_i}}{S_{i,j}},\,i=1,2.$$
+Then $T_i(\lambda_i)$ and $S_{i,m_i}$ are independent, and $T_i(\lambda_i)\sim \chi^2(2m_i-2)$, $V_i=2\alpha_i S_{i,m_i}\sim \chi^2(2m_i)$.
+%\begin{align*}
+%&S_{i,j}=\sum_{l=1}^j{k_i(R_{i,l}+1)\log(1-e^{-\lambda/x_{l:m_i:n_i:k_i}^{R_i}}})+k_i[n_i-\sum\limits_{l=1}^j (R_{i,l}+1)] \log(1-e^{-\lambda_i}/x_{j:m_i:n_i:k_i}^{R_i}).\\
+%&T_i(\lambda)=2\sum_{j=1}^{n_i-1}\log\frac{S_{i,m_i}}{S_{i,j}}
+%\end{align*}
+
+
+
+
+%The point estimation of $R$ can be obtained by the maximum likelihood method.
+
+
+We first consider GCI for $\delta$ when $\lambda_1=\lambda_2\hat{=}\lambda$. In this case, it is obvious that $T_3(\lambda)=T_1(\lambda)+T_2(\lambda)\sim \chi^2(2m_1+2m_2-4)$. Let $g(T_0, \textbf{x}_1,\textbf{x}_2)$ be the unique solution of the equation $T_3(\lambda)=T_0$ for $T_0\sim\chi^2(2m_1+2m_2-4)$.
+Similar to the derivation of $Y_1$ in Section 2.1, the generalized pivotal quantity for $\delta$ is given by
+\begin{equation}\label{eq27}
+Y_5=\frac{Y_{1,1}}{Y_{1,1}+Y_{2,1}},
+\end{equation}
+where $Y_{i,1}=-V_i/[k_i\sum_{j=1}^{m_i}(R_{i,j}+1)\log({1-e^{{-g(T_0,\textbf{x}_1,\textbf{x}_2)}/{x_{j:m_i:n_i:k_i}^{R_i}}})}]$, $i=1,2$.
+
+Let $Y_{5,\gamma}$ denote the $\gamma$ percentile of $Y_5$. Then $[Y_{5,\gamma/2},\, Y_{5,1-\gamma/2}]$  is the $1-\gamma$ GCI of $\delta$ when $\lambda_1=\lambda_2$. Just as in the case of $Y_1$, the percentiles of $Y_5$ can be obtained by Monte Carlo simulations.
+
+{\bf Algorithm 3: GCI for the reliability $\delta$ with the common scale parameters.}
+
+(1) Generate $T_0 \sim \chi^2(2m_1+2m_2-4)$. Then for given progressively first failure censored samples $\mathbf{x_1}, \mathbf{x_2}$, obtain $g(T_0,\mathbf{x_1}, \mathbf{x_2})$ from the equation $T_3(\lambda)=T_0$.
+
+(2) Generate $V_i \sim \chi^2(2m_i)$, $i=1,2$. Then compute $Y_5$ based on the equation (\ref{eq27}).
+
+(3) Repeat the steps (1) and (2) $B$ times. Then there are the $B$ values of $Y_5$.
+
+(4) Arrange all $Y_5$ values in ascending order: $Y_{5,(1)}<Y_{5,(2)}<...<Y_{5,(B)}$. Then a $1-\beta$ GCI of the reliability $\delta$ is given by $[Y_{5,(B\gamma/2)}, Y_{5,(B-B\gamma/2)}]$.
+
+We now consider GCI for $\delta$ when $\lambda_1\neq \lambda_2$. In this case, let $g_i(T_{i,0},\textbf{x}_i)$ be
+the solution of the equation $T_i(\lambda_i)=T_{i,0}$, where $T_{i,0}\sim \chi^2(2m_i)$. Using the substitution method, the generalized pivotal quantity for $\delta$ is given by
+\begin{equation}\label{eq28}
+Y_6=1-Y_{2,2} \int_0^1(1-t)^{Y_{2,2}-1}(1-t^{g_1(T_{1,0},\textbf{x}_1)/g_2(T_{2,0},\textbf{x}_2)})^{Y_{1,2}}dt,
+\end{equation}
+where $Y_{i,2}=-V_i/[k_i\sum_{j=1}^{m_i}(R_{i,j}+1)\log({1-e^{{-g(T_{i,0},\textbf{x}_i)}/{x_{j:m_i:n_i:k_i}^{R_i}}})}]$, $i=1,2$.
+
+If $Y_{6,\gamma}$ denotes the $\gamma$ percentile of $Y_6$, then $[Y_{6,\gamma/2}, Y_{6,1-\gamma/2}]$ is a $1-\gamma$ GCI for the reliability $\delta$. Similarly, the value $Y_{6,\gamma}$ can be obtained by Monte Carlo simulation. Because our simulation results show that the coverage probabilities of the proposed generalized confidence lower limit (GCLL) based on (\ref{eq28}) are larger than the nominal coverage probabilities (These simulation results are not provided for saving space.), we propose a modified generalized pivotal quantity. The modified generalized pivotal quantity is given by $$Y_7=\left|\log \frac{1+Y_6}{1-Y_6}-RZ\right|,$$
+where $\widehat{\delta}$ is the MLE of $\delta$, $RZ=\log[(1+\widehat{\delta})/(1-\widehat{\delta})]$.
+
+If $Y_{7,\gamma}$ denotes the $\gamma$ percentile of $T_7$, then a $1-\gamma$ modified GCI (MGCI) for the reliability $\delta$ is given by $$\left[\frac{e^{RZ-Y_{7,1-\gamma}}-1}{e^{RZ-Y_{7,1-\gamma}}+1}, \frac{e^{RZ+Y_{7,1-\gamma}}-1}{e^{RZ+Y_{7,1-\gamma}}+1}\right],$$ and $(e^{RZ-Y_{7,1-2\gamma}}-1)/(e^{RZ-Y_{7,1-2\gamma}}+1)$ is a $1-\gamma$ modified GCLL for the reliability $\delta$. Similarly, the value $Y_{7,\gamma}$ can be obtained by the following Monte Carlo method.
+
+{\bf Algorithm 4: MGCI for the reliability $\delta$ with the unequal scale parameters.}
+
+(1) Generate $T_{i,0} \sim \chi^2(2m_i-2)$. Then for given progressively first failure censored sample $\mathbf{x_i}$, obtain $g(T_{i,0},\mathbf{x_i})$ from the equation $T_i(\lambda_i)=T_{i,0}$, $i=1,2$.
+
+(2) Generate $V_i$ from $\chi^2(2m_i)$, $i=1,2$. Then compute $Y_6$ on the basis of (\ref{eq28}).
+
+(3) Repeat the steps (1) and (2) $B$ times. Then there are the $B$ values of $Y_6$.
+
+(5) For given sample $\mathbf{x_i}$, obtain the MLEs $\widehat{\lambda}_i$ and $\widehat{\alpha}_i$, $i=1,2$. Then compute the value of $\widehat{\delta}$.
+
+(6) Compute $Y_{7,i}=|\log[(1+Y_{6,i})/(1-Y_{6,i})]-RZ|$, $i=1,2,...,B$, where $RZ=\log[(1+\widehat{\delta})/(1-\widehat{\delta})]$.
+
+(7) Arrange all $Y_7$ values in ascending order: $Y_{7,(1)}<Y_{7,(2)}<...<Y_{7,(B)}$. Then a $1-\gamma$ MGCI for the reliability $\delta$ is given by $$\left[\frac{e^{RZ-Y_{7,(B-B\gamma)}}-1}{e^{RZ-Y_{7,(B-B\gamma)}}+1}, \frac{e^{RZ+Y_{7,(B-B\gamma)}}-1}{e^{RZ+Y_{7,(B-B\gamma)}}+1}\right].$$
+
+
+
+
+
+
+
+
+\subsection{Simulation study}
+
+In this subsection, a simulation study is conducted to assess the proposed GCI and MGCI for $\delta$ with both equal scale and unequal scale parameters in terms of the coverage percentage and the average interval length.
+In the simulation study, we consider two scenarios of the GIEDs. The first one is a pair of the GIEDs with the parameters $(\alpha_1, \lambda_1, \alpha_2, \lambda_2) = (4, 1, 2, 1)$ and the parameter $\delta=2/3$, and the second one is a pair of the GIEDs with the parameters $(\alpha_1, \lambda_1, \alpha_2, \lambda_2) = (4, 1, 2, 2)$ and the parameter
+$\delta=0.8810$. In addition, we take $n_1=n_2=n=10, 20$, $k_1 =k_2=k=1$, $m_1=m_2=m=10, 15$ and the same progressive censoring schemes, $R_1=R_2=R$ for a pair of the GIEDs in the simulation study. For a given combination of the parameters and censoring scheme, the simulation is carried over 5000 simulation runs with $B=10000$. The simulation results are reported in Table 4.
+
+
+{\scriptsize
+\begin{center}
+{Table 4: The coverage percentages and the average lengths (in parentheses) of the GCIs/MGCIs\\ for $\delta$ with nominal levels 0.9, 0.95, based on 5000 replications}\\[5pt]
+\begin{tabular}{ccccc}\hline
+     %&     &\multicolumn{2}{c}{$1/\alpha$} && \multicolumn{2}{c}{$x_{0.1}$} &&\multicolumn{2}{c}{$R(1.2)$}&&\multicolumn{2}{c}{$X_{new}$}\\\cline{3-4} \cline{6-7} \cline{9-10}\cline{12-13}
+$(\alpha_1, \lambda_1, \alpha_2, \lambda_2)$&$(k,m,n)$ & $R$           & 0.9       &0.95     \\ \hline
+(4, 1, 2, 1)                                &(1,10,15) & (0,\dots,0,5) & 0.8994 (0.3261)   &0.9466 (0.3852)\\
+                                            &          & (5,0,\dots,0) & 0.8988 (0.3224)   &0.9468 (0.3809)\\
+                                            &(1,10,20) & (0,\dots,0,10)& 0.9000 (0.3274)   &0.9458 (0.3866)\\
+                                            &          & (10,0,\dots,0)& 0.8980 (0.3220)   &0.9478 (0.3804)\\
+                                            &(1,15,20) & (0,\dots,0,5) & 0.9024 (0.2697)   &0.9534 (0.3194)\\
+                                            &          & (5,0,\dots,0) & 0.9038 (0.2673)   &0.9538 (0.3166)\\
+(4, 1, 2, 2)                                &(1,10,15) & (0,\dots,0,5) & 0.9080 (0.2449)   &0.9574 (0.2992)\\
+                                            &          & (5,0,\dots,0) & 0.9022 (0.2404)   &0.9502 (0.2944)\\
+                                            &(1,10,20) & (0,\dots,0,10)& 0.9056 (0.2546)   &0.9524 (0.3120)\\
+                                            &          & (10,0,\dots,0)& 0.8996 (0.2351)   &0.9508 (0.2885)\\
+                                            &(1,15,20) & (0,\dots,0,5) & 0.9090 (0.1967)   &0.9548 (0.2386)\\
+                                            &          & (5,0,\dots,0) & 0.9032 (0.1965)   &0.9486 (0.2389) \\\hline
+\end{tabular}
+\end{center}}
+
+It is seen from Table 4 that for all combinations, the coverage percentages of the GCIs and MGCIs for $\delta$ are quite close to the nominal coverage probabilities, even for small sample sizes. The simulation results also show that for a fixed $n$, as $m$ increases the average interval lengths decrease, as expected. These findings show that the performance of the proposed MGCI is very satisfactory for all cases.
+
+
+\section{An illustrative example}
+
+In this section, we use the following progressively first failure censored data to illustrate the methods of inference developed in this paper. These data are the strength of single carbon fibers of 10 mm and 20 mm in gauge length. The original data are provided by Bader and
+Priest \cite{badar1982data}. Krishna et al. \cite{krishna2017estimation} generated two progressively first failure censored samples from those original data. They showed that those data can be fitted by the GIEDs.
+
+%To illustrate the methods of inference developed in this paper, we consider the following progressively first failure censored data giving the strength measured in GPa (giga-Pascals) for single carbon fibers and impregnated 1000-carbon fiber tows. This data has been utilized by Krishna et al. \cite{krishna2017estimation}. They showed that those data can be fitted by the GIEDs.
+
+{\scriptsize
+\begin{center}
+{Table 5: Two progressively first failure censored samples}\\[5pt]
+\begin{tabular}{cccc}\hline
+$X_1$&$n_1=23, m_1=18, k_1=3$&$R_1= (0*6, 1* 5,0*7)$ &0.562, 0.564, 0.729, 0.802, 0.950, 1.111, 1.208, 1.247, 1.271, \\
+                      & &&1.348, 1.429, 1.522, 1.524, 1.551, 1.609, 1.740, 1.976, 2.068\\
+$X_2$&$n_2=21, m_2=16, k_3=3$&$R_2= (0*5, 1* 5,0*6)$ &1.151, 1.382, 1.453, 1.478, 1.507, 1.600, 1.647, 1.704, 1.768, \\
+                      & &&1.775, 1.825, 1.866, 1.925, 2.227, 2.375, 2.627\\\hline
+\end{tabular}
+\end{center}}
+
+Based on the first censored sample, the MLEs of $\lambda_1$ and $\alpha_1$ are $\widehat{\lambda}_1=4.1155$ and $\widehat{\alpha}_1=5.1947$, respectively. The 95\% exact confidence interval of $\lambda_1$ is $[2.1668, 5.4888]$. The GCIs of $\alpha_1, x_{1,0.1}$ and $R_{X_1}(1)$ are given by $[1.0875, 13.6657]$, $[0.8280, 1.2160]$ and $[0.8354, 0.9565]$, respectively. The GPI of $X_{1,new}$ is $[0.7194, 11.8121]$.
+
+Based on the second censored sample, the MLEs of $\lambda_2$ and $\alpha_2$ are $\widehat{\lambda}_2=10.1753$ and $\widehat{\alpha}_2=60.6688$, respectively. The 95\% exact confidence interval of $\lambda_2$ is $[6.3857, 13.9296]$. The 95\% confidence intervals of $\lambda_1$ and $\lambda_2$ show $\lambda_1 \neq \lambda_2$. The MLE of $\delta=P(X_1<X_2)$ is 0.5841 based on the equation (\ref{eq25}). The 95\% MGCI of $\delta$ is $[0.3585,    0.7453]$ based on the generalized pivotal quantity $Y_7$. The above GCIs and MGCI are based on $B=100000$. Krishna et al. \cite{krishna2017estimation} reported that the MLE, the 95\% asymptotic, bootstrap-$p$ and bootstrap-$t$ confidence intervals of $\delta$ are 0.6310, [0.1770,1], [0.5137,0.9330], [0.2691,0.7484], respectively. Because we observed from the simulation results that our MGCI for $\delta$ works well,
+it is clear that the MGCI of $\delta$ outperforms other confidence intervals in terms of the interval lengths of these intervals.
+
+\section{Conclusion}
+The generalized inverted exponential distribution is an important skewed distribution. This study developed interval estimation procedures for the GIED and the GIED stress-strength model. The idea is to transform progressively first failure censored sample from the GIED into random variables following the standard exponential distribution. The exact confidence interval for the scale parameter was proposed. The GCIs for the shape parameter, the percentile and reliability of the GIED were also provided. In addition, the GPI for the future measurement was derived. In the simulation study, we showed that the proposed GCIs and GPI work well.
+
+The GIED stress-strength model was also considered. The proposed procedure was also successfully extended to the GIED stress-strength model with both equal scale and unequal scale parameters. The performance of the proposed MGCIs for the reliability of the GIED stress-strength model was guaranteed using extensive simulations.
+
+
+
+
+
+
+
+
+
+%\textbf{Acknowledgements:} The authors thank the Editor, the Associate Editor and the reviewers for their detailed comments and suggestions, which considerably helped improve the manuscript.
+
+
+
+
+
+\bibliographystyle{unsrt}%
+\bibliography{bibfile}
+
+\end{document}

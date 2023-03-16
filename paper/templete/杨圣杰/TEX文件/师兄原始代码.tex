@@ -1,0 +1,322 @@
+\documentclass[a4paper,12pt,openany,oneside,utf-8]{ctexbook}
+%\documentclass[a4paper,12pt,openany,oneside,utf-8]{cctbook}
+%\usepackage{hyperref}
+%\hypersetup{CJKbookmarks=true}
+\usepackage{amssymb,amsmath}
+\usepackage{subcaption}
+\usepackage[amsmath,thmmarks]{ntheorem}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{titletoc}%自己添加,
+\usepackage{epsfig,picins,picinpar}
+\usepackage{setspace}
+%\usepackage[top=2.54cm,bottom=2.54cm,left=2.54cm,right=2.54cm]{geometry}
+\usepackage{geometry}
+\geometry{left=3.3cm,right=2.8cm,top=2.5cm,bottom=2.2cm,}
+\usepackage{amsmath}
+\usepackage{mathtools} % offer \coloneqq to show := [see https://tex.stackexchange.com/questions/194344/symbol-for-definition]
+%%%%%%%%%%%%%%%%%%%%%%%%new
+\usepackage[super,square,comma,sort&compress]{natbib}
+\usepackage{multirow}
+\usepackage{dsfont}
+\usepackage{booktabs}
+\usepackage{epstopdf}
+\usepackage{ccmap}
+\bibliographystyle{gbt7714-2005}%{elsarticle-num}%{elsarticle-num}%{plain}%{elsarticle-num-names}%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%自己的导言区
+%\usepackage{natbib}     % adding a package for \citet{}, \citep{}, \citet*{}, \citep*{}
+\usepackage{amssymb} %% The amssymb package provides various useful mathematical symbols
+\usepackage{amsmath}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proof}{Proof}[section]
+\DeclareMathOperator*{\argmax}{arg\,max}
+\usepackage{bm}         % adding a package for \bm{\widehat{\beta}}
+\usepackage{makecell}   % makecell, see: https://blog.csdn.net/cy_tec/article/details/51436434
+\usepackage{multirow}   % Latex Table, see: https://blog.csdn.net/canhui_wang/article/details/72920963
+\usepackage{booktabs}   % for \cmidrule, see: https://zhidao.baidu.com/question/306414034088577164.html
+\usepackage{graphicx}   % adding a package for loading figures
+\usepackage{threeparttable}   % adding a package for tablenotes
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{titlesec}    % for \titleformat
+\usepackage{indentfirst}   % 关于首个段落缩进的问题，可以在导言区加入宏包\usepackage{indentfirst}会自动缩进， see: https://zhidao.baidu.com/question/207438548.html
+\usepackage{caption}   % for \captionsetup, see: https://blog.csdn.net/kebu12345678/article/details/76957377?locationNum=9&fps=1
+\usepackage{makecell}  % for \Xcline  \Xhline, see: http://blog.sina.com.cn/s/blog_5e16f1770100mvtd.html
+\floatname{algorithm}{Algorithm}  % Ref: https://blog.csdn.net/lwb102063/article/details/53046265
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\usepackage{paralist} % for \begin{enumerate}, see: http://bbs.ctex.org/forum.php?mod=viewthread&tid=62084
+%%%%%%%%%%%%%%%%%%%%%%自己的导言区
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%\renewcommand\sectionname{\arabic{section}}
+%\renewcommand\sectionformat{\centering}
+%\renewcommand\subsectionname{\arabic{section}.\arabic{subsection}}
+%\renewcommand\subsectionformat{}
+%\renewcommand\subsubsectionname{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+%\renewcommand\subsubsectionformat{}
+
+\allowdisplaybreaks[4]
+\renewcommand{\baselinestretch}{1.5}
+%\renewcommand{\chaptername}{{Chapter\thechapter}}
+\renewcommand{\chaptername}{第{\thechapter}章}
+\renewcommand\bibname{参考文献}
+\renewcommand\contentsname{目录}
+%\renewcommand{\sectionname}{{\thechapter}.\arabic{section}}
+
+\renewcommand {\thetable} {\thechapter{}-\arabic{table}}
+\renewcommand {\thefigure} {\thechapter{}-\arabic{figure}}
+\renewcommand {\theequation} {\thechapter{}-\arabic{equation}}
+
+% 字体大小设置
+\newcommand{\chuhao}{\fontsize{48pt}{\baselineskip}\selectfont}
+\newcommand{\xiaochuhao}{\fontsize{36pt}{\baselineskip}\selectfont}
+\newcommand{\yihao}{\fontsize{28pt}{\baselineskip}\selectfont}
+\newcommand{\xiaoyihao}{\fontsize{25pt}{\baselineskip}\selectfont}
+\newcommand{\erhao}{\fontsize{21pt}{\baselineskip}\selectfont}
+\newcommand{\xiaoerhao}{\fontsize{17pt}{\baselineskip}\selectfont}
+\newcommand{\sanhao}{\fontsize{15.75pt}{\baselineskip}\selectfont}
+\newcommand{\xiaosanhao}{\fontsize{15pt}{\baselineskip}\selectfont}
+\newcommand{\sihao}{\fontsize{13pt}{\baselineskip}\selectfont}
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}%\newcommand\kaishu{\CJKfamily{kai}}
+
+
+\CTEXsetup[name={第,章}, number=\arabic{chapter}]{chapter}
+\titleformat{\chapter}{\centering\sanhao\bfseries}{第\,\thechapter\,章}{1em}{}
+\titlespacing*{\chapter} {0pt}{-10.5pt}{12pt}
+
+\titleformat{\section}{\centering\xiaosanhao\bfseries}{\thesection}{1em}{}
+\titlespacing*{\section} {0pt}{12pt}{12pt}
+
+\titleformat{\subsection}{\sihao\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection} {0pt}{0pt}{5.25pt}
+
+\DeclareCaptionFont{fivehao}{\fontsize{10.5pt}{11pt}\selectfont #1}
+\pagestyle{fancy}%
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{0\baselineskip}
+\addtolength{\headwidth}{0\marginparsep}
+\addtolength{\headwidth}{0\marginparwidth}
+\setlength{\headsep}{5mm}%
+\fancyhf{}
+
+
+\begin{document}
+\theoremstyle{plain} \theoremseparator{}
+\theoremindent0cm\theoremnumbering{arabic} \theoremsymbol{}
+
+
+\fancypagestyle{plain}{%
+\fancyhead{}
+\fancyhead[CE,CO]{\xiaowuhao{}}}
+\begin{titlepage}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+\fancyhead[C]{\xiaowuhao}
+\vskip 4mm
+\xiaowuhao 密级：公开 \hspace{9cm}中图分类号：O212.1
+
+\vskip 6mm
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=140mm,height=22mm]{zjgsu.jpg}
+\end{figure}
+
+\vskip 10mm
+
+\begin{spacing}{1.0}
+\begin{center}
+\chuhao\textbf{硕士学位论文}
+\end{center}
+
+\vskip 20mm
+\begin{center}
+\hspace{0.01mm}\sanhao\textbf{论文题目：\underline{有限混合模型的参数估计及定阶研究}}
+\end{center}
+\end{spacing}
+\vspace{24mm}
+
+\begin{center}
+\textbf{\kaishu\sanhao 作者姓名：\underline{\quad \quad \quad 许耿鑫 \quad \quad \quad \quad}}
+\end{center}
+
+
+\begin{center}
+\textbf{\kaishu\sanhao 学科专业：\underline{\quad \quad \quad 统计学 \quad \quad \quad \quad}}
+\end{center}
+
+
+\begin{center}
+\textbf{\kaishu\sanhao 研究方向：\underline{\quad \quad \ \ 数理统计 \ \quad \quad\quad}}
+\end{center}
+
+\begin{center}
+\textbf{\kaishu\sanhao 指导教师：\underline{\quad \quad \quad  王伟刚 \quad \quad \quad \quad  }}
+\end{center}
+
+\
+
+\
+
+\
+
+
+\begin{center}
+\kaishu\sanhao 提交日期：2018 年12月
+\end{center}
+
+\end{titlepage}
+
+
+\frontmatter
+\pagenumbering{Roman}
+\cfoot{\thepage}
+\newpage
+\begin{center}
+\heiti\sanhao{有限混合模型的参数估计及定阶研究}
+\end{center}
+\vskip 10 mm
+\begin{center}
+\heiti\sanhao{摘\quad 要}
+\end{center}
+\vskip 7 mm
+\begin{spacing}{1.8}
+{\sihao 大数据背景下, 庞大复杂的样本往往来自很多种类或分组. 有限混合模型正是刻画这种异质性的有力建模工具. 对混合模型中的数理问题进行研究, 是很多应用展开的首要任务, 其意义重大.}
+\end{spacing}
+\begin{spacing}{1.8}
+{\sihao 本文对有限混合模型的两个问题进行研究. 第一个问题是在给定混合模型的成分个数的条件下, 对模型参数进行估计. 另一个问题则是在成分个数未知情况下的模型选择, 即混合模型的定阶.}%即确定混合模型的成分个数
+\end{spacing}
+\begin{spacing}{1.8}
+{\sihao 针对第一个问题, 文章提出了三种改进的期望最大化算法~(expectation-maximization algorithm, EM算法),~用于对有限混合模型进行参数估计. 具体地, 在E步给定观测数据及当前参数估计值, 计算隐变量的条件期望时, 对混合比例进行不同形式的修改. 改进的算法保持了经典EM算法的收敛性. 基于模拟数据以及真实数据的实验结果均表明, 三种改进EM算法的收敛速度比经典EM算法更快, 同时对有限混合模型的参数估计效果更加准确和稳定.}
+\end{spacing}
+\begin{spacing}{1.8}
+{\sihao 针对第二个问题, 本文在惩罚对数似然函数中引入MCP罚函数~(minimax concave penalty),~提出了MMCP方法. 具体地, 该方法在对数似然函数的基础上引入两个惩罚项, 分别对混合比例和成分参数的距离进行惩罚. MMCP法能够同时实现混合模型的定阶及其它参数的估计. 数值实验结果表明, 相比MSCAD方法, MMCP方法对混合模型的定阶准确率更高.}
+\end{spacing}
+\vskip 16 mm
+\noindent {\sihao 关键词: 有限混合模型；EM算法；惩罚似然方法；MCP罚函数}
+
+\newpage                                                                                               %
+\begin{spacing}{1.1}
+\begin{center}
+\heiti\xiaosanhao{PARAMETER ESTIMATION AND ORDER SELECTION IN FINITE MIXTURE MODELS}
+\end{center}
+\end{spacing}
+\vskip 14mm
+\begin{center}
+\heiti\xiaosanhao{ABSTRACT}
+\end{center}
+\vskip 7mm
+
+Under the circumstances of big data age, the large and complex data set always comes from different species or groups. Finite mixture models form a flexible tool to deal with the heterogeneity. As the top priority of application, it is a significant step to study the mathematical problems.
+
+In this thesis, we investigate two problems in finite mixture models. One is the problem of parameter estimation given the number of components of the model. Another one is to do order selection, that is, to determine the number of components.
+
+As to the first problem, we propose three modified EM algorithms for parameter estimation in finite mixture models. The proposed methods replace the mixing proportions with other estimates while calculating the conditional expectations for the hidden labels given observations and the current estimates for parameters in the E step. We also discuss the convergence properties of the new procedures. Simulation studies show that the new acceleration methods perform much better than the classical EM algorithm in convergence rate and estimation accuracy. A real-data example is examined to illustrate their performance.
+
+Regarding the second problem, a penalized likelihood method with MCP penalty is proposed, called MMCP. To be specific, based on likelihood function, the proposed method introduces two penalty functions on the mixing proportions and the distance between component parameters. The new method can do order selection and parameter estimation simultaneously. Numerical studies show that the new method perform better than MSCAD.
+
+\vskip 14 mm
+\noindent{KEYWORDS: Finite mixture models; EM algorithm; Penalized likelihood approach; Minimax concave penalty}
+                                                                                                      %
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                                                                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\begin{spacing}{1.8}
+\tableofcontents
+\titlecontents{chapter}[0pt]{\addvspace{2pt}\filright}
+{\contentspush{\thecontentslabel\ }}
+{}{\titlerule*[8pt]{.}\contentspage}
+\end{spacing}
+
+
+\mainmatter
+\fancyfoot[EC,OC]{\hspace*{1 em}\thepage{}\hspace*{1 em}}
+\normalsize
+\fancypagestyle{plain}{\pagestyle{fancy}}
+\chapter[引言]{引言}\fancyhead[C]{\xiaowuhao}
+\section{选题背景与研究意义}
+\subsection{选题背景}
+
+
+随着计算机、互联网的高速发展, 有限混合模型的应用潜力得到了广泛认可. 混合模型作为模式识别、聚类判别及生存分析等统计方法的支撑, 已经被成功地应用到社会科学、经济学、营销学、天文学、精神病学、遗传学、生物学等领域. 这些行业大都出现了海量、复杂的数据, 普通的单一分布无法在其中挖掘出有用的模式和信息, 而混合模型则有效地解决了这个问题. 纵观当前的众多研究, 不同类型的混合模型被应用到不同的领域当中: 泊松混合模型被应用到医学领域中; 指数混合模型被应用到工程领域当中; 而高斯混合模型则被应用地最广, 这是由于许许多多的随机现象在样本量足够大的情况下, 都可以用高斯分布去逼近.
+
+不同于传统的单一分布模型, 有限混合模型的参数估计问题处理起来较为复杂. 极大似然估计作为参数估计的经典方法, 由于在混合模型中没有解析解, 因此人们对于混合模型参数估计的早期研究方法基本局限在矩方法上.~%迫切需要新的数值方法.
+EM算法~(Demspter等, 1977)~的提出, 加上计算机技术的发展, 使得人们能够更高效地处理复杂数据, 这也进一步为有限混合模型的推广应用奠定了基础. EM算法通过重复E步和M步, 直到所得的参数迭代序列收敛, 方法的实际操作相对简单, 但其本身也具有不足之处, 如受初始值的影响较大、收敛速度慢且只能达到目标函数的局部最大值, 因此, 对EM算法进行改进的意义重大.
+
+\section{文献综述}
+
+\subsection{有限混合模型的参数估计}
+在计算机发展之前, 学者们
+
+
+
+
+\bibliography{bibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%参考文献
+\newpage
+\pagestyle{fancy}
+\begin{center}
+\heiti\sanhao {参考文献}
+\end{center}
+
+\addcontentsline{toc}{chapter}{参考文献}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%参考文献
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\pagestyle{fancy}
+\begin{center}
+\heiti\sanhao {致\quad 谢}
+\end{center}
+
+\addcontentsline{toc}{chapter}{致谢}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
+%\thispagestyle{empty}
+%\begin{center}\heiti\sanhao\textbf{独\ 创\ 性\ 声\ 明}\end{center}
+%\begin{spacing}{2.0}
+%本人声明所呈交的学位论文是本人在导师指导下进行的研究工作及取得的研究成果.尽我所知,除了文中特别加以标注和致谢的地方外,论文中不包含其他人已经发表或撰写过的研究成果,也不包含本人为获得浙江工商大学或其它教育机构的学位或证书而使用过的材料.与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明并表示谢意.\\
+%
+%~~~~~~~~~~~~~~~~~~签名:\underline{\hspace{3cm} }\ \ 日期: \hspace{0.8cm} 年 \hspace{0.2cm} 月 \hspace{0.4cm} 日\\
+%%~~~~~~~~~~~~~~~~~~签名:\underline{\hspace{0.8cm} 许耿鑫 \hspace{0.8cm}}\ \ 日期: 2018 年 1 月 14 日\\
+%\\
+%
+%\begin{center}\heiti\sanhao\textbf{ 关于论文使用授权的说明}\end{center}
+%~~~~~~本学位论文作者完全了解浙江工商大学有关保留、使用学位论文的规定：浙江工商大学有权保留并向国家有关部门或机构送交论文的复印件和磁盘,允许论文被查阅和借阅,可以将学位论文的全部或部分内容编入有关数据库进行检索,可以采用影印、缩印或扫描等复制手段保存、汇编学位论文,并且本人电子文档的内容和纸质论文的内容相一致.
+%
+%保密的学位论文在解密后也遵守此规定.\\
+%
+%~~~~~~~~~~~~~~~~~~签名:\underline{\hspace{3cm} }\ \ 导师签名:\underline{\hspace{3cm}}
+%%~~~~~~~~~~~~~~~~~~签名:\underline{\hspace{0.8cm} 许耿鑫 \hspace{0.8cm}}\ \ 导师签名:\underline{\hspace{0.8cm} 王伟刚 \hspace{0.8cm}}
+%
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 日期: \hspace{0.8cm} 年 \hspace{0.2cm} 月 \hspace{0.4cm} 日
+%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 日期: 2018 年 1 月 14 日
+%\end{spacing}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}
