@@ -14,7 +14,7 @@
 \usepackage{multirow}
 \usepackage{dsfont}
 \usepackage{booktabs}
-\usepackage{epstopdf}
+\usepackage{epstopdf, pdfpages}
 \usepackage{ccmap}
 \bibliographystyle{gbt7714-2005}
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -154,9 +154,13 @@
 
 
 \begin{center}
-\kaishu\sanhao 提交日期：2023 年12月
+\kaishu\sanhao 提交日期：2024 年 1 月
 \end{center}
 \end{titlepage}
+
+\includepdf{figures/covers/cover_en.pdf}
+
+% \includepdf{figures/covers/cover_anonymous.pdf}
 
 \input{sections/1_abstract.tex}
 
@@ -170,8 +174,8 @@
 
 \input{sections/6_conclusion.tex}
 
-\input{sections/7_contributions.tex}
+\input{sections/7_references.tex}
 
-\input{sections/8_acknowledgement.tex}
+\input{sections/8_contributions.tex}
 
 \end{document}
