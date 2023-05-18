@@ -6,22 +6,27 @@
 \chapter[引言]{引言}\fancyhead[C]{\xiaowuhao} %上传到系统里面的论文电子最终版本不要出现页眉（就是每一页的最顶端不要再写浙江工商大学了）
 \section{选题背景与研究意义}
 \subsection{选题背景}
+除图像、视频，音频与自然语言处理等领域，AI技术的快速发展也带动相关交叉学科的发展。AI4Science近年在计算生物、计算化学、材料设计、计算天文，计算育种等都有广泛应用，相关AI技术的应用能够大幅加速相关科学研究进展。在计算制药领域，近年来相关AI技术在药物性质预测，生成，开发，实验等领域的运用不仅加速相关研究的进展，也能够降低相关研究的研发成本。
 
-近年来基于深度学习的生成模型也在多领域有成功应用，例如AI在图画、语音、视频、对话等应用上的优秀表现引发了社会对人工智能新一轮广泛关注与热烈讨论。
+基于AI的生成模型近十年来也被广泛研究，他们包括变分自编码器（Variational autoencoders / VAEs）\cite{vae_kingma_13}，生成对抗模型（Generative adversarial networks / GANs）\cite{gan_goodfellow_14}，流形模型（Normalizing flow）\cite{nice_dinh_15,density_dinh_17}，自回归（Auto-regressive）\cite{ar_oord_16}，强化学习与扩散模型（Diffusion）\cite{deepunsupervised_dickstein_15,generative_song_19}等。相关方法在图像，文字等方面也有了许多成功应用。
 
-在智能计算的计算医药相关研究中，深度学习模型在药物发现、药物属性预测等应用中已经展现出良好的性能和极大的潜力。人工智能技术应用能够为药物研发的多个阶段降本增效。过去的2022年，AI制药赛道相关融资总金额达百亿美元。国内互联网巨头如百度百图生科、华为EIHealth、腾讯云深智药，及初创企业晶泰科技，剂泰医药，星药科技等，相关成果已经展现出深度学习在该领域的强大性能和广阔前景。
+深度学习在分子化学领域近年来也有着成功的应用。以分子学习为例，化学分子常以简化分子线性输入规范字符串（Simplified molecular-input line-entry system / SMILES）\cite{smiles_weinberger_88}存储，每一个分子式对应一个SMILES字符串。随着早期深度学习方法，如卷积神经网络（Convolutional neural networks / CNNs）\cite{cnnsmiles_hirohara_18}和循环神经网络（Recurrent neural networks / RNNs）\cite{rnnsmiles_bjerrum_17,practicalmodel_liu_19,deeppurpose_huang_20}的发展，一些研究试图运用这些深度学习算法，对以字符串形式存在的分子式进行学习，以获得预测特定原子或是分子整体的性质的能力。随着图神经网络（Graph neural networks / GNNs）\cite{semisupervised_kipf_17,inductive_hamilton_17,howpowerful_xu_18}的出现，其对非结构化数据的建模能力和对节点间拓扑关系学习的能力被证明十分优异。分子作为自然界中天然存在的图结构，原子和键对应着图中的节点和边，这为分子学习提供了新的思路与方法。从最早的图卷积神经网络开始，相关研究者致力于提出新的图学习算法，以提升对分子图学习的性能。随着相关化学模拟技术的发展，让三维分子建模成为可能。这也在拓扑结构信息以外，提供了更丰富的几何构型信息，这也驱动着相关研究拓展至几何图神经网络上。分子三维构象允许研究者对分子进行更准确的研究，同时也推动更多复杂任务的出现，包括分子生成，Ligand生成，Protacs生成，药物亲和力预测，蛋白质预测等等。
 
 \subsection{研究意义}
+人工智能在智能计算相关研究中开始扮演越来越重要的角色，相关模型在药物发现、药物属性预测等应用中已经展现出良好的性能和极大的潜力。由于深度学习技术应用具备为药物研发的多阶段降本增效的潜力，在2022年，AI制药赛道相关企业融资总金额达百亿美元。在这一赛道竞逐的有国内互联网巨头如百度百图生科、华为EIHealth、腾讯云深智药，及初创企业晶泰科技，剂泰医药，星药科技等。相关成果已经展现出深度学习在该领域的强大性能和广阔前景。
 
 \section{文献综述}
+\subsection{基于深度学习的分子学习}
+分子最早被表示为简化分子线性输入规范字符串（SMILES）\cite{smiles_weinberger_88}，随着早期深度学习模型卷积神经网络（CNN）和循环神经网络（RNN）的发展，相关模型利用CNNs和RNNs对分子性质做出学习。Hirohara等\cite{cnnsmiles_hirohara_18}的研究提出使用CNN对分子级别的特征和分子基团性质进行有效学习。由于RNNs在早期自然语言护理任务上有良好表现，Bjerrum\cite{rnnsmiles_bjerrum_17}提出LSTM-QSAR模型用于学习分子性质。伴随图神经网络（GNNs）
 
-\subsection{生成模型}
+Transformer \cite{smilestrans_honda_19,smilesbert_wang_19,chemberta_chithrananda_20}
 
-\subsection{分子学习}
+\subsection{生成式人工智能}
 
 \subsection{分子生成}
 现有的基于扩散的分子生成模型有且只有EDM\cite{edm_hoogeboom_22}和MDM\cite{mdm_huang_22}。
  
 \section{创新点}
+本文聚焦于扩散模型在分子生成领域的前沿研究，意在提出一个能够设计出有效、稳定分子的生成模型框架。本文利用扩散模型作为生成框架的骨架，在扩散模型的去噪内核设计上，本文提出了一个全新的图学习算法。该算法能够对几何信息，拓扑信息和原子化学性质进行分别建模，在保证模型等变形的条件下，实现对多种信息的有效学习与利用。
 
 \section{基本框架}
