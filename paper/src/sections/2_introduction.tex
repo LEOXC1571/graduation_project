@@ -17,7 +17,11 @@
 
 \section{文献综述}
 \subsection{基于深度学习的分子学习}
-分子最早被表示为简化分子线性输入规范字符串（SMILES）\cite{smiles_weinberger_88}，随着早期深度学习模型卷积神经网络（CNN）和循环神经网络（RNN）的发展，相关模型利用CNNs和RNNs对分子性质做出学习。Hirohara等\cite{cnnsmiles_hirohara_18}的研究提出使用CNN对分子级别的特征和分子基团性质进行有效学习。由于RNNs在早期自然语言护理任务上有良好表现，Bjerrum\cite{rnnsmiles_bjerrum_17}提出LSTM-QSAR模型用于学习分子性质。伴随图神经网络（GNNs）
+分子最早被表示为简化分子线性输入规范字符串（SMILES）\cite{smiles_weinberger_88}，随着早期深度学习模型卷积神经网络（CNN）和循环神经网络（RNN）的发展，相关模型利用CNNs和RNNs对分子性质做出学习。Hirohara等\cite{cnnsmiles_hirohara_18}的研究提出使用CNN对分子级别的特征和分子基团性质进行有效学习。由于RNNs在早期自然语言护理任务上有良好表现，Bjerrum\cite{rnnsmiles_bjerrum_17}提出LSTM-QSAR模型用于学习分子性质。
+
+伴随图神经网络（GNNs）的发展，由于分子的形式天然的属于图结构，一些研究开始使用GNNs进行分子学习。CGCNN\cite{cgcnn_xie_18}将图卷积神经网络引入到分子性质学习，用以模拟并替代复杂的DFT计算。Xiong等\cite{attentivefp_xiong_20}提出Attentive FP，一个结合注意力机制的图神经网络实现分子性质的有效学习与预测。GraSeq\cite{graseq_guo_20}提出在运用图神经网络学习拓扑结构同时，利用双向LSTM模型对SMILES分子式进行学习，通过两个通道联合预测分子性质。伴随相关技术的发展，研究者可以不再拘泥于原子拓扑结构，进而实现对分子三维结构的建模与学习。鉴于某一分子对应大量的同分异构体，而不同构象对应属性不尽相同，因此对三维构象的有效学习是十分必要的。EGNN\cite{egnn_satorras_21}在流行的图网络基础上，保留最基本的几何信息，即原子间距离，其简单的设计也成为了一些。在分子预训练框架GEM\cite{gem_fang_22}中，研究者提出GeoGNN图网络，将键长视作原子节点图的边特征，又对原子键构图，并将键角作为原子键图的边特征，通过在两个网络上的信息传递实现分子局部空间几何性质学习。Sch\"{u}tt等\cite{schnet_schutt_17}在继承GNNs的信息传递范式的同时，将原子间距离用径向基函数（Radial basis funciton / RBF）建模后融入边特征，使算法对三维几何信息的有效学习的同时保证了等变性要求。SphereNet\cite{spherenet_liu_22}提出了基于球坐标系的信息传递范式SMP。通过一系列参考原子或键的规则，SMP在保证对原子对距离，键角和键扭转角这三个空间几何信息完整提取的同时，避免计算复杂度的爆炸式增长。ComENet\cite{comenet_wang_22}在ShpereNet的基础上，简化了空间几何信息的提取范式，在保证利用完整空间信息的前提下，以损失部分精度为代价，大幅度提升计算速度。
+
+伴随着Transformer\cite{transformer_vaswani_17}相关研究在图像与文本领域的兴起
 
 Transformer \cite{smilestrans_honda_19,smilesbert_wang_19,chemberta_chithrananda_20}
 
