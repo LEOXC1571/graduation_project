@@ -21,10 +21,14 @@
 
 伴随图神经网络（GNNs）的发展，由于分子的形式天然的属于图结构，一些研究开始使用GNNs进行分子学习。CGCNN\cite{cgcnn_xie_18}将图卷积神经网络引入到分子性质学习，用以模拟并替代复杂的DFT计算。Xiong等\cite{attentivefp_xiong_20}提出Attentive FP，一个结合注意力机制的图神经网络实现分子性质的有效学习与预测。GraSeq\cite{graseq_guo_20}提出在运用图神经网络学习拓扑结构同时，利用双向LSTM模型对SMILES分子式进行学习，通过两个通道联合预测分子性质。伴随相关技术的发展，研究者可以不再拘泥于原子拓扑结构，进而实现对分子三维结构的建模与学习。鉴于某一分子对应大量的同分异构体，而不同构象对应属性不尽相同，因此对三维构象的有效学习是十分必要的。EGNN\cite{egnn_satorras_21}在流行的图网络基础上，保留最基本的几何信息，即原子间距离，其简单的设计也成为了一些。在分子预训练框架GEM\cite{gem_fang_22}中，研究者提出GeoGNN图网络，将键长视作原子节点图的边特征，又对原子键构图，并将键角作为原子键图的边特征，通过在两个网络上的信息传递实现分子局部空间几何性质学习。Sch\"{u}tt等\cite{schnet_schutt_17}在继承GNNs的信息传递范式的同时，将原子间距离用径向基函数（Radial basis funciton / RBF）建模后融入边特征，使算法对三维几何信息的有效学习的同时保证了等变性要求。SphereNet\cite{spherenet_liu_22}提出了基于球坐标系的信息传递范式SMP。通过一系列参考原子或键的规则，SMP在保证对原子对距离，键角和键扭转角这三个空间几何信息完整提取的同时，避免计算复杂度的爆炸式增长。ComENet\cite{comenet_wang_22}在ShpereNet的基础上，简化了空间几何信息的提取范式，在保证利用完整空间信息的前提下，以损失部分精度为代价，大幅度提升计算速度。
 
-伴随着Transformer\cite{transformer_vaswani_17}相关研究在图像与文本领域的兴起，相关研究\cite{smilestrans_honda_19,smilesbert_wang_19,chemberta_chithrananda_20}也利用Transformer对SMILES分子式进行学习。随着GTN\cite{gtn_yun_19}将Transformer引入图学习，越来越多的研究也将多头注意力机制用于分子图学习领域。大规模分子图预训练框架GROVER\cite{grover_rong_20}中，分子学习内核运用了GTransformer，同时学习分子中的原子与键的节点嵌入（embedding）或边嵌入。在分子预训练框架MPG\cite{mpg_li_21}中提出的图学习内核MolGNet放弃了对边嵌入的学习，仅使用节点嵌入被证明效果良好。
+伴随着Transformer\cite{transformer_vaswani_17}相关研究在图像与文本领域的兴起，相关研究\cite{smilestrans_honda_19,smilesbert_wang_19,chemberta_chithrananda_20}也利用Transformer对SMILES分子式进行学习。随着GTN\cite{gtn_yun_19}将Transformer引入图学习，越来越多的研究也将多头注意力机制用于分子图学习领域。大规模分子图预训练框架GROVER\cite{grover_rong_20}中，分子学习内核运用了GTransformer，同时学习分子中的原子与键的节点嵌入（embedding）或边嵌入。在分子预训练框架MPG\cite{mpg_li_21}中提出的图学习内核MolGNet放弃了对边嵌入的学习，仅利用多头注意力学习节点嵌入，结果证明了该图学习算法的有效性。
 
 \subsection{基于深度生成模型的分子设计}
-自深度学习研究兴起以来，深度生成模型一直是研究者重点研究的对象。作画、翻译、对话，渲染等应用能够直接服务于广大用户。主流的深度生成模型有变分自编码器（Variational autoencoders / VAEs）\cite{vae_kingma_13}，生成对抗模型（Generative adversarial networks / GANs）\cite{gan_goodfellow_14}，流形模型（Normalizing flows / NFs）\cite{nice_dinh_15,density_dinh_17}，自回归（Autoregressive models / ARs）\cite{ar_oord_16}与扩散模型（Diffusion）\cite{deepunsupervised_dickstein_15,generative_song_19}等
+自深度学习研究兴起以来，深度生成模型一直是研究者重点研究的对象。作画、翻译、对话，渲染等应用能够直接服务于广大用户。主流的深度生成模型有变分自编码器（Variational autoencoders / VAEs）\cite{vae_kingma_13}，生成对抗模型（Generative adversarial networks / GANs）\cite{gan_goodfellow_14}，流形模型（Normalizing flows / NFs）\cite{nice_dinh_15,density_dinh_17}，自回归（Autoregressive models / ARs）\cite{ar_oord_16}与扩散模型（Diffusion）\cite{deepunsupervised_dickstein_15,generative_song_19}等。
+
+与图学习的演进过程相似，基于深度生成模型的分子设计也经历了从二维图结构到三维几何构象的演进。主流分子设计任务具体又可以被细分为：分子生成，分子优化，构象生成，蛋白质配体生成，蛋白质生成，蛋白降解靶向嵌合体生成。
+
+分子生成的任务就是根据给定分子数据，使模型具备凭空生成全新且有效的药物分子。
 
 现有的基于扩散的分子生成模型有且只有EDM\cite{edm_hoogeboom_22}和MDM\cite{mdm_huang_22}。
  
