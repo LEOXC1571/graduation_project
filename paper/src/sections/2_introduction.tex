@@ -30,8 +30,16 @@
 
 分子生成的任务就是根据给定分子数据，使模型具备凭空生成全新且有效的药物分子图或三维结构。考虑到复杂药物分子主要由官能团等子结构组成，JT-VAE\cite{jtvae_jin_18}基于VAE生成树结构骨架，而后利用树结构骨架逐步生成分子图结构。GraphVAE\cite{graphvae_simonovsky_18}是早期的基于VAE的图生成研究，为避免离散化结构的线性表示的相关障碍，使其中解码器直接输出预设的最大概率的全连接图。基于NF模型，MoFlow\cite{moflow_zang_20}将隐式表征逐步映射到条件流过程中，模型首先生成连接原子的键，随后通过图条件流生成原子，并最终组成有效的分子图。
 
-现有的基于扩散的分子生成模型有且只有EDM\cite{edm_hoogeboom_22}和MDM\cite{mdm_huang_22}。
- 
+现有的基于扩散的分子生成模型较少，此领域最早的研究为EDM\cite{edm_hoogeboom_22}，其基于EGNN\cite{egnn_satorras_21}的去噪过程内核，通过生成点云，再根据预设定的化学性质生成连接边的键。MDM\cite{mdm_huang_22}在此基础上，提出了全新的去噪内核，通过两个SchNet\cite{schnet_schutt_17}分别对局部节点和全局节点特征进行学习。由于这种扩散模型更擅长在连续样本空间上的学习，故主流方法并不直接预测分子图中边的存在性，针对这一问题，DiGress\cite{digress_vignac_22}和MiDi\cite{midi_vignac_23}提出将图邻接矩阵引入扩散过程，并相应将马尔可夫状态转移矩阵引入噪声序列而非传统的高斯噪声。GCDM\cite{gcdm_morehead_23}针对对空间几何信息提取不足的问题，引入ColfNet\cite{colfnet_du_22}相似的空间几何学习范式，实现了对几何信息的充分学习。
+
+\subsection{扩散模型}
+在图学习领域中，一个图可以被表示为一个元组 $\mathcal{G} = (\mathcal{V}, \mathcal{E})$，其中包含了一个节点集合 $\mathcal{V}$ 和一个边集合 $\mathcal{E}$。在训练阶段，模型学习图在扩散过程中的概率分布，并被用于后续的采样阶段，以迭代地方式生成新的图。基于扩散的生成模型因其在多个领域的生成任务中表现出色而受到广泛关注，例如计算机视觉\cite{blendeddiffusion_avrahami_22,cascadeddiff_ho_22,gradforshapegen_cai_20,sgmpointcloud_luo_21}，自然语言处理\cite{struccddpm_austin_21,argmaxflow_hoogeboom_21,stepunrolled_savinov_22}，以及其他各种跨学科任务等\cite{cdvae_xie_22,housediffusion_shabani_23,nap_lei_23}。
+
+人体骨架的表示形式与分子类似，都是表示为被边连接起的点云。不同之处在于生成人体骨架动作时，不需要对边的存在性进行预测。基于扩散模型，MoFusion\cite{mofusion_dabral_22}在人体动作生成中使用U-Net\cite{unet_ronneberger_15}作为扩散模型中去噪核心的架构。MoDi\cite{modi_raab_22}利用结构感知神经滤波器和3D卷积，实现对每个关节的精确控制。
+
+除了在连续数据上的应用外，许多研究工作致力于离散数据的生成。EDP-GNN \cite{edpgnn_niu_20}引入Score SDE，一种扩散模型的学习范式，用于生成离散图邻接矩阵。
+
+
 \section{创新点}
 本文聚焦于扩散模型在分子生成领域的前沿研究，意在提出一个能够设计出有效、稳定分子的生成模型框架。本文利用扩散模型作为生成框架的骨架，在扩散模型的去噪内核设计上，本文提出了一个全新的图学习算法。该算法能够对几何信息，拓扑信息和原子化学性质进行分别建模，在保证模型等变形的条件下，实现对多种信息的有效学习与利用。
 
