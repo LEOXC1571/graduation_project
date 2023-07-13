@@ -15,8 +15,43 @@
     &m_j^{(l)} = {\rm MSG}^{(l)}(e_j^{(l-1)}), \ j \in \mathcal{N}_i, & \\
     &e_i^{(l)} = {\rm AGG}^{(l)}(\{ m_j^{(l)}, \ j \in \mathcal{N}_i \}, \ m_i^{(l)} ), &
 \end{eqnarray}
-m(l,k) = AGGREGATE(l)({(h(l,k−1)v, h(l,k)v) | v与节点v相邻}，其中m(l,k)v是聚合后的消息，σ(·)是某个激活函数。我们约定h(l,0)v := h(l−1,Kl−1)v。选择AGGREGATE(l)(·)的方式有几种流行的方法，如平均值、最大池化和图注意力机制。对于一次消息传递，其中有一个可训练参数层（即AGGREGATE(l)(·)、W(l)和b(l)内部的参数）。这些参数在迭代l中的Kl个跳数之间是共享的。经过L次消息传递后，最后一次迭代中最后一个跳数的隐藏状态被用作节点的嵌入，即h(L,KL)v，其中v ∈ V。最后，应用READOUT操作来获取图级别的表示。
+其中$m_j^{(l)}$为聚合后的消息，MSG为消息聚合函数，主流的选择包括多层感知机（MLP），可学习权重。$e_i^{(l)}$为聚合后的目标节点特征，AGG为聚合函数，主流的方式有平均值池化、最大池化和图注意力机制等。对每一次消息传递，MSG和AGG函数都可能存在可训练的参数，这些参数在每轮迭代中一般是共享的。经过$L$次消息传递与聚合后，最后一次迭代后的隐式特征被视为模型预测的节点嵌入，即$e_i^{(L)}$。最后，根据具体任务需要，运用相应的READOUT函数即可得到节点信息或是全图级别的信息。
 
-model: gpt-3.5-t
+近年来，伴随Transformer模型的出现，一些研究也开始将该架构引入图学习中。多头注意机制是Transformer的核心模块，它将多个注意力层堆叠在一起，实现并行运算。一个注意力层的核心要素一般为一组查询、键、值组成，记为$(\mathbf{Q}, \mathbf{K}, \mathbf{V})$。通过查询和键的点积，经过softmax函数归一化后即可获得注意力概率，具体可表示为：
+\begin{eqnarray}
+    {\rm Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = {\rm softmax}(\frac{\mathbf{Q} \cdot \mathbf{K}^T}{\sqrt{d}}) \cdot \mathbf{V},
+\end{eqnarray}
+其中$d$为注意力头数。
 
 \section{基于扩散模型的图生成}
+扩散模型在生成模型中引起了相当大的关注。通过学习逆过程的去噪核，这些模型能够揭示噪声样本的潜在分布。在给定一段数据的情况下，正向过程被视为马尔可夫链，通过学习可学习参数控制噪声强度，逐渐向数据添加高斯噪声$T$次。在生成过程中，模型将噪声还原回真实数据的原始分布。
+
+\subsection{扩散过程}
+设$G_t (t=0, 1, ..., T)$表示分子几何信息的分布，$\beta_t \in (0, 1), t=0, 1, ..., T$表示马尔可夫链的噪声方差序列。因此我们可以得到几何信息在$t$或$T$时刻在后验分布：
+\begin{eqnarray}
+&q(G_{1:T} | G_0) = \prod^T_{t=1} q(G_t | G_{t-1}), & \\
+&q(G_t | G_{t-1}) = \mathcal{N}(G_t; \sqrt{1-\beta_t}G_{t-1}, \beta_t I).&
+\end{eqnarray}
+
+随着时间步$t$的增加，噪声方差$\beta_t$从0平滑地过渡到1，这意味着向原始数据分布添加更多噪声。设$\bar{\alpha}_t = \prod^t_{s=1} \alpha_s = \prod^t_{s=1}(1-\beta_s)$，样本数据的分布可以表示为：
+\begin{equation}
+    q(G_t|G_0) = \mathcal{N}(G_t; \sqrt{\bar{\alpha}_t} G_0, (1 - \bar{\alpha}_t) I).
+\end{equation} 
+
+\subsubsection{去噪过程}
+在去噪过程中，模型通过学习接近实际逆过程$q(G_{t-1} | G_t)$的马尔可夫核函数$p_\theta(G_{0:T-1}| G_{T}) = \prod^T_{t=1} p_\theta(G_{t-1} | G_t)$来重新构建原始的几何信息。每个时间步骤中学习到的参数化动力学的分布为： 
+\begin{equation}
+  p_\theta(G_{t-1} | G_t) = \mathcal{N}(G_{t-1}; \mu_\theta(G_t, t), \sigma_t^2 I),
+\end{equation}
+其中$\mu_\theta(G_t, t)$是用于近似均值的神经网络，$\sigma^2_t = \frac{(\beta_t - \beta_{t-1})\beta_{t-1}}{(1 - \beta_{t-1}) \beta_t}$是预定义的方差进度。初始时，$p_\theta(G_t)$从标准高斯分布中采样得到。然后通过迭代的逆过程逐步优化几何信息和原子特征。
+
+理论上，训练目标采用数据对数似然的变分下界形式：
+\begin{eqnarray}
+    &{\rm log}p(G) \geq \mathcal{L}_{base} + \sum_{t=0}^T \mathcal{L}_t,& \\
+    &\mathcal{L}_{base} = -KL(q(G_T|G_0)|p(G_T)),& \\
+    &\mathcal{L}_t = KL(q(G_{t-1}|G_t)|p(G_{t-1}|G_t)). &
+\end{eqnarray}
+然而，研究发现，预测高斯噪声$\epsilon$能够更容易进行神经网络训练。因此，$\mathcal{L}_t$ \cite{vaediff_kingma_21}的形式为
+\begin{equation}
+    \mathcal{L}_t = E_{\epsilon_t \sim \mathcal{N}(0, I)}[\frac{1}{2}(1- \frac{{\rm SNR}(t-1)}{{\rm SNR}(t)})||\epsilon_t - \hat{\epsilon}_t||^2].
+\end{equation}
