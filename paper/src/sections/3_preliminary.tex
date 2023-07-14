@@ -33,25 +33,26 @@
 &q(G_t | G_{t-1}) = \mathcal{N}(G_t; \sqrt{1-\beta_t}G_{t-1}, \beta_t I).&
 \end{eqnarray}
 
-随着时间步$t$的增加，噪声方差$\beta_t$从0平滑地过渡到1，这意味着向原始数据分布添加更多噪声。设$\bar{\alpha}_t = \prod^t_{s=1} \alpha_s = \prod^t_{s=1}(1-\beta_s)$，样本数据的分布可以表示为：
+随着时间步$t$的增加，扩散过程逐步将更多的噪声添加到原始数据分布，具体表现为噪声方差$\beta_t$从0平滑地过渡到1。设$\bar{\alpha}_t = \prod^t_{s=1} \alpha_s = \prod^t_{s=1}(1-\beta_s)$，则任意$t$时刻样本数据的分布可以表示为：
 \begin{equation}
     q(G_t|G_0) = \mathcal{N}(G_t; \sqrt{\bar{\alpha}_t} G_0, (1 - \bar{\alpha}_t) I).
 \end{equation} 
 
 \subsubsection{去噪过程}
-在去噪过程中，模型通过学习接近实际逆过程$q(G_{t-1} | G_t)$的马尔可夫核函数$p_\theta(G_{0:T-1}| G_{T}) = \prod^T_{t=1} p_\theta(G_{t-1} | G_t)$来重新构建原始的几何信息。每个时间步骤中学习到的参数化动力学的分布为： 
+在去噪过程中，模型通过学习接近真实的逆过程$q(G_{t-1} | G_t)$的马尔可夫核函数$p_\theta(G_{0:T-1}| G_{T}) = \prod^T_{t=1} p_\theta(G_{t-1} | G_t)$来重新构建原始的几何信息。每个时间步中学习到的去噪分布为： 
 \begin{equation}
   p_\theta(G_{t-1} | G_t) = \mathcal{N}(G_{t-1}; \mu_\theta(G_t, t), \sigma_t^2 I),
 \end{equation}
-其中$\mu_\theta(G_t, t)$是用于近似均值的神经网络，$\sigma^2_t = \frac{(\beta_t - \beta_{t-1})\beta_{t-1}}{(1 - \beta_{t-1}) \beta_t}$是预定义的方差进度。初始时，$p_\theta(G_t)$从标准高斯分布中采样得到。然后通过迭代的逆过程逐步优化几何信息和原子特征。
+其中$\mu_\theta(G_t, t)$是可训练的神经网络，被用于近似估计均值，$\sigma^2_t = \frac{(\beta_t - \beta_{t-1})\beta_{t-1}}{(1 - \beta_{t-1}) \beta_t}$是预定义的方差。在采样过程开始时，$p_\theta(G_T)$采样自标准高斯分布中，然后通过迭代的去噪过程逐步优化参数化的神经网络，并最终到达0时刻得到几何信息的采样结果。
 
-理论上，训练目标采用数据对数似然的变分下界形式：
+理论上，神经网络的目标函数采用数据的对数似然函数的变分下界形式：
 \begin{eqnarray}
     &{\rm log}p(G) \geq \mathcal{L}_{base} + \sum_{t=0}^T \mathcal{L}_t,& \\
     &\mathcal{L}_{base} = -KL(q(G_T|G_0)|p(G_T)),& \\
     &\mathcal{L}_t = KL(q(G_{t-1}|G_t)|p(G_{t-1}|G_t)). &
 \end{eqnarray}
-然而，研究发现，预测高斯噪声$\epsilon$能够更容易进行神经网络训练。因此，$\mathcal{L}_t$ \cite{vaediff_kingma_21}的形式为
+然而，研究发现，神经网路预测的高斯噪声$\epsilon$能够更容易的用于训练。因此，在实际优化神经网络时，神经网路的目标函数$\mathcal{L}_t$ \cite{vaediff_kingma_21}的形式为：
 \begin{equation}
     \mathcal{L}_t = E_{\epsilon_t \sim \mathcal{N}(0, I)}[\frac{1}{2}(1- \frac{{\rm SNR}(t-1)}{{\rm SNR}(t)})||\epsilon_t - \hat{\epsilon}_t||^2].
 \end{equation}
+
