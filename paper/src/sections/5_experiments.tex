@@ -4,8 +4,36 @@
 \section{分子生成}
 
 \subsection{实验设置}
+在本节中，我们报告了GFMDiff在两个主流数据集GEOM-QM9 \cite{qm9_ramakrishnan_14}和GEOM-Drugs \cite{drugs_axelrod_22}上的性能。结果表明，我们的方法在多个方面显著优于一些最先进的模型。
+
+为了进行全面的比较，我们在两个分子生成的基准数据集上进行了实验：GEOM-QM9 \cite{qm9_ramakrishnan_14}和GEOM-Drugs \cite{drugs_axelrod_22}。GEOM-QM9数据集包含超过130K个分子及其对应的构象，其中平均每个分子有18个原子，包括氢原子。GEOM-Drugs是一个规模较大的数据集，包括的分子数量和平均分子数量都较多。它包含超过450K个分子和37M个构象，其中平均分子大小为44。
 
 \subsection{在GEOM-QM9数据集上的全新三维分子生成}
+
+
+\begin{table}[h]
+    \centering
+    \caption{Performance comparison on QM9}
+    \label{tab:exp_qm9}
+    \begin{tabular}{llllll}
+    \hline
+    Method & NLL$\downarrow$ & \makecell[l]{Atom\\Stability (\%)} $\uparrow$ & \makecell[l]{Mol\\Stability (\%)} $\uparrow$ & Validity (\%) $\uparrow$ & Uniqueness$\cdot$Validity (\%) $\uparrow$ \\
+    \hline
+    E-NF & -59.7 & 85.0 & 4.9 & 40.2 & 39.4 \\
+    G-SchNet & N/A & 95.7 & 68.1 & 85.5 & 80.3 \\
+    EDM & -110.7$\pm$1.5 & 98.7$\pm$0.1 & 82.0$\pm$0.4 & 91.9$\pm$0.5 & 90.7$\pm$0.6 \\
+    Bridge & N/A & 98.7$\pm$0.1 & 81.8$\pm$0.2 & N/A & N/A \\
+    Bridge+Force & N/A & \underline{98.8}$\pm$0.1 & 84.6$\pm$0.3 & N/A & N/A \\
+    GCDM & \textbf{-171.0}$\pm$0.2 & 98.7$\pm$0.0 & 85.7$\pm$0.4 & 94.8$\pm$0.2 & 93.3$\pm$0.0 \\
+    \hline
+    \makecell[l]{GFMDiff\\w/o tri} & -123.1$\pm$0.4 & 98.7$\pm$0.1 & 85.9$\pm$0.2 & 94.9$\pm$0.2 & 94.2$\pm$0.2 \\
+    \makecell[l]{GFMDiff\\w/o GFLoss} & \underline{-127.5}$\pm$0.4 & 98.7$\pm$0.0 & \underline{86.5}$\pm$0.1 & \underline{95.2}$\pm$0.0 & \textbf{94.5}$\pm$0.0 \\
+    GFMDiff & \underline{-128.0}$\pm$0.2 & \textbf{98.9}$\pm$0.0 & \textbf{87.5}$\pm$0.1 & \textbf{95.8}$\pm$0.1 & \textbf{94.5}$\pm$0.1 \\
+    \hline
+    Data &  & 99.0 & 95.2 & 97.7 & 97.7 \\
+    \hline
+    \end{tabular}
+\end{table}
 
 \subsection{在GEOM-QM9数据集上的条件三维分子生成}
 
