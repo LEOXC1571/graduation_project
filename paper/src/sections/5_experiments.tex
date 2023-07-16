@@ -17,7 +17,7 @@
     \label{tab:exp_qm9}
     \begin{tabular}{llllll}
     \hline
-    Method & NLL$\downarrow$ & \makecell[l]{Atom\\Stability (\%)} $\uparrow$ & \makecell[l]{Mol\\Stability (\%)} $\uparrow$ & Validity (\%) $\uparrow$ & Uniqueness$\cdot$Validity (\%) $\uparrow$ \\
+    Method & NLL$\downarrow$ & \makecell[l]{Atom\\Stable\\(\%) $\uparrow$} & \makecell[l]{Mol\\Stable\\(\%) $\uparrow$} & \makecell[l]{Valid\\(\%) $\uparrow$} & \makecell[l]{Unique$\cdot$Valid\\(\%) $\uparrow$} \\
     \hline
     E-NF & -59.7 & 85.0 & 4.9 & 40.2 & 39.4 \\
     G-SchNet & N/A & 95.7 & 68.1 & 85.5 & 80.3 \\
@@ -27,8 +27,8 @@
     GCDM & \textbf{-171.0}$\pm$0.2 & 98.7$\pm$0.0 & 85.7$\pm$0.4 & 94.8$\pm$0.2 & 93.3$\pm$0.0 \\
     \hline
     \makecell[l]{GFMDiff\\w/o tri} & -123.1$\pm$0.4 & 98.7$\pm$0.1 & 85.9$\pm$0.2 & 94.9$\pm$0.2 & 94.2$\pm$0.2 \\
-    \makecell[l]{GFMDiff\\w/o GFLoss} & \underline{-127.5}$\pm$0.4 & 98.7$\pm$0.0 & \underline{86.5}$\pm$0.1 & \underline{95.2}$\pm$0.0 & \textbf{94.5}$\pm$0.0 \\
-    GFMDiff & \underline{-128.0}$\pm$0.2 & \textbf{98.9}$\pm$0.0 & \textbf{87.5}$\pm$0.1 & \textbf{95.8}$\pm$0.1 & \textbf{94.5}$\pm$0.1 \\
+    \makecell[l]{GFMDiff\\w/o GFLoss} & \underline{-127.5}$\pm$0.4 & 98.7$\pm$0.0 & \underline{86.5}$\pm$0.1 & \underline{95.2}$\pm$0.0 & \underline{94.5}$\pm$0.0 \\
+    GFMDiff & \underline{-128.0}$\pm$0.2 & \textbf{98.9}$\pm$0.0 & \textbf{87.7}$\pm$0.2 & \textbf{96.3}$\pm$0.3 & \textbf{95.1}$\pm$0.2 \\
     \hline
     Data &  & 99.0 & 95.2 & 97.7 & 97.7 \\
     \hline
@@ -37,12 +37,71 @@
 
 \subsection{在GEOM-QM9数据集上的条件三维分子生成}
 
+\begin{table}[h]
+    \centering
+    \caption{Performance comparison on QM9}
+    \label{tab:exp_qm9_condition}
+    \begin{tabular}{lllllll}
+    \hline
+    \makecell[l]{Task\\Units} & \makecell[l]{$\alpha$\\${\rm Bohr^3}$} & \makecell[l]{$\Delta \varepsilon$\\${\rm meV}$} & \makecell[l]{$\varepsilon_{{\rm HOMO}}$\\${\rm meV}$} & \makecell[l]{$\varepsilon_{{\rm LUMO}}$\\${\rm meV}$} & \makecell[l]{$\mu$\\${\rm D}$} & \makecell[l]{$C_v$\\$\frac{{\rm cal}}{{\rm mol}}{\rm K}$} \\
+    \hline
+    Naive (Upper-bound) & 9.01 & 1470 & 645 & 1457 & 1.616 & 6.857 \\
+    \# Atom & 3.86 & 866 & 426 & 813 & 1.053 & 1.971 \\
+    EDM & 2.76 & 655 & 356 & 584 & 1.111 & 1.101 \\
+    GCDM & 1.97 & 602 & 344 & 479 & 0.844 & 0.689 \\
+    GeoDiff &  &  &  &  &  & \\
+    QM9 (Lower-bound) & 0.10 & 64 & 39 & 36 & 0.043 & 0.040 \\
+    \hline
+    \end{tabular}
+\end{table}
+
+
 \subsection{在GEOM-Drugs数据集上的三维分子生成}
+
+\begin{table}[h]
+    \centering
+    \caption{Performance comparison on Drugs}
+    \label{tab:exp_drugs}
+    \begin{tabular}{llll}
+    \hline
+    Type & Method & Atom Stable (\%) $\uparrow$ & Mol Stable (\%) $\uparrow$ \\
+    \hline
+    Normalizing flow & E-NF & 75.0 & 0 \\
+    \multirow{2}{*}{DDPM}
+    & EDM  & 81.3 & 0.0 \\
+    & Bridge & 81.0$\pm$0.7 & 0.0 \\
+    & Bridge+Force & 82.4$\pm$0.8 & 0.0 \\
+    & GCDM & 86.4$\pm$0.2 & 3.7$\pm$0.3 \\
+    \hline
+    Ours & GFMDiff & \textbf{86.5}$\pm$0.2 & \textbf{3.9}$\pm$0.2 \\
+    \hline
+    Data &  & 86.5 & 2.8 \\
+    \hline
+    \end{tabular}
+\end{table}
 
 \section{分子性质预测}
 
 \subsection{实验设置}
 
 \subsection{在GEOM-QM9数据集上的分子性质预测}
+
+\begin{table}[h]
+    \centering
+    \caption{Performance comparison on QM9}
+    \label{tab:exp_qm9_reg}
+    \begin{tabular}{lllllll}
+    \hline
+    \makecell[l]{Task\\Units} & \makecell[l]{$\alpha$\\${\rm Bohr^3}$} & \makecell[l]{$\Delta \varepsilon$\\${\rm meV}$} & \makecell[l]{$\varepsilon_{{\rm HOMO}}$\\${\rm meV}$} & \makecell[l]{$\varepsilon_{{\rm LUMO}}$\\${\rm meV}$} & \makecell[l]{$\mu$\\${\rm D}$} & \makecell[l]{$C_v$\\$\frac{{\rm cal}}{{\rm mol}}{\rm K}$} \\
+    \hline
+    Naive (Upper-bound) & 9.01 & 1470 & 645 & 1457 & 1.616 & 6.857 \\
+    \# Atom & 3.86 & 866 & 426 & 813 & 1.053 & 1.971 \\
+    EDM & 2.76 & 655 & 356 & 584 & 1.111 & 1.101 \\
+    GCDM & 1.97 & 602 & 344 & 479 & 0.844 & 0.689 \\
+    GeoDiff &  &  &  &  &  & \\
+    QM9 (Lower-bound) & 0.10 & 64 & 39 & 36 & 0.043 & 0.040 \\
+    \hline
+    \end{tabular}
+\end{table}
 
 \subsection{在OC20数据集上的分子性质预测}
