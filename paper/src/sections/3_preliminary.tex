@@ -21,7 +21,7 @@
 \begin{eqnarray}
     {\rm Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = {\rm softmax}(\frac{\mathbf{Q} \cdot \mathbf{K}^T}{\sqrt{d}}) \cdot \mathbf{V},
 \end{eqnarray}
-其中$d$为注意力头数。
+其中$d$为注意力头数。多头注意力机制已经在广泛的应用中证明了其优异的性能。在图学习领域，基于多头注意力机制的Transformer机制不依赖于每一层的消息传递，故能够对全局信息有更全面的建模。
 
 \section{等变性要求}
 等变性是涉及到几何空间的深度学习模型需要满足的基础条件。设$T_g: X \to X$是咋$g \in G$上，对$X$的变换集合。我们称一个函数$\phi: X \to Y$在$g$上具有等变性，如果存在一个变换$S_g: Y \to Y$，使得下式成立：
