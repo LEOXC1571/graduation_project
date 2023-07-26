@@ -1,4 +1,4 @@
-\chapter[几何促进的3D分子图生成]{几何促进的3D分子图生成}
+\chapter[几何促进的3D分子图生成（GFMDiff）]{几何促进的3D分子图生成（GFMDiff）}
 \label{chap:gfmdiff}
 
 在本节中，本文将着重介绍3D分子生成的模型框架，具体包括本文提出的E（n）等变去噪内核，几何信息促进的损失函数，扩散及去噪过程和优化目标。本文提出的3D分子生成整体框架由图~\ref{fig:gfmdiff}所示。
@@ -10,16 +10,16 @@
     \label{fig:gfmdiff}
   \end{figure}
 
-在每次训练时，我们随机选取时间步$t$，并对该时刻的噪声分布进行采样，作为E（n）等变的去噪内核的输入。该输入可以总体分为原子特征和其空间坐标。通过本文设计的双轨Transformer网络（Dual-track Transformer Network，简称DTN），我们即可得到网络预测样本在$t-1$时刻的分布。
+在每次训练时，我们随机选取时间步$t$，并对该时刻的噪声分布进行采样，作为E（n）等变的去噪内核的输入。该输入可以总体分为原子特征和其空间坐标。通过本文设计的双轨Transformer网络（Dual-track Transformer Network / DTN），我们即可得到网络预测样本在$t-1$时刻的分布。
 
-\section{双轨Transformer网路（DTN）}
+\section{双轨Transformer网络（DTN）}
 
-在这个小节中，我们将详细介绍作为GFMDiff的E（n）等变去噪内核的双轨Transformer网络（Dual-track Transformer Network，简称DTN）。DTN被设计用于有效捕捉原子之间的关系和原子特征。由于三维分子几何具有旋转、平移、反射和排列等不变性质，使得去噪核满足这些性质是很重要的。所提出的DTN不仅是E（n）等变的，还能充分利用空间信息。
+在这个小节中，我们将详细介绍作为GFMDiff的E（n）等变去噪内核的双轨Transformer网络（Dual-track Transformer Network / DTN）。DTN被设计用于有效捕捉原子之间的关系和原子特征。由于三维分子几何具有旋转、平移、反射和排列等不变性质，使得去噪核满足这些性质是很重要的。所提出的DTN不仅是E（n）等变的，还能充分利用空间信息。
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figures/structure_dtn.png}
-  \caption{双规Transformer网络（Dual-track Transformer Network，简称DTN）的示意图}
+  \caption{DTN去噪内核结构示意图}
   \label{fig:dtn}
 \end{figure}
 
@@ -72,12 +72,12 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
 在更新坐标的方法上，我们遵循EDM \cite{edm_hoogeboom_22}和MDM \cite{mdm_huang_23}的相关设计。由于原子坐标得到了更新，原子对和原子三元组的嵌入也将得到更新：
 
 \begin{eqnarray}
-  &e_{ij} = {\rm Linear}[{\rm Linear}({\rm RBF}(\hat{d}{ij}), \hat{e}{ij}), \hat{e}i, \hat{e_j}],& \\
-  &e{ijk} = {\rm Linear}({\rm RBF}(\hat{\varphi}{ijk}), e{ijk}). &
+  &e_{ij} = {\rm Linear}[{\rm Linear}({\rm RBF}(\hat{d}_{ij}), \hat{e}_{ij}), \hat{e}_i, \hat{e_j}],& \\
+  &e_{ijk} = {\rm Linear}({\rm RBF}(\hat{\varphi}_{ijk}), e_{ijk}). &
 \end{eqnarray}
 
-\section{几何信息促进的损失函数}
-预测化学键的存在是分子图生成中的基本且不可或缺的任务。与以往 heavily relies on predefined rules 的研究不同，我们提出在训练过程中积极干预化学键的形成，通过设计一种精细的训练目标函数，命名为\textbf{几何促进损失}（GFLoss）。这个损失函数的目的是引导模型生成既具有有效的拓扑结构，又具有稳定构象的分子。在分子生成中，我们认为原子的价是一种非常重要的辅助特征类型。因此，在上述提到的分子生成网络（DTN）中，原子的价被作为原子特征的一部分进行了整合。这使得模型能够学习和利用原子的价信息。
+\section{几何信息促进的损失函数（GFLoss）}
+预测化学键的存在是分子图生成中的基本且不可或缺的任务。与以往的研究完全依赖于预设规则生成边不同，我们提出在训练过程中积极干预化学键的形成，通过设计一种精细的训练目标函数，命名为几何促进损失（Geometric-facilitated Loss / GFLoss）。这个损失函数的目的是引导模型生成既具有有效的拓扑结构，又具有稳定构象的分子。在分子生成中，我们认为原子的价是一种非常重要的辅助特征类型。因此，在上述提到的分子学习网络DTN中，原子的价被作为原子特征的一部分进行了整合。这使得模型能够学习和利用原子的价信息。
 
 根据预定义的规则，具有适当距离的原子对被认为是由化学键连接的。对于单键、双键或三键，某些原子之间存在典型距离。如果一对原子之间的距离在某个范围内，这两个原子被认为是由对应类型的键连接的。假设预定义的距离和边界为 $\mathbf{D} \in \mathbb{R}^{nf \times nf \times 3}$ 和 $\mathbf{M} \in \mathbb{R}^{3}$，其中 3 表示键的类型数量。基于 DTN 的输出 $\hat{\mathcal{C}}_t = (\hat{P}_t, \hat{X}_t, \hat{A}_t, \hat{V}_t)$，我们首先使用 softmax 函数预测原子类型的概率：
 \begin{equation}

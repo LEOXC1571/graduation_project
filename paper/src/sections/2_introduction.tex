@@ -30,19 +30,33 @@
 
 分子生成的任务就是根据给定分子数据，使模型具备凭空生成全新且有效的药物分子图或三维结构。考虑到复杂药物分子主要由官能团等子结构组成，JT-VAE\cite{jtvae_jin_18}基于VAE生成树结构骨架，而后利用树结构骨架逐步生成分子图结构。GraphVAE\cite{graphvae_simonovsky_18}是早期的基于VAE的图生成研究，为避免离散化结构的线性表示的相关障碍，使其中解码器直接输出预设的最大概率的全连接图。基于NF模型，MoFlow\cite{moflow_zang_20}将隐式表征逐步映射到条件流过程中，模型首先生成连接原子的键，随后通过图条件流生成原子，并最终组成有效的分子图。
 
-现有的基于扩散的分子生成模型较少，此领域最早的研究为EDM\cite{edm_hoogeboom_22}，其基于EGNN\cite{egnn_satorras_21}的去噪过程内核，通过生成点云，再根据预设定的化学性质生成连接边的键。MDM\cite{mdm_huang_22}在此基础上，提出了全新的去噪内核，通过两个SchNet\cite{schnet_schutt_17}分别对局部节点和全局节点特征进行学习。由于这种扩散模型更擅长在连续样本空间上的学习，故主流方法并不直接预测分子图中边的存在性，针对这一问题，DiGress\cite{digress_vignac_22}和MiDi\cite{midi_vignac_23}提出将图邻接矩阵引入扩散过程，并相应将马尔可夫状态转移矩阵引入噪声序列而非传统的高斯噪声。GCDM\cite{gcdm_morehead_23}针对对空间几何信息提取不足的问题，引入ColfNet\cite{colfnet_du_22}相似的空间几何学习范式，实现了对几何信息的充分学习。
+现有的基于扩散的分子生成模型较少，此领域最早的研究为EDM\cite{edm_hoogeboom_22}，其基于EGNN\cite{egnn_satorras_21}的去噪过程内核，通过生成点云，再根据预设定的化学性质生成连接边的键。MDM\cite{mdm_huang_23}在此基础上，提出了全新的去噪内核，通过两个SchNet\cite{schnet_schutt_17}分别对局部节点和全局节点特征进行学习。由于这种扩散模型更擅长在连续样本空间上的学习，故主流方法并不直接预测分子图中边的存在性，针对这一问题，DiGress\cite{digress_vignac_22}和MiDi\cite{midi_vignac_23}提出将图邻接矩阵引入扩散过程，并相应将马尔可夫状态转移矩阵引入噪声序列而非传统的高斯噪声。GCDM\cite{gcdm_morehead_23}针对对空间几何信息提取不足的问题，引入ColfNet\cite{colfnet_du_22}相似的空间几何学习范式，实现了对几何信息的充分学习。
 
 \subsection{扩散模型}
 在图学习领域中，一个图可以被表示为一个元组 $\mathcal{G} = (\mathcal{V}, \mathcal{E})$，其中包含了一个节点集合 $\mathcal{V}$ 和一个边集合 $\mathcal{E}$。在训练阶段，模型学习图在扩散过程中的概率分布，并被用于后续的采样阶段，以迭代地方式生成新的图。基于扩散的生成模型因其在多个领域的生成任务中表现出色而受到广泛关注，例如计算机视觉\cite{blendeddiffusion_avrahami_22,cascadeddiff_ho_22,gradforshapegen_cai_20,sgmpointcloud_luo_21}，自然语言处理\cite{struccddpm_austin_21,argmaxflow_hoogeboom_21,stepunrolled_savinov_22}，以及其他各种跨学科任务等\cite{cdvae_xie_22,housediffusion_shabani_23,nap_lei_23}。
 
-人体骨架的表示形式与分子类似，都是表示为被边连接起的点云。不同之处在于生成人体骨架动作时，不需要对边的存在性进行预测。基于扩散模型，MoFusion\cite{mofusion_dabral_22}在人体动作生成中使用U-Net\cite{unet_ronneberger_15}作为扩散模型中去噪核心的架构。MoDi\cite{modi_raab_22}利用结构感知神经滤波器和3D卷积，实现对每个关节的精确控制。
+人体骨架的表示形式与分子类似，都是表示为被边连接起的点云。不同之处在于生成人体骨架动作时，不需要对边的存在性进行预测。基于扩散模型，MoFusion\cite{mofusion_dabral_22}在人体动作生成中使用U-Net\cite{unet_ronneberger_15}作为扩散模型中去噪核心的架构。MoDi \cite{modi_raab_22} 利用结构感知神经滤波器和3D卷积，实现对每个关节的精确控制。
 
 除了在分子生成和人体动作生成上的应用外，许多研究工作致力于将扩散过程用于其他形式的图数据生成。SaGess\cite{sagess_limnios_23}通过引入广义分治框架来增强DiGress\cite{digress_vignac_22}。对于2D图生成，EDP-GNN\cite{edpgnn_niu_20}将Score SDEs结合到离散图邻接矩阵生成中。在此基础上，GraphGDP\cite{graphgdp_huang_22}提出了名为Position-enhanced图得分网络的去噪核心，以实现对位置信息的进一步利用。GSDM\cite{gsdm_luo_22}不仅仅在边属性上进行采样，还利用了节点特征和图谱空间上的Score SDE高效地生成图，这在通用数据集和分子数据集上得到了验证。受VAEs启发，NVDiff\cite{nvdiff_chen_22}采用VGAE结构，首先对图在隐变量空间上的特征进行采样，然后将其解码为节点或边特征。SLD\cite{sld_yang_23}以类似的方式进行图生成任务。GraphARM\cite{ardiff_kong_23}通过引入节点吸收扩散过程，将自回归模型与扩散模型结合起来。EDGE \cite{edge_chen_23}将扩散模型引入大图生成，扩散过程中逐渐移除边，直到图为空。该模型还通过仅关注部分节点来避免生成过多的边。专为双曲图设计的HGDM\cite{hgdm_wen_23}在提取双曲嵌入的复杂几何特征方面表现出优良的性能。
 
 
 
 \section{创新点}
-在本文中，我们提出了用于3D分子生成的“Geometric-facilitated Molecular Diffusion”（GFMDiff）框架。与先前的方法主要基于原子对距离学习原子特征不同，本文成功地将三元几何信息与原子对距离有效地结合到分子学习中。本领域大多数研究在生成式直接生成点云，并根据预设规则完成3D图结构的搭建。然而这种方法存在两个主要问题。首先，间接的图生成方式导致样本的稳定性和有效性下降。其次，传统的图卷积不足以区分局部和全局信息。为了解决第一个约束，本文设计了一个精巧的损失函数“Geometric-facilitated Loss”（GFLoss），在训练阶段主动引导键的形成。至于第二个约束，我们引入了“Dual-track Transformer Network”（DTN），这是一个基于全局Transformer的神经网络，以促进全面的几何学习和局部特征学习。
+近年来，深度生成模型，特别是基于扩散模型的生成模型\cite{ddpm_ho_20,sgm_song_19,scoresde_song_21}在各个生成式人工智能研究领域中都取得了广泛且重大的进展。与生成方法的发展趋势相一致，分子发现领域的主流方法已经从之前的生成模型转变为基于扩散的模型，并从设计2D图形转变为3D构象。然而，3D分子生成面临两个主要挑战。第一个挑战是在预测准确稳定的分子构象方面，而另一个挑战则是充分利用几何信息以促进离散图结构的生成。在本文中，我们提出了几何促进的分子扩散（Geometric-facilitated Molecular Diffusion / GFMDiff），这是一种解决上述挑战的全新的3D分子生成方法。GFMDiff能够生成准确的3D几何构型，同时解决图自身离散性带来的诸多问题。
+
+作为扩散模型中广泛采用的范式，去噪扩散概率模型（Denoising Diffusion Probabilistic Models / DDPMs\cite{ddpm_ho_20,dpm_jascha_15}在各种生成任务中表现出色。通过在前向过程中逐渐添加高斯噪声，将输入数据转换为预定义的噪声分布，并在采样阶段迭代去噪，最终得到生成结果。与变分自编码器（VAEs）\cite{vae_kingma_13}和生成对抗网络（GANs）\cite{gan_goodfellow_14}等端到端方法相比，这种在每个时间步训练扩散模型的方法在准确性、效率和训练难度方面表现更好。扩散模型在计算化学\cite{edm_hoogeboom_22,targetdiff_guan_23}和生物学\cite{diffab_luo_22,protseed_shi_23}等领域的应用已经显示出卓越的性能。在分子生成任务的背景下，逐步调整分子构象与分子动力学的核心原理高度一致。
+
+全新的分子生成是分子生成领域一个重要的任务，该任务要求生成有效、新颖且结构稳定的分子。为了解决生成的3D构象所要求的等变性条件，一些基于扩散的方法\cite{edm_hoogeboom_22,mdm_huang_23}通过原子间距离间接对分子进行建模，这直接反映了原子间相互作用力的强度。然而，早期的方法\cite{edm_hoogeboom_22}没有解决多个原子之间的复杂原子间关系。而MDM\cite{mdm_huang_23}只是简单地使用阈值区分化学键和原子间力所造成的影响，而不考虑具体的原子和键的类型。最近的研究\cite{moleformer_yuan_23}表明，键角之于分子学习与原子对间相互距离同样重要，但只有少数方法充分利用了空间信息。此外，由于分子扩散方法只作用于点云，传统的图卷积无法区分不同原子的重要性。鉴于这些挑战，我们设计了一种新颖的双轨分子学习框架，命名为双轨Transformer网络（Dual-track Transformer Network / DTN）。通过集成全局Transformer架构，本文将DTN作为扩散模型的去噪核函数，实现对空间几何信息的充分学习。
+
+% 在分子生成领域，基于自回归模型（ARs）\cite{gschnet_wallach_19,gshperenet_luo_22}、正则化流（NFs）\cite{moflow_zang_20,graphaf_shi_20}、变分自编码器（VAEs）\cite{jtvae_jin_18,cgvae_liu_18}、能量模型（EBMs）\cite{graphebm_liu_21}等方法已经有了一些尝试。
+鉴于扩散模型在连续数据上的出色性能，大多数分子图生成模型采用了在笛卡尔坐标和特征上采用扩散和去噪方法，然后基于预定义的规则生成分子图，而不是直接通过模型预测键的存在。间接生成图形的方式可能导致生成样本的稳定性和有效性有所下降。为了使扩散模型适用于分子的多模态数据，一些研究\cite{edpgnn_niu_20,digress_vignac_22,midi_vignac_23}在扩散和去噪过程中引入了邻接矩阵。然而，将图和边嵌入模型中会导致计算成本的增加。在我们的研究中，我们将扩散模型视为一个过程，即在每个时间步根据局部多体原子间关系逐步更新原子信息。准确的特征学习有助于对分子构型进行精确预测。为了预测准确的分子构象，我们设计了一种在训练过程中减少嵌入和局部几何之间差距的方法。在本文中，我们通过精心设计的损失函数几何促进的损失函数（Geometric-facilitate Loss / GFLoss），在训练过程中积极的干预模型学习，促使模型生成稳定且合理的化学键。
+
+在本文中，我们提出了用于3D分子生成的几何促进的分子扩散（Geometric-facilitated Molecular Diffusion / GFMDiff）框架。与先前的方法主要基于原子对距离学习原子特征不同，本文成功地将三元几何信息与原子对距离有效地结合到分子学习中。本领域大多数研究在生成式直接生成点云，并根据预设规则完成3D图结构的搭建。然而这种方法存在两个主要问题。首先，间接的图生成方式导致样本的稳定性和有效性下降。其次，传统的图卷积不足以区分局部和全局信息。为了解决第一个约束，本文设计了一个精巧的几何促进的损失函数（Geometric-facilitate Loss / GFLoss），在训练阶段主动引导键的形成。至于第二个约束，我们引入了双轨Transformer网络（Dual-track Transformer Network / DTN），这是一个基于全局Transformer的神经网络，以促进全面的几何学习和局部特征学习。最后在试验阶段，本文进一步在分子性质预测任务上检验了本文提出的DTN神经网络的有效性。总而言之，本文的创新点如下：
+\begin{itemize}
+    \item 本文提出的GFMDiff框架及其中的DTN网络，能够综合且全面的利用空间信息，以捕捉原子之间的多体相互作用，这对生成有效且稳定的全新分子至关重要。
+    \item 为了解决图形的离散性问题，引入了一个精心设计的GFLoss，以促进键的形成，高效的处理由图内在离散性与扩散模型不兼容带来的挑战。
+    \item 提出了DTN作为全局图卷积的替代方案，可以有效地捕捉全局和局部信息，并在后续的分子性质预测任务中进一步验证其有效性。
+\end{itemize}
 
 \section{基本框架}
 本文可分为四章，每章的主要内容如下：
