@@ -1,0 +1,10 @@
+% 切换封面
+\ifthenelse{\equal{\BlindReview}{true}}
+{
+    \input{page/cover/blind-review.tex}
+}
+{
+    \input{page/cover/cover-chn.tex}
+    \clearpage
+    \input{page/cover/cover-eng.tex}
+}

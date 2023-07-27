@@ -1,0 +1,18 @@
+% \cleardoublepage
+% \addcontentsline{toc}{chapter}{目录}
+\phantomsection
+% \markloc
+\tableofcontents
+
+\begingroup
+    \renewcommand*{\addvspace}[1]{}
+    \cleardoublepage
+    \phantomsection
+    \marklof
+    \listoffigures
+
+    \cleardoublepage
+    \phantomsection
+    \marklot
+    \listoftables
+\endgroup
