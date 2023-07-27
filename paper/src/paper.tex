@@ -36,6 +36,7 @@
 \usepackage{paralist}
 
 
+
 \allowdisplaybreaks[4]
 \renewcommand{\baselinestretch}{1.5}
 %\renewcommand{\chaptername}{{Chapter\thechapter}}
@@ -61,7 +62,17 @@
 \newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}
 \newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}
 \newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}
-\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}%\newcommand\kaishu{\CJKfamily{kai}}
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}
+
+
+% \let\kaishu\relax
+% % \renewcommand{\kaishu}{\CJKfamily{kai}}
+% \newCJKfontfamily\kaishu{方正楷体简体}[BoldFont=方正粗楷简体]
+% \setCJKmainfont{方正书宋简体}[BoldFont = 方正粗宋简体]
+% \setCJKsansfont{方正黑体简体}[BoldFont=方正正粗黑简体]
+% \setCJKmonofont{方正仿宋简体}
+
+% \usepackage{ctexsize,type1cm}
 %这样在文档中就可以随心所欲地改变字体了, 比如上图中开始部分就是用
 % {\yihao 1770年}{\sanhao 法国人狄道} 来实现的
 
@@ -131,21 +142,21 @@
 \vspace{24mm}
 
 \begin{center}
-\textbf{\kaishu\sanhao 作者姓名：\underline{\quad \quad \quad \quad  徐璨 \quad \quad \quad \quad}}
+\kaishu\sanhao{\textbf{作者姓名：\underline{\quad \quad \quad \quad  徐璨 \quad \quad \quad \quad}}}
 \end{center}
 
 
 \begin{center}
-\textbf{\kaishu\sanhao 学科专业：\underline{\quad \quad \quad \ \ 统计学 \ \ \quad \quad \quad}}
+\kaishu\sanhao{\textbf{学科专业：\underline{\quad \quad \quad \ \ 统计学 \ \ \quad \quad \quad}}}
 \end{center}
 
 
 \begin{center}
-\textbf{\kaishu\sanhao 研究方向：\underline{\quad \quad \ \ \ 数理统计 \ \ \ \ \quad \quad}}
+\kaishu\sanhao{\textbf{研究方向：\underline{\quad \quad \ \ \ 数理统计 \ \ \ \ \quad \quad}}}
 \end{center}
 
 \begin{center}
-\textbf{\kaishu\sanhao 指导教师：\underline{\quad \quad \quad \ \  王伟刚 \ \ \quad \quad \quad  }}
+\kaishu\sanhao{\textbf{指导教师：\underline{\quad \quad \quad \ \  王伟刚 \ \ \quad \quad \quad  }}}
 \end{center}
 
 \
@@ -156,7 +167,7 @@
 
 
 \begin{center}
-\kaishu\sanhao 提交日期：2024 年 1 月
+\kaishu\sanhao\textbf{提交日期：2024 年 1 月}
 \end{center}
 \end{titlepage}
 

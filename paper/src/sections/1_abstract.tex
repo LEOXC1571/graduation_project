@@ -2,45 +2,56 @@
 \pagenumbering{Roman}
 \cfoot{\thepage}
 \newpage
+% \begin{center}
+% \heiti\sanhao{\textbf{基于扩散模型的三维药物分子设计框架}}
+% \end{center}
+% \vskip 10 mm
 \begin{center}
-\heiti\sanhao{基于扩散模型的三维药物分子设计框架}
-\end{center}
-\vskip 10 mm
-\begin{center}
-\heiti\sanhao{摘\quad 要}
+\heiti\sanhao{\textbf{摘 \quad 要}}
 \end{center}
 \vskip 7 mm
-\begin{spacing}{1.8}
-{\sihao 近年来基于深度学习的生成模型也在多领域有成功应用，例如AI在图画、语音、视频、对话等应用上的优秀表现引发了社会对人工智能新一轮广泛关注与热烈讨论。}
+\begin{spacing}{1.5}
+{\sihao 去噪扩散模型在多个研究领域显示出巨大潜力。现有的基于扩散生成模型在全新的三维分子生成任务中面临两个主要挑战。由于分子中的大部分重原子能够通过单键与多个原子相连，使用成对距离来建模分子几何结构是不足够的。因此，第一个挑战是提出一个有效的神经网络作为去噪核，能够捕捉复杂的原子间关系并学习高质量的特征。此外，由于图的离散性质，当前主流的基于扩散分子生成模型严重依赖预设的规则，并以间接的方式生成边。故第二个挑战是将分子生成的过程与扩散的学习过程相结合，有效地准确预测键的存在。本文认为扩散过程中分子构象的迭代更新方式与分子动力学一致，故提出一种名为几何辅助的分子扩散（Geometric-facilitated Molecular Diffusion / GFMDiff）的新型分子生成框架。针对第一个挑战，我们引入了一种双轨Transformer网络（Dual-track Transformer Network / DTN），以全面挖掘全局空间关系并学习高质量的表示，从而提高对特征和几何结构的准确预测能力。至于第二个挑战，我们设计了几何辅助损失（Geometric-facilitated Loss / GFLoss），该损失在训练期间干预键的形成，而不是直接将边嵌入隐变量空间。本文在多个基准数据集上开展了全面实验表明GFMDiff性能达到该领域时下最优的水平。}
 \end{spacing}
-\begin{spacing}{1.8}
-{\sihao 在智能计算的计算医药相关研究中，深度学习模型在药物发现、药物属性预测等应用中已经展现出良好的性能和极大的潜力。人工智能技术应用能够为药物研发的多个阶段降本增效。过去的2022年，AI制药赛道相关融资总金额达百亿美元。国内互联网巨头如百度百图生科、华为EIHealth、腾讯云深智药，及初创企业晶泰科技，剂泰医药，星药科技等，相关成果已经展现出深度学习在该领域的强大性能和广阔前景。}
-\end{spacing}
-\begin{spacing}{1.8}
-{\sihao 近来大火的生成模型被广泛应用于智能计算领域，人工智能算法有望根据人类的要求生成理想的结果，帮助提升药物发现与设计的效率与质量。在计算化学的相关研究中，深度学习模型的成功落地能够推动制药企业减少湿实验成本，助力靶点确认、药物发现、分子生成、化学反应设计、化合物筛选、临床试验、风险评估等多阶段。}
-\end{spacing} 
-\begin{spacing}{1.8}
-{\sihao 本文聚焦于深度学习算法在三维药物分子发现这一主题，意在利用时下最优的生成模型算法，创新性设计出更符合三位药物理化性质的算法，提升全新药物分子设计的性能与效率。}
-\end{spacing}
+% \begin{spacing}{1.8}
+% {\sihao 在智能计算的计算医药相关研究中，深度学习模型在药物发现、药物属性预测等应用中已经展现出良好的性能和极大的潜力。人工智能技术应用能够为药物研发的多个阶段降本增效。过去的2022年，AI制药赛道相关融资总金额达百亿美元。国内互联网巨头如百度百图生科、华为EIHealth、腾讯云深智药，及初创企业晶泰科技，剂泰医药，星药科技等，相关成果已经展现出深度学习在该领域的强大性能和广阔前景。}
+% \end{spacing}
+% \begin{spacing}{1.8}
+% {\sihao 近来大火的生成模型被广泛应用于智能计算领域，人工智能算法有望根据人类的要求生成理想的结果，帮助提升药物发现与设计的效率与质量。在计算化学的相关研究中，深度学习模型的成功落地能够推动制药企业减少湿实验成本，助力靶点确认、药物发现、分子生成、化学反应设计、化合物筛选、临床试验、风险评估等多阶段。}
+% \end{spacing} 
+% \begin{spacing}{1.8}
+% {\sihao 本文聚焦于深度学习算法在三维药物分子发现这一主题，意在利用时下最优的生成模型算法，创新性设计出更符合三位药物理化性质的算法，提升全新药物分子设计的性能与效率。}
+% \end{spacing}
 \vskip 16 mm
-\noindent {\sihao 关键词: 扩散模型；分子生成；几何神经网络}
+\noindent {\sihao 关键词: 扩散模型；分子生成；分子学习；图神经网络；几何神经网络}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                                                                                        %
 \newpage                                                                                               %
-\begin{spacing}{1.1}
+% \begin{spacing}{1.1}
+% \begin{center}
+% \heiti\sanhao{\textbf{A DIFFUSION-BASED 3D MOLECULE GENERATIVE FRAMEWORK}}
+% \end{center}
+% \end{spacing}
+% \vskip 14mm
+% \vskip 7mm
 \begin{center}
-\heiti\xiaosanhao{A DIFFUSION-BASED 3D MOLECULE GENERATIVE FRAMEWORK}
-\end{center}
-\end{spacing}
-\vskip 14mm
-\begin{center}
-\heiti\xiaosanhao{ABSTRACT}
+\heiti\xiaosanhao{\textbf{Abstract}}
 \end{center}
 \vskip 7mm
 
-AAAAAAAAAAAAA
+\begin{spacing}{1.5}
+{\sihao Denoising diffusion models have shown great potential in multiple research areas. Existing diffusion-based generative methods on {\itshape de novo} 3D molecule generation face two major challenge. Since majority heavy atoms in molecules allow connections to multiple atoms through single bonds, modeling molecule geometries using pair-wise distance is insufficient. Therefore, the first one involves proposing an effective neural network as the denoising kernel that is capable to capture complex interatomic relationships and learn high-quality features. Due to the discrete nature of graphs, mainstream diffusion-based methods for molecules heavily rely on predefined rules and generate edges in a indirect manner. The second one involves accommodating molecule generation to the learning process of diffusion and accurately predicting the existence of bonds effectively. In our research, we view the iterative way of updating molecule conformations in diffusion process is consistent with molecular dynamics and introduce a novel molecule generation method named Geometric-Facilitated Molecular Diffusion (GFMDiff). For the first challenge, we introduce a Dual-track Transformer Network (DTN) to fully excevate global spatial relationships and learn high quality representations which contribute to accurate predictions of features and geometries. As for the second challenge, we design Geometric-facilitated Loss (GFLoss) which intervenes the formation of bonds during the training period, instead of directly embedding edges into the latent space. Comprehensive experiments on current benchmarks demonstrate the superiority of GFMDiff.}
+\end{spacing}
 
 \vskip 14 mm
-\noindent{KEYWORDS: Diffusion model; Molecule generation; Geometry neural network}
+\noindent{KEYWORDS: Diffusion models; Molecule generation; Molecular learning; Graph neural networks; Geometry neural Networks}
+
+\newpage
+\begin{spacing}{1.5}
+\tableofcontents
+\titlecontents{chapter}[0pt]{\addvspace{2pt}\filright}
+{\contentspush{\thecontentslabel\ }}
+{}{\titlerule*[8pt]{.}\contentspage}
+\end{spacing}

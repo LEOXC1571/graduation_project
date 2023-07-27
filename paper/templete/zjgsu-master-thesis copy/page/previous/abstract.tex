@@ -1,0 +1,52 @@
+\clearpage
+\chapternonum{中文摘要}
+% \begin{center}
+%     \textbf{\heiti \zihao{3} \Title }
+% \end{center}
+\begin{center}
+    \textbf{ \zihao{3} \heiti 摘\quad 要}
+\end{center}
+\songti \zihao{-4}
+\linespreadonehalf
+
+随着信息技术和互联网大数据的飞速发展，现代社会已经进入了信息爆炸的时代。然而，数据资源在应用的数据平台中大量积累，信息超载已经成为互联网用户面临的重要挑战之一。推荐系统作为大数据时代缓解信息超载的有效工具之一，可以为用户提供个性化推荐服务。在 Web 3.0 时代，用户和数据资源的关系更为丰富。在一些网站上用户可以创造并分享各种物品，同时为物品标注各种标签。这些标签不仅可以反映用户自身的兴趣偏好和看待物品的态度，而且物品本身蕴含的丰富内容也可以为推荐系统提供更多信息。因此，标签感知推荐系统将这类社会标注数据作为协同过滤信息，为用户提供更为精准的个性化推荐服务。
+
+当前，标签感知推荐系统已成为解决推荐系统中的稀疏性、公平性等问题的有效途径。然而，标签感知推荐系统也有其局限。其中，标签数据自有的一词多义与多词同义问题局限了标签感知推荐系统的推荐性能。虽然针对这些问题的标签感知推荐模型被一些研究人员提出，但依旧存在社会标签数据如何系统性组织、现有的深度学习模型如何有效地迁移以及如何为算法设定合适的优化方向等问题。为了更好地利用社会标签数据，提升推荐性能，本文针对以上研究问题，提出了社会标注图的定义，并在此基础上提出了两个新型的标签感知推荐模型。本文提出的模型分别通过轻量化的图神经网络与对比学习方法提高了标签感知推荐算法的表现，并降低训练难度，缓解数据中的流行度偏差。主要研究贡献如下：
+
+（1）本文提出了一种新的社会标注图（Folksonomy Graph，FG），由<用户-标签>图和<物品-标签>图组成，降低了社会标注图的复杂度，为后续模型的设计和优化提供了便利。
+
+（2）基于图神经网络，本文提出了一种轻量化社会标注图协同过滤（Light Folksonomy Graph Collaborative Filtering, LFGCF）。为了适应推荐系统的特性，该模型去除了图卷积神经网络的特征变换和非线性激活组件，并采用加权和聚合函数进行消息传播。这种方式提高了模型的精准度，并减轻了模型的训练难度。
+
+（3）本文探讨了推荐系统中存在的数据偏差，并提出了一种标签图对比学习框架（Tag-aware Graph Contrastive Learning，TAGCL）。该模型使用对比学习和知识图谱联合优化模型，在训练过程中对标签进行同时采样，从而有效地提高了模型的推荐精准度和公平性。
+
+（4）为了评估 LFGCF 和 TAGCL 的性能，本文设计了一系列实验，并与当前主流的推荐算法模型在召回率、准确率、归一化累计折损增益（normalized Discounted cumulative Gain，NDCG）、平均逆排名（Mean Peciprocal Rank，MRR）指标上进行对比。在三个公开的学术数据集 MovieLens、Last.FM 和 Delicious 上，本文提出的模型 TAGCL 的召回率对比通用推荐模型有 4.6\% 的提升，准确率有 5.0\% 的提升，NDCG 有 4.21\% 的提升，MRR 有 1.62\% 的提升。对比标签感知推荐模型，TAGCL 在召回率有 5.18\% 的提升，准确率有 8.0\% 的提升，NDCG有 7.22\% 的提升，MRR 有 5.64\% 的提升。对于数据偏差较大的 MovieLens 与 Last.FM 降低了 17\% 的平均推荐流行度。最后，本文还在一个真实运行的推荐系统 BibSonomy 上测试 TAGCL 性能，实验结果证明 TAGCL 对比与基线模型的召回率提高了 1\%。
+
+
+\vspace{20pt}
+\noindent \textbf{关键字：}标签感知推荐算法；图神经网络；对比学习；协同过滤；个性化推荐；
+
+% 英文摘要
+\clearpage
+\addcontentsline{toc}{chapter}{英文摘要}
+% \begin{center}
+%     \zihao{3} \TitleEng
+% \end{center}π
+\begin{center}
+    \textbf{\zihao{3} Abstract}
+\end{center}
+
+With the rapid development of information technology and big data on the Internet, modern society has entered the era of information explosion. However, data resources are accumulated in large quantities in the data platforms of applications, and information overload has become one of the important challenges faced by Internet users. As one of the effective tools to relieve information overload in the era of big data, recommendation system can provide personalized recommendation service for users. In the Web 3.0 era, the relationship between users and data resources is richer. On some websites, users can create and share various items, and tag them with various labels. These tags not only reflect the user's own interests and preferences and attitudes towards the items, but also provide more information to the recommendation system with the rich content of the items themselves. Therefore, label-aware recommendation systems use such socially labeled data as collaborative filtering information to provide users with more accurate personalized recommendation services.
+
+Currently, label-aware recommendation systems have become an effective way to solve the problems of sparsity and fairness in recommendation systems. However, label-aware recommendation systems also have their limitations. Among them, the label data's own problems of multi-word meaning and multi-word synonymy limit the recommendation performance of label-aware recommendation systems. Although label-aware recommendation models for these problems have been proposed by some researchers, there are still problems such as how to systematically organize social label data, how to effectively migrate existing deep learning models, and how to set appropriate optimization directions for algorithms. In order to make better use of social labeling data and improve recommendation performance, this thesis proposes the definition of social labeling graph for the above research problems, and based on this, two novel label-aware recommendation models are proposed. The models proposed in this thesis improve the performance of label-aware recommendation algorithms through lightweight graph neural networks and contrast learning methods, respectively, and reduce the training difficulty and mitigate the prevalence bias in the data. The main research contributions are as follows:
+
+(1) This thesis proposes a new social labeling graph Folksonomy Graph consisting of <user-label> graph and <item-label> graph, which reduces the complexity of the social labeling graph and facilitates the design and optimization of subsequent models.
+
+(2) Based on graph neural network, this thesis proposes a Light Folksonomy Graph Collaborative Filtering (LFGCF). In order to adapt to the characteristics of recommender systems, the model removes the feature transformation and nonlinear activation components of graph convolutional neural networks, and uses weighting and aggregation functions for message propagation. This approach improves the accuracy of the model and reduces the training difficulty of the model.
+
+(3) This thesis explores the data bias present in recommender systems and proposes a Tag-aware Graph Contrastive Learning framework (TAGCL). The model uses contrast learning and knowledge graph to jointly optimize the model and sample tags simultaneously during the training process, thus effectively improving the recommendation accuracy and fairness of the model.
+
+(4) In order to evaluate the performance of LFGCF and TAGCL, a series of experiments are designed and compared with the current mainstream recommendation algorithm models in terms of recall, accuracy, Normalized Discounted cumulative Gain, Mean Peciprocal Rank metrics are compared. On three publicly available academic datasets MovieLens, Last.FM, and Delicious, the proposed model TAGCL has a 4.6\% improvement in recall, 5.0\% improvement in accuracy, 4.21\% improvement in NDCG, and 1.62\% improvement in MRR compared to the generic recommendation model. Compared with the tag-aware recommendation model, TAGCL has a 5.18\% improvement in recall, 8.0\% improvement in accuracy, 7.22\% improvement in NDCG, and 5.64\% improvement in MRR. For MovieLens and Last.FM, which have large data bias, the average recommendation popularity is reduced by 17\%. Finally, this thesis also tests TAGCL performance on a real-running recommendation system BibSonomy, and the experimental results demonstrate that TAGCL improves the recall rate by 1\% compared to the baseline model.
+
+\vspace{20pt}
+\noindent \textbf{Keywords: Tag-aware recommender systems; Graph neural networs; Contrastive learning; Contrastive Learning; Personalized recommender}
+\clearpage
