@@ -1,1 +1,1 @@
-# graduation_project
+# The Graduation Project
