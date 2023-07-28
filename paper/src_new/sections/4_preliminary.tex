@@ -4,11 +4,25 @@
 \section{分子图学习}
 在图学习中通常有两类监督任务：节点分类/回归和图分类/回归。对于图学习，一个分子可以被抽象为一个图 $\mathcal{G} = (\mathcal{V}, \mathcal{E})$，其中 $|\mathcal{V}| = n$表示节点（原子）的集合，$|\mathcal{E}| = m$ 表示分子中的边（化学键）的集合。我们用$e_i$表示节点 $i$的特征，用$e_{ij}$表示边$(i, j)$的特征。
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{figures/molecular_learning.png}
+    \caption{分子学习常见泛式示意图}
+    \label{fig:molecularlearning}
+\end{figure} 
+
 在节点分类或回归任务中，每个节点$i$都有一个标签或目标$y_i$。任务目标是通过学习，预测未见节点的标签。这个任务可被应用于许多应用，比如识别分子中的功能团或预测各个原子的性质。
 
 此外，在图分类或回归任务中，给定一组图$\{ \mathcal{G}_1, \mathcal{G}_2, ..., \mathcal{G}_N \}$和对应的标签或目标 $\{ y_1, ..., y_N \}$。此时任务目标是根据图的结构和节点边的特征，预测给定图的标签或目标。这个任务被广泛应用于化合物分类或基于结构预测分子性质等。
 
 在这两类任务中，目标是利用监督学习技术训练模型，有效地捕捉图的结构与相关标签/目标之间的关系。现有的图学习方法主要有基于图神经网络的模型和基于Transformer架构的模型。
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{figures/gnn_transformer.png}
+    \caption{基于图神经网络或Transformer的分子性质预测框架}
+    \label{fig:gnntransformer}
+\end{figure} 
 
 图神经网络（Graph Neural Networks / GNNs），近来在知识图谱、社交网络和药物发现等各个领域引起了广泛的关注。GNNs的核心操作在于将图中节点或边之间的特征进行传递（也称为邻居聚合）。消息传递操作通过聚合节点$i$的邻居节点和边的隐式特征来迭代更新节点$i$自身的隐式特征$e_i$。一般来说，消息传递过程包含多轮迭代，每轮迭代可以被视为对更远距离邻居的消息聚合。假设有$L$轮迭代，第$l$轮迭代会将目标节点的l跳邻居特征注入目标节点的隐式特征。第$l$轮迭代中，消息的传递与聚合可被表示为：
 \begin{eqnarray}
@@ -40,6 +54,12 @@
 
 \section{基于扩散模型的图生成}
 扩散模型在生成模型中引起了相当大的关注。通过学习逆过程的去噪核，这些模型能够揭示噪声样本的潜在分布。在给定一段数据的情况下，正向过程被视为马尔可夫链，通过学习可学习参数控制噪声强度，逐渐向数据添加高斯噪声$T$次。在生成过程中，模型将噪声还原回真实数据的原始分布。
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{figures/diffusion.png}
+    \caption{扩散模型在计算机视觉和图生成领域的示意图}
+    \label{fig:diffusion}
+\end{figure} 
 
 \subsection{扩散过程}
 设$G_t (t=0, 1, ..., T)$表示分子几何信息的分布，$\beta_t \in (0, 1), t=0, 1, ..., T$表示马尔可夫链的噪声方差序列。因此我们可以得到几何信息在$t$或$T$时刻在后验分布：
