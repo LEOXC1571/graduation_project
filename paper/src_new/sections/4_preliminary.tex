@@ -2,12 +2,14 @@
 \label{chap:diffusion-based_molgen}
 
 \section{分子图学习}
+早期基于深度学习的分子学习主要基于简化分子线性输入规范字符串（SMILES） \cite{smiles_weinberger_88}，经过对序列中每个原子对应字符进行编码，通过RNN等序列学习模型，最终得到原子或分子特征输出，进而服务于下游任务。随着图神经网络的发展，分子作为自然界中天然的图结构，相应的研究也迅速发展。图~\ref{fig:molecularlearning}~为基于深度学习的常见分子学习范式。
+
 在图学习中通常有两类监督任务：节点分类/回归和图分类/回归。对于图学习，一个分子可以被抽象为一个图 $\mathcal{G} = (\mathcal{V}, \mathcal{E})$，其中 $|\mathcal{V}| = n$表示节点（原子）的集合，$|\mathcal{E}| = m$ 表示分子中的边（化学键）的集合。我们用$e_i$表示节点 $i$的特征，用$e_{ij}$表示边$(i, j)$的特征。
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{figures/molecular_learning.png}
-    \caption{分子学习常见泛式示意图}
+    \caption{基于深度学习的常见分子学习泛式}
     \label{fig:molecularlearning}
 \end{figure} 
 
@@ -15,7 +17,7 @@
 
 此外，在图分类或回归任务中，给定一组图$\{ \mathcal{G}_1, \mathcal{G}_2, ..., \mathcal{G}_N \}$和对应的标签或目标 $\{ y_1, ..., y_N \}$。此时任务目标是根据图的结构和节点边的特征，预测给定图的标签或目标。这个任务被广泛应用于化合物分类或基于结构预测分子性质等。
 
-在这两类任务中，目标是利用监督学习技术训练模型，有效地捕捉图的结构与相关标签/目标之间的关系。现有的图学习方法主要有基于图神经网络的模型和基于Transformer架构的模型。
+在这两类任务中，目标是利用监督学习技术训练模型，有效地捕捉图的结构与相关标签/目标之间的关系。现有的图学习方法主要有基于图神经网络的模型和基于Transformer架构的模型。图~\ref{fig:gnntransformer}~为基于GNNs或Transformer的分子性质预测框架。若下游任务为节点分类/回归等其他任务时，只需改变池化层和最终输出的格式即可，图~\ref{fig:gnntransformer}~中蓝色背景的模型架构对各下游任务均可通用。
 
 \begin{figure}[h]
     \centering
@@ -53,11 +55,11 @@
 
 
 \section{基于扩散模型的图生成}
-扩散模型在生成模型中引起了相当大的关注。通过学习逆过程的去噪核，这些模型能够揭示噪声样本的潜在分布。在给定一段数据的情况下，正向过程被视为马尔可夫链，通过学习可学习参数控制噪声强度，逐渐向数据添加高斯噪声$T$次。在生成过程中，模型将噪声还原回真实数据的原始分布。
+扩散模型在生成模型中引起了相当大的关注。通过学习逆过程的去噪核，这些模型能够揭示噪声样本的潜在分布。在给定一段数据的情况下，正向过程被视为马尔可夫链，通过学习可学习参数控制噪声强度，逐渐向数据添加高斯噪声$T$次。在生成过程中，模型将噪声还原回真实数据的原始分布。图~\ref{fig:diffusion}~为扩散模型在计算机视觉和图学习上，在生成任务中样本随扩散/去噪过程变化的示意图。
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{figures/diffusion.png}
-    \caption{扩散模型在计算机视觉和图生成领域的示意图}
+    \caption{计算机视觉和图学习领域上基于扩散的生成模型}
     \label{fig:diffusion}
 \end{figure} 
 
