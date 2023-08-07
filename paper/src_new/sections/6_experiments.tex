@@ -31,9 +31,9 @@ $\bullet$ 平均绝对误差（Mean absolute error / MAE）：是一个常用于
 \textbf{基线模型：}
 本文采用了本领域最具代表性且最前沿的模型，包含基于自回归模型的，流型模型的和扩散模型的方法。
 
-$\bullet$ E-NF\cite{enf_satorras_21}是基于流型模型的3D分子设计的模型。其中用于图学习的网络为等变的EGNNs\cite{egnn_satorras_21}。
+$\bullet$ E-NF\cite{enf_satorras_21}是基于流型模型的3D分子设计的模型。其中用于图学习的网络为等变的EGNNs\cite{egnn_satorras_21}。该网络将原子间距离视作键的特征，通过信息传递更新相应节点特征。
 
-$\bullet$ G-SchNet\cite{gschnet_wallach_19}在SchNet\cite{schnet_schutt_17}的基础上设计了一个自回归模型，通过逐步生成原子和键的方式生成分子结构。
+$\bullet$ G-SchNet\cite{gschnet_wallach_19}在SchNet\cite{schnet_schutt_17}的基础上设计了一个自回归模型，通过逐步生成原子和键的方式生成分子结构。SchNet已经被证明其对角度信息具备良好提取能力。
 
 $\bullet$ EDM\cite{edm_hoogeboom_22}是最早将扩散模型引入到药物分子设计的模型。其去噪内核同样采用EGNNs\cite{egnn_satorras_21}。
 
