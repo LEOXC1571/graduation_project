@@ -29,7 +29,7 @@
 \begin{equation}
     d_{ij} = ||p_i - p_j||_2.
 \end{equation}
-在分子中，除了氢原子，其他多数原子能够形成超过一个单键，故存在大量原子间的多体复杂关系。因此仅使用原子对距离是不足以充分提取空间几何信息。本文提出进一步使用以下公式计算三元角度：
+在分子中，除了氢原子，其他多数原子能够形成超过一个单键，故存在大量原子间的多体复杂关系。因此仅使用原子对距离是不足以充分提取空间几何信息。本文提出进一步使用以下公式计算原子三元组间的夹角：
 \begin{equation}
     \varphi_{ijk} = \arccos (\frac{(p_i - p_j) \times (p_i - p_k)}{||p_i - p_j||_2 \times ||p_i - p_k||_2}). 
 \end{equation}
@@ -38,7 +38,12 @@
     &e_{ij} = {\rm Linear}({\rm RBF}(d_{ij}), e_i, e_j),& \\
     &e_{ijk} = {\rm Linear}({\rm RBF}(\varphi_{ijk}), e_i, e_j, e_k),&
 \end{eqnarray}
-其中$e_i = {\rm Embedding}(x_i, a_i, v_i)$是原子$i$的节点嵌入，由原子序数和化合价决定。这些特征随后被输入到$L$层的DTN中。
+其中$e_i = {\rm Embedding}(x_i, a_i, v_i)$是原子$i$的节点嵌入，由原子序数和化合价决定。这些特征随后被输入到$L$层的DTN中。RBF函数是一种常用的径向基函数。在机器学习和模式识别领域中，RBF函数常用于对数据进行特征编码和表征，以距离特征计算为例：
+\begin{eqnarray}
+    &K(d_{ij}, \mu_k) = {\rm exp} (- \frac{||d_{ij} - \mu_k||^2}{2\sigma^2}), & \\
+    &{\rm RBF}(d_ij) = {\rm Linear}(K(d_{ij}, \mu_k)), &
+\end{eqnarray}
+其中中心$\mu_k$和自由参数$\sigma$为RBF函数参数。在距离特征计算时，$\mu$满足$0 \text{\AA} \leq \mu_k \leq 10 \text{\AA}$并以$0.2\text{\AA}$的间隔切片，$\sigma$满足$\frac{1}{2\sigma^2} = 10 \text{\AA}$。经过切片操作后，$K(d_{ij}, \mu_k)$的维度为50，故需要通过线性层将RBF特征映射到与原子对特征维度一致的高位特征空间内。在角度计算时，$\mu$满足$0 \text{\AA} \leq \mu_k \leq \pi \text{\AA}$并以$0.1\text{\AA}$的间隔切片，$\sigma$满足$\frac{1}{2\sigma^2} = 10 \text{\AA}$。
 
 DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连接模块。原子对轨道模拟了原子之间的相互作用力对目标原子的影响，而对-三元轨道模型则模拟了潜在键角对边的影响。连接模块作为两个轨道之间的桥梁，将原子特征注入到成对特征中，以促进更好的表示学习。
 
@@ -56,8 +61,7 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
 \begin{eqnarray}
     &e_{ij} = {\rm LayerNorm}(e_{ij}),&\\
     &e_{ijk} = {\rm LayerNorm}(e_{ijk}),&\\
-    &\mathbf{Q}_{ij} = {\rm Linear}(e_{ij}),& \\ 
-    &\mathbf{K}_{ij} = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{ijk}),& \\
+    &\mathbf{Q}_{ij} = {\rm Linear}(e_{ij}), \ \mathbf{K}_{ij} = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{ijk}),& \\
     &a_{ij}= {\rm Dropout}({\rm softmax} \frac{\mathbf{Q}_{ij} \mathbf{K}_{ij}^T}{\sqrt{d_h}}), & \\
     &\mathbf{V}_{ij} = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{ijk}),& \\
     &\hat{e}_{ij} = {\rm Linear}(a_{ij} \mathbf{V}_{ij}^T).&
@@ -69,12 +73,18 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
     e_{ij} = {\rm LayerNorm}(e_{ij} + {\rm Linear}({\rm Linear}(e_i) \otimes {\rm Linear}(e_j)))
 \end{equation}
 
-在更新坐标的方法上，我们遵循EDM \cite{edm_hoogeboom_22}和MDM \cite{mdm_huang_23}的相关设计。由于原子坐标得到了更新，原子对和原子三元组的嵌入也将得到更新：
+在更新坐标的方法上，我们遵循EDM \cite{edm_hoogeboom_22}和MDM \cite{mdm_huang_23}的相关设计。
+\begin{equation}
+    \hat{p}_i = p_i + \sum_{j \neq i} \frac{p_i - p_j}{d_{ij} + 1} {\rm Linear}(\hat{e}_i, \hat{e}_j, d_{ij}^2, \hat{e}_{ij})
+\end{equation}
 
+由于在该坐标更新模组中，仅依赖于原子间相对距离更新原子坐标，故其严格遵循E(n)等变性要求。在原子坐标得到更新后，原子对和原子三元组的嵌入也将得到更新：
 \begin{eqnarray}
   &e_{ij} = {\rm Linear}[{\rm Linear}({\rm RBF}(\hat{d}_{ij}), \hat{e}_{ij}), \hat{e}_i, \hat{e_j}],& \\
   &e_{ijk} = {\rm Linear}({\rm RBF}(\hat{\varphi}_{ijk}), e_{ijk}). &
 \end{eqnarray}
+
+更新后的原子对距离特征和三元组角度特征将被用作下一层DTN网络的输入，或是直接作为去噪内核的输出。
 
 \section{几何信息促进的损失函数（GFLoss）}
 预测化学键的存在是分子图生成中的基本且不可或缺的任务。与以往的研究完全依赖于预设规则生成边不同，我们提出在训练过程中积极干预化学键的形成，通过设计一种精细的训练目标函数，命名为几何促进损失（Geometric-facilitated Loss / GFLoss）。这个损失函数的目的是引导模型生成既具有有效的拓扑结构，又具有稳定构象的分子。在药物分子设计中，我们认为原子的价是一种非常重要的辅助特征类型。因此，在上述提到的分子学习网络DTN中，原子的价被作为原子特征的一部分进行了整合。这使得模型能够学习和利用原子的价信息，具体计算流程如图~\ref{fig:gfloss}~所示。
@@ -116,15 +126,14 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
 在提出的GFMDiff的前向过程中，位置、原子序数和原子价逐渐被噪声先验分布所污染。通过具有预定义方差调度$\beta_t \in (0, 1), t=0, 1, ..., T$的马尔可夫链将真实构象$G_0 = (P_0, X_0, A_0, V_0)$进行转换。后验分布定义为：
 \begin{eqnarray}
     &q(G_{1:T}|G_0) = \prod^T_{t=1} q(G_t|G_{t-1}),& \\
-    &q(G_t|G_{t-1}) = \mathcal{N}_p(p_t;\sqrt{\alpha_t} p_{t-1}, \beta_t I) \cdot \\
-    & \quad \quad \quad \quad \quad \mathcal{N}_h(h_t;\sqrt{\alpha_t} h_{t-1}, \beta_t I),&
+    &q(G_t|G_{t-1}) = \mathcal{N}_p(p_t;\sqrt{\alpha_t} p_{t-1}, \beta_t I) \cdot \mathcal{N}_h(h_t;\sqrt{\alpha_t} h_{t-1}, \beta_t I),&
 \end{eqnarray}
 其中$h_t = {\rm concat}(x_t, a_t, v_t)$表示原子特征，为了方便起见。为了满足等变性的要求，在将原子坐标引入扩散之前，它们必须先转换为线性子空间，其中质心为零\cite{enf_satorras_21,edm_hoogeboom_22,geodiff_xu_22}。因此，噪声分布和上述后验分布都受限于相同的线性子空间。虽然原子特征对于变换是不变的，但它们在整个前向和后向过程中与位置按相同的比例进行转换。
 
 在去噪过程中，我们使用上述的去噪核函数来逼近每个时间步的分子构象，
 \begin{eqnarray}
     &p_\theta(G_{t-1}|G_t) = \mathcal{N}(G_{t-1}; \mu_\theta(G_t,t),\sigma_t^2 I),& \\
-    &\hat{G}_t = G_t / \alpha_t - \hat{\epsilon}_t * \sigma_t / \alpha_t ,&
+    &\hat{G}_t = G_t / \alpha_t - \hat{\epsilon}_t \times \sigma_t / \alpha_t ,&
 \end{eqnarray}
 其中$\hat{\epsilon}_t$是参数化神经网络的输出。
 

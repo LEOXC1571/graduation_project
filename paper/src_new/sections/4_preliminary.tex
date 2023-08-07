@@ -94,7 +94,7 @@
     &\mathcal{L}_{base} = -KL(q(G_T|G_0)|p(G_T)),& \\
     &\mathcal{L}_t = KL(q(G_{t-1}|G_t)|p(G_{t-1}|G_t)). &
 \end{eqnarray}
-然而，研究发现，神经网路预测的高斯噪声$\epsilon$能够更容易的用于训练。因此，在实际优化神经网络时，神经网路常用的目标函数$\mathcal{L}_t$ \cite{vaediff_kingma_21}形式为：
+然而，研究发现，神经网络预测的高斯噪声$\epsilon$能够更容易的用于训练。因此，在实际优化神经网络时，神经网络常用的目标函数$\mathcal{L}_t$ \cite{vaediff_kingma_21}形式为：
 \begin{equation}
     \mathcal{L}_t = E_{\epsilon_t \sim \mathcal{N}(0, I)}[\frac{1}{2}(1- \frac{{\rm SNR}(t-1)}{{\rm SNR}(t)})||\epsilon_t - \hat{\epsilon}_t||^2].
 \end{equation}
