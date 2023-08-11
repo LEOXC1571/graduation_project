@@ -22,6 +22,29 @@
 %     \end{algorithmic}
 % \end{algorithm}
 
+% \begin{algorithm}[H]
+%     \caption{新方法1}%{新方法1(modified EM algorithm 1, MEM1)}
+%     \label{alg:New method 1}
+%     \begin{algorithmic} %Display per line number
+%     %   \Require 数据集$\{x_1, x_2, \cdots, x_n\}$, 成分数$K$;
+%     %   \Ensure 参数$G$的估计值;
+%       \State 参数初始值$G^{(0)}$;
+%     %   \Repeat
+%         % \State 计算$\tilde{\pi}_{ik}^{(m+1)}=\frac{f(x_i;\theta_k^{(m)})}{\sum_{j=1}^{K}f(x_i;\theta_j^{(m)})}$;
+%         % \State 计算$\tilde{E}[z_{ik}|x_i;G^{(m)}]=\frac{\tilde{\pi}_{ik}^{(m+1)}f(x_{i}; \theta_{k}^{(m)})}{\sum_{j=1}^{K}\tilde{\pi}_{ij}^{(m+1)}f(x_{i}; \theta_{j}^{(m)})}$;
+%         % \State 计算$G^{(m+1)}=\mathop{\arg\max}_{G} Q(G;G^{(m)})$,其中
+%         % \begin{equation}
+%         % \label{equ:Q function in new method 1}
+%         %   Q(G;G^{(m)})=\sum_{i=1}^{n} \sum_{k=1}^{K} \tilde{E}[z_{ik}|x_i;G^{(m)}] [ \log\pi_{k} + \log\{f(x_{i}; \theta_{k})\} ];
+%         % \end{equation}
+%         % LaTeX: For the non numbered interline formula, why we use \[ … \] but $$ … $$?  see: https://www.zhihu.com/question/27589739/answer/37237684
+%         %$\bm{\hat{\theta}}^{(m)}=\mathop{\arg\max}_{\bm{\theta}}\prod_{i=1}^{n}\{\sum_{j=1}^{K}\pi_{ij}^{(m-1)}f(x_i;\theta_j)\}$;
+%         %\State compute $\pi_{ik}^{(m)}=\frac{f(x_i;\theta_k^{(m)})}{\sum_{j=1}^{K}f(x_i;\theta_j^{(m)})}$;
+%         %\State compute $\pi_{k}^{(m)}=\sum_{i=1}^{n}\pi_{ik}^{(m)}/n$;
+%     %   \Until{收敛}.
+%     \end{algorithmic}
+%   \end{algorithm}
+
 \section{化学键长}
 本文在生成药物分子中的化学键时，依据计算化学领域常见的原子键长作为参考。表~\ref{tab:single_bond_typ_dist}~，表~\ref{tab:double_bond_typ_dist}~和表~\ref{tab:tri_bond_typ_dist}~列出了出现在GEOM-QM9和GEOM-Drugs中原子类型间所有可能的化学键的典型键长。表中数值代表对应化学键的典型长度（皮米），而横线代表该两种原子间不可能存在稳定的对应化学键连接，原子间距离短于典型键长则可以被认为被对应的键连接。在实际计算中，对单键，双键和三键典型键长分别有10，5和3皮米的冗余。例如，对于两个距离136皮米的碳原子，他们之间距离虽然大于134皮米，小于154皮米，但本文认定136皮米小于134+5皮米，则认为这两个碳原子由双键连接。
 

@@ -25,13 +25,13 @@
 
 % 传统的图神经网络用于学习图结构数据的拓扑信息，仅仅是置换等变的。尽管已经有许多努力致力于赋予GNN上述性质，我们提供了另一种解决这个问题的视角。
 
-在我们提出的方法中，我们将具有总原子数$N$的输入分子视为$G = (P, X, A, V)$，其中$P = (p_1, p_2, ..., p_N) \in \mathbb{R}^{N \times 3}$表示原子坐标，$X = (x_1, x_2, ..., x_N) \in \mathbb{R}^{N \times nf}$表示原子编号的独热编码，$A = (a_1, a_2, ..., a_N) \in \mathbb{R}^{N}$表示原子编号，$V = (v_1, v_2, ..., v_N) \in \mathbb{R}^{N}$表示原子的价数。为了确保等变性，DTN利用原子对距离信息和三元组角度信息捕捉几何信息。原子$i$和$j$之间的欧几里得距离反映了原子间相互作用的强度，可以通过以下公式获得：
+在我们提出的方法中，我们将具有总原子数$N$的输入分子视为$G = (P, X, A, V)$，其中$P = (p_1, p_2, ..., p_N) \in \mathbb{R}^{N \times 3}$表示原子坐标，$X = (x_1, x_2, ..., x_N) \in \mathbb{R}^{N \times nf}$表示原子编号的独热编码，$A = (a_1, a_2, ..., a_N) \in \mathbb{R}^{N}$表示原子编号，$V = (v_1, v_2, ..., v_N) \in \mathbb{R}^{N}$表示原子化合价数。为了确保等变性，DTN利用原子对距离信息和三元组角度信息捕捉几何信息。原子$i$和$j$之间的欧几里得距离反映了原子间相互作用的强度，可以通过以下公式获得：
 \begin{equation}
     d_{ij} = ||p_i - p_j||_2.
 \end{equation}
 在分子中，除了氢原子，其他多数原子能够形成超过一个单键，故存在大量原子间的多体复杂关系。因此仅使用原子对距离是不足以充分提取空间几何信息。本文提出进一步使用以下公式计算原子三元组间的夹角：
 \begin{equation}
-    \varphi_{ijk} = \arccos (\frac{(p_i - p_j) \times (p_i - p_k)}{||p_i - p_j||_2 \times ||p_i - p_k||_2}). 
+    \varphi_{ijk} = \arccos \left(\frac{(p_i - p_j) \times (p_i - p_k)}{||p_i - p_j||_2 \times ||p_i - p_k||_2} \right). 
 \end{equation}
 经过上述几何计算，本文通过径向基神经网络（Radial Basis Function / RBF）编码得到可以被用作神经网络学习的原子对距离特征和三元组角度特征：
 \begin{eqnarray}
@@ -40,7 +40,7 @@
 \end{eqnarray}
 其中$e_i = {\rm Embedding}(x_i, a_i, v_i)$是原子$i$的节点嵌入，由原子序数和化合价决定。这些特征随后被输入到$L$层的DTN中。RBF函数是一种常用的径向基函数。在机器学习和模式识别领域中，RBF函数常用于对数据进行特征编码和表征，以距离特征计算为例：
 \begin{eqnarray}
-    &K(d_{ij}, \mu_k) = {\rm exp} (- \frac{||d_{ij} - \mu_k||^2}{2\sigma^2}), & \\
+    &K(d_{ij}, \mu_k) = {\rm exp} \left(- \frac{||d_{ij} - \mu_k||^2}{2\sigma^2}\right), & \\
     &{\rm RBF}(d_ij) = {\rm Linear}(K(d_{ij}, \mu_k)), &
 \end{eqnarray}
 其中中心$\mu_k$和自由参数$\sigma$为RBF函数参数。在距离特征计算时，$\mu$满足$0 \text{\AA} \leq \mu_k \leq 10 \text{\AA}$并以$0.2\text{\AA}$的间隔切片，$\sigma$满足$\frac{1}{2\sigma^2} = 10 \text{\AA}$。经过切片操作后，$K(d_{ij}, \mu_k)$的维度为50，故需要通过线性层将RBF特征映射到与原子对特征维度一致的高位特征空间内。在角度计算时，$\mu$满足$0 \text{\AA} \leq \mu_k \leq \pi \text{\AA}$并以$0.1\text{\AA}$的间隔切片，$\sigma$满足$\frac{1}{2\sigma^2} = 10 \text{\AA}$。
@@ -51,7 +51,7 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
 \begin{eqnarray}
     &e_i = {\rm LayerNorm}(e_i), \ e_{ij} = {\rm LayerNorm}(e_{ij}),& \\
     &\mathbf{Q}_i = {\rm Linear}(e_i), \ \mathbf{K}_i = {\rm Linear}(e_i) + {\rm Linear}(e_{ij}),& \\
-    &a_i = {\rm Dropout}({\rm softmax} \frac{\mathbf{Q}_i \mathbf{K}_i^T}{\sqrt{d_h}}), & \\
+    &a_i = {\rm Dropout} \left({\rm softmax} \frac{\mathbf{Q}_i \mathbf{K}_i^T}{\sqrt{d_h}} \right), & \\
     &\mathbf{V}_i = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{i}) + {\rm Linear}(e_{j}),& \\
     &\hat{e}_i = {\rm Linear}(a_i \mathbf{V}_i^T),&
 \end{eqnarray}
@@ -62,7 +62,7 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
     &e_{ij} = {\rm LayerNorm}(e_{ij}),&\\
     &e_{ijk} = {\rm LayerNorm}(e_{ijk}),&\\
     &\mathbf{Q}_{ij} = {\rm Linear}(e_{ij}), \ \mathbf{K}_{ij} = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{ijk}),& \\
-    &a_{ij}= {\rm Dropout}({\rm softmax} \frac{\mathbf{Q}_{ij} \mathbf{K}_{ij}^T}{\sqrt{d_h}}), & \\
+    &a_{ij}= {\rm Dropout} \left({\rm softmax} \frac{\mathbf{Q}_{ij} \mathbf{K}_{ij}^T}{\sqrt{d_h}} \right), & \\
     &\mathbf{V}_{ij} = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{ijk}),& \\
     &\hat{e}_{ij} = {\rm Linear}(a_{ij} \mathbf{V}_{ij}^T).&
 \end{eqnarray}
@@ -85,6 +85,22 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
 \end{eqnarray}
 
 更新后的原子对距离特征和三元组角度特征将被用作下一层DTN网络的输入，或是直接作为去噪内核的输出。
+
+\begin{algorithm}[H]
+    \caption{DTN去噪内核伪代码}
+    \label{alg:dtn}
+    \begin{algorithmic}
+    \STATE {\bfseries Input：} 原子坐标$p$，原子特征$h = [x, a, v]$，去噪神经网络$\phi$;
+    \STATE 采样时间步 $t \sim \mathcal{U}(1, T)$和噪声 $\varepsilon_t = [\varepsilon^{(p)}_t, ~\varepsilon^{(h)}_t] \sim \mathcal{N}(\mathbf{0}, I)$;
+    \STATE 混合输入样本与噪声 $z_t = \alpha_t [p, h] + \sigma_t \varepsilon_t$;
+    \STATE 计算神经网络损失函数 $\mathcal{L}_t = \frac{1}{2}(1 - \mathrm{SNR}(t-1) / \mathrm{SNR}(t)) ||\varepsilon_t - \phi(z_t, t)||^2$;
+    \STATE 采样0时刻样本噪声 $\varepsilon_0 = [\varepsilon^{(p)}_0, ~\varepsilon^{(h)}_0] \sim \mathcal{N}(\mathbf{0}, I)$;
+    \STATE 混合0时刻输入样本与噪声 $z_0 = \alpha_0 [p, h] + \sigma_0 \varepsilon_0$;
+    \STATE 计算0时刻损失函数 $\mathcal{L}_0 = \mathcal{L}_0^{(x)} + \mathcal{L}_0^{(h)} = -\frac{1}{2} ||\varepsilon_0 - \phi(z_0, 0)||^2 - \log Z + \log p(h | z_0^{(h)})$;
+    \STATE $\mathcal{L}_{\text{base}} = -\mathrm{KL}(q(z_T | x, h) | p(z_T)) = -\mathrm{KL}(\mathcal{N}_{xh}(\alpha_T [x, h], \sigma_T^2 I) | \mathcal{N}_{xh}(\mathbf{0}, I))$;
+    \STATE Return $\hat{\mathcal{L}} = T \cdot \mathcal{L}_t + \mathcal{L}_0 + \mathcal{L}_{\text{base}}$.
+    \end{algorithmic}
+\end{algorithm}
 
 \section{几何信息促进的损失函数（GFLoss）}
 预测化学键的存在是分子图生成中的基本且不可或缺的任务。与以往的研究完全依赖于预设规则生成边不同，我们提出在训练过程中积极干预化学键的形成，通过设计一种精细的训练目标函数，命名为几何促进损失（Geometric-facilitated Loss / GFLoss）。这个损失函数的目的是引导模型生成既具有有效的拓扑结构，又具有稳定构象的分子。在药物分子设计中，我们认为原子的价是一种非常重要的辅助特征类型。因此，在上述提到的分子学习网络DTN中，原子的价被作为原子特征的一部分进行了整合。这使得模型能够学习和利用原子的价信息，具体计算流程如图~\ref{fig:gfloss}~所示。
@@ -122,13 +138,20 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
 其中 $\alpha_t$ 是扩散过程中噪声数据中真实数据的水平。
 
 \section{扩散及去噪过程}
-
 在提出的GFMDiff的前向过程中，位置、原子序数和原子价逐渐被噪声先验分布所污染。通过具有预定义方差调度$\beta_t \in (0, 1), t=0, 1, ..., T$的马尔可夫链将真实构象$G_0 = (P_0, X_0, A_0, V_0)$进行转换。后验分布定义为：
 \begin{eqnarray}
     &q(G_{1:T}|G_0) = \prod^T_{t=1} q(G_t|G_{t-1}),& \\
     &q(G_t|G_{t-1}) = \mathcal{N}_p(p_t;\sqrt{\alpha_t} p_{t-1}, \beta_t I) \cdot \mathcal{N}_h(h_t;\sqrt{\alpha_t} h_{t-1}, \beta_t I),&
 \end{eqnarray}
-其中$h_t = {\rm concat}(x_t, a_t, v_t)$表示原子特征，为了方便起见。为了满足等变性的要求，在将原子坐标引入扩散之前，它们必须先转换为线性子空间，其中质心为零\cite{enf_satorras_21,edm_hoogeboom_22,geodiff_xu_22}。因此，噪声分布和上述后验分布都受限于相同的线性子空间。虽然原子特征对于变换是不变的，但它们在整个前向和后向过程中与位置按相同的比例进行转换。
+为方便起见，其中$h_t = {\rm concat}(x_t, a_t, v_t)$表示原子特征。
+
+为了在去噪过程中的满足几何坐标的等变性要求，在将原子坐标引入扩散之前，它们必须先转换到质心为零的线性子空间内\cite{enf_satorras_21,edm_hoogeboom_22,geodiff_xu_22}。因此，噪声分布和上述后验分布都受限于相同的线性子空间。此外，原子特征对于对神经网络是等变的，故它们不需要进一步处理即可在整个前向和后向过程中与几何坐标一起进行运算。
+
+考虑欧几里得变量$\mathbf{p} \in \mathbb{R}^{M \times n}$在线性子空间上满足$\sum_i \mathbf{x}_i = \mathbf{0}$。故可以认为$\mathbf{p}$是$n$维空间内的一个质心为零的点云。对于在此子空间上的一个正态分布$\mathcal{N}_x$，欧式变量服从的分布可以表示为：
+\begin{equation}
+    \mathcal{N}_x(\mathbf{x} | \mathbf{\mu}, \sigma^2 I) = (\sqrt{2 \pi} \sigma)^{-(M-1)\cdot n} \exp \left( -\frac{1}{2\sigma^2} || \mathbf{x} - \mathbf{\mu}||^2 \right),
+\end{equation}
+其中$\mathbf{\mu}$位于与$\mathbf{x}$相同的子空间中。从这个正态分布中采样有多种方法，例如可以从维度为$(M-1)\cdot n$的正态分布中采样，然后将采样映射到$M\cdot n$维的环境空间中，使得它的重心为零。但是还有一种更简单的方法：可以直接在$M\cdot n$维的环境空间中进行采样，并减去$\sum_i \mathbf{x}_i$。由于正态分布是各向同性的（即无论选择哪个方向，其方差都是 $\sigma^2$），故本文采用这样的方法对原子几何坐标进行采样。
 
 在去噪过程中，我们使用上述的去噪核函数来逼近每个时间步的分子构象，
 \begin{eqnarray}
@@ -137,10 +160,67 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
 \end{eqnarray}
 其中$\hat{\epsilon}_t$是参数化神经网络的输出。
 
-\section{目标函数}
+\begin{algorithm}[H]
+    \caption{GFLoss损失函数项伪代码}
+    \label{alg:gfloss}
+    \begin{algorithmic}
+    \STATE {\bfseries Input：} 原子坐标$p$，原子特征$h = [x, a, v]$，去噪神经网络$\phi$;
+    \STATE 采样时间步 $t \sim \mathcal{U}(1, T)$和噪声 $\varepsilon_t = [\varepsilon^{(p)}_t, ~\varepsilon^{(h)}_t] \sim \mathcal{N}(\mathbf{0}, I)$;
+    \STATE 混合输入样本与噪声 $z_t = \alpha_t [p, h] + \sigma_t \varepsilon_t$;
+    \STATE 计算神经网络损失函数 $\mathcal{L}_t = \frac{1}{2}(1 - \mathrm{SNR}(t-1) / \mathrm{SNR}(t)) ||\varepsilon_t - \phi(z_t, t)||^2$;
+    \STATE 采样0时刻样本噪声 $\varepsilon_0 = [\varepsilon^{(p)}_0, ~\varepsilon^{(h)}_0] \sim \mathcal{N}(\mathbf{0}, I)$;
+    \STATE 混合0时刻输入样本与噪声 $z_0 = \alpha_0 [p, h] + \sigma_0 \varepsilon_0$;
+    \STATE 计算0时刻损失函数 $\mathcal{L}_0 = \mathcal{L}_0^{(x)} + \mathcal{L}_0^{(h)} = -\frac{1}{2} ||\varepsilon_0 - \phi(z_0, 0)||^2 - \log Z + \log p(h | z_0^{(h)})$;
+    \STATE $\mathcal{L}_{\text{base}} = -\mathrm{KL}(q(z_T | x, h) | p(z_T)) = -\mathrm{KL}(\mathcal{N}_{xh}(\alpha_T [x, h], \sigma_T^2 I) | \mathcal{N}_{xh}(\mathbf{0}, I))$;
+    \STATE Return $\hat{\mathcal{L}} = T \cdot \mathcal{L}_t + \mathcal{L}_0 + \mathcal{L}_{\text{base}}$.
+    \end{algorithmic}
+\end{algorithm}
 
-对于DDPMs，典型的目标函数是数据对数似然的变分下界。在前人的方法基础上，我们将目标函数与GFLoss相结合：
+\section{目标函数与评价指标}
+
+对于DDPMs，典型的目标函数是数据对数似然的变分下界。在先前相关研究方法的基础上，我们将目标函数与GFLoss相结合：
 \begin{equation}
-    \mathcal{L}_t = E_{\epsilon_t \sim \mathcal{N}(0, I)}[\frac{1}{2}\omega(t)||\epsilon_t - \hat{\epsilon}_t||^2 + \lambda ||\alpha_t(\hat{V}_{pred}(t) - V_t)||^2],
+    \mathcal{L}_t = E_{\epsilon_t \sim \mathcal{N}(0, I)} \left[ \frac{1}{2} \omega(t) \left( ||\epsilon_t - \hat{\epsilon}_t||^2 + \lambda || \alpha_t(\hat{V}_{pred}(t) - V_t)||^2 \right) \right],
 \end{equation}
 其中$\omega(t) = (1-{\rm SNR}(t)/{\rm SNR}(t-1))$。
+
+此外，在评价模型参数的好坏时，需要比较模型学习的去噪分布于前向噪声分布的差异。该指标具体表现为参数的负对数似然函数，由于负对数似然函数无法直接计算得到，本文通过算法~\ref{alg:nll_gfmdiff}~估计该负对数似然函数的取值。
+
+\begin{algorithm}[H]
+    \caption{GFMDiff参数的负对数似然函数估计}
+    \label{alg:nll_gfmdiff}
+    \begin{algorithmic}
+    \STATE {\bfseries Input：} 原子坐标$p$，原子特征$h = [x, a, v]$，去噪神经网络$\phi$;
+    \STATE 采样时间步 $t \sim \mathcal{U}(1, T)$和噪声 $\varepsilon_t = [\varepsilon^{(p)}_t, ~\varepsilon^{(h)}_t] \sim \mathcal{N}(\mathbf{0}, I)$;
+    \STATE 混合输入样本与噪声 $z_t = \alpha_t [p, h] + \sigma_t \varepsilon_t$;
+    \STATE 计算神经网络损失函数 $\mathcal{L}_t = \frac{1}{2}(1 - \mathrm{SNR}(t-1) / \mathrm{SNR}(t)) ||\varepsilon_t - \phi(z_t, t)||^2$;
+    \STATE 采样0时刻样本噪声 $\varepsilon_0 = [\varepsilon^{(p)}_0, ~\varepsilon^{(h)}_0] \sim \mathcal{N}(\mathbf{0}, I)$;
+    \STATE 混合0时刻输入样本与噪声 $z_0 = \alpha_0 [p, h] + \sigma_0 \varepsilon_0$;
+    \STATE 计算0时刻损失函数 $\mathcal{L}_0 = \mathcal{L}_0^{(x)} + \mathcal{L}_0^{(h)} = -\frac{1}{2} ||\varepsilon_0 - \phi(z_0, 0)||^2 - \log Z + \log p(h | z_0^{(h)})$;
+    \STATE $\mathcal{L}_{\text{base}} = -\mathrm{KL}(q(z_T | x, h) | p(z_T)) = -\mathrm{KL}(\mathcal{N}_{xh}(\alpha_T [x, h], \sigma_T^2 I) | \mathcal{N}_{xh}(\mathbf{0}, I))$;
+    \STATE Return $\hat{\mathcal{L}} = T \cdot \mathcal{L}_t + \mathcal{L}_0 + \mathcal{L}_{\text{base}}$.
+    \end{algorithmic}
+\end{algorithm}
+
+对于两个各向同性正态分布$q = \mathcal{N}(\mathbf{\mu}_1, \sigma_1^2 I)$和$p = \mathcal{N}(\mathbf{\mu}_2, \sigma_2^2 I)$，标准的KL散度可表示为：
+\begin{equation}
+    \mathrm{KL}(q || p) = d \cdot \log \frac{\sigma_2}{\sigma_1} + \frac{1}{2} \left[ \frac{d \cdot \sigma_1^2 + ||\mathbf{\mu}_1 - \mathbf{\mu}_2||^2}{\sigma_2^2} - d  \right],
+\end{equation}
+其中$d$是分布的维度。在扩散模型中，扩散过程和去噪过程具有相同的方差$\sigma^2$。如果$\sigma_1 = \sigma_2 = \sigma$，则这两个分布的KL散度可简化为：
+\begin{equation}
+    \mathrm{KL}(q || p) = \frac{1}{2} \left[ \frac{||\mathbf{\mu}_1 - \mathbf{\mu}_2||^2}{\sigma^2} \right].
+\end{equation}
+
+现假设$\mathcal{N}_1(\tilde{\mathbf{\mu}}_1, \sigma_2 I)$和$\mathcal{N}_2(\tilde{\mathbf{\mu}}_2, \sigma_2 I)$ 定义在一个线性子空间上，其中均值 $\tilde{\mathbf{\mu}}$ 是相对于子空间中的任意坐标系定义的。这两个分布之间的KL散度包含一个包含欧几里得距离 $||\tilde{\mathbf{\mu}}_1 - \tilde{\mathbf{\mu}}_2||^2$ 的项。
+
+类似于ENF和GeoDiff\cite{enf_satorras_21, geodiff_xu_22}中的论证，可以构造一个正交变换$Q$，将使得 $\sum_i \mathbf{\mu}_i = \mathbf{0}$ 的环境空间映射到子空间，以满足$\begin{bmatrix} \tilde{\mathbf{\mu}} \\ \mathbf{0} \end{bmatrix} = Q \mathbf{\mu}$。由于$||\tilde{\mathbf{\mu}}|| = ||\begin{bmatrix} \tilde{\mathbf{\mu}} \\ \mathbf{0} \end{bmatrix}|| = ||\mathbf{\mu}||$，故$||\tilde{\mathbf{\mu}}_1 - \tilde{\mathbf{\mu}}_2||^2 = ||\mathbf{\mu}_1 - \mathbf{\mu}_2||^2$。这表明在某些扩散模型中，后验扩散过程和去噪过程使用的方差不同。从方程可以看出，KL散度取决于子空间的维度，而不是环境空间的维度。
+
+在前面的部分中，我们已经展示了对于诸如 $\mathcal{N}_x$ 这样的分布，只要两个分布之间的标准差相同，KL散度仍然可以在环境空间中计算。现在我们来考虑分布 $q = \mathcal{N}_{xh}(\mathbf{\mu}_1, \sigma^2 I)$ 和 $p = \mathcal{N}_{xh}(\mathbf{\mu}_2, \sigma^2 I)$ 的组合KL散度。注意到这里的均值由两部分组成 $\mathbf{\mu} = [\mathbf{\mu}^{(x)}, \mathbf{\mu}^{(h)}]$，其中 $x$ 部分位于一个子空间中，而 $h$ 部分可以任意定义。这些分布可以分解为 $\mathcal{N}_{xh}(\mathbf{\mu}, \sigma^2 I) = \mathcal{N}_{x}(\mathbf{\mu}^{(x)}, \sigma^2 I) \cdot \mathcal{N}(\mathbf{\mu}^{(h)}, \sigma^2 I)$。然后，KL散度简化为：
+\begin{align}
+    \begin{split}
+        \mathrm{KL}(q||p) &= \mathrm{KL}\left(\mathcal{N}_{x}(\mathbf{\mu}_1^{(x)}, \sigma^2 I) || \mathcal{N}_{x}(\mathbf{\mu}_2^{(x)}, \sigma^2 I)\right) + \mathrm{KL}\left(\mathcal{N}(\mathbf{\mu}_1^{(h)}, \sigma^2 I) || \mathcal{N}(\mathbf{\mu}_2^{(h)}, \sigma^2 I )\right) \\
+        &= \frac{1}{2} \left[ \frac{||\mathbf{\mu}_1^{(x)} - \mathbf{\mu}_2^{(x)}||^2}{\sigma^2} \right] + \frac{1}{2} \left[ \frac{||\mathbf{\mu}_1^{(h)} - \mathbf{\mu}_2^{(h)}||^2}{\sigma^2} \right] = \frac{1}{2} \left[ \frac{||\mathbf{\mu}_1 - \mathbf{\mu}_2||^2}{\sigma^2} \right].
+    \end{split}
+\end{align}
+
+在这里，我们使用了独立分布的乘积在它们的独立KL项中求和，以及两个向量的欧几里得距离的平方的和等于将两个向量连接起来的欧几里得距离的平方。总之，尽管我们分布的某些部分是在一个线性子空间上定义的，但所有对于KL散度的计算仍然是一致的，不需要特殊处理。然而，这仅在去噪过程和后验加噪过程的方差相同时才有效。
