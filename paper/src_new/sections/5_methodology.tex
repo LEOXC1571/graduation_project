@@ -157,15 +157,17 @@ DTN的每一层由以下组件组成：原子对轨道、对-三元轨道和连�
 \end{algorithm}
 
 \section{扩散及去噪过程}
-扩散过程对于$t = 0, \ldots, T$ 需要定义 $\alpha_t, \sigma_t$。由于 $\alpha_t = \sqrt{1 - \sigma_t^2}$，只需定义 $\alpha_t$ 即可。这些值应该单调递减，从 $\alpha_0 \approx 1$ 开始，最终到达 $\alpha_T \approx 0$。在本文中，我们设定
-\[
-\alpha_t = (1 - 2s) \cdot f(t) + s \quad \text{其中} \quad f(t) = (1 - (t/T)^2)
-\]
-精度取 $10^{-5}$，以避免数值不稳定情况。这种计划在符号中与  中引入的余弦噪声计划非常相似，但我们的符号表述要简单一些。为了避免采样过程中的数值不稳定性，我们遵循 \citep{nichol2021improved} 的剪切过程，并计算 $\alpha_{t|t-1} = \alpha_t / \alpha_{t-1}$，其中我们定义 $\alpha_{-1} = 1$。然后，$\alpha_{t|t-1}^2$ 的值被剪切到下限 $0.001$。这样做是为了在采样过程中避免数值不稳定性，因为 $1 / \alpha_{t|t-1}$ 现在在采样过程中保持有界。然后，$\alpha_t$ 的值可以使用累积乘积 $\alpha_t = \prod_{\tau=0}^t \alpha_{\tau|\tau-1}$ 来重新计算。
+在提出的GFMDiff的前向过程中，位置、原子序数和原子价逐渐被预设定的噪声先验分布所扰动。对于任一时间步$t = 0, \ldots, T$，需要定义均值$\alpha_t$及方差序列$\sigma_t$。由于 $\alpha_t = \sqrt{1 - \sigma_t^2}$，故实际工程实践中只需定义 $\alpha_t$ 即可。伴随噪声的逐步加入，样本原有的真实信息占比也逐渐减少，故均值序列的值应该单调递减，从 $\alpha_0 \approx 1$ 开始递减，最终到达 $\alpha_T \approx 0$。在本文中，我们设定
+\begin{eqnarray}
+    &\alpha_t = (1 - 2s) \cdot f(t) + s, & \\
+    &f(t) = (1 - (t/T)^2)& 
+\end{eqnarray}
 
-回想一下，$\mathrm{SNR}(t) = \alpha_t^2 / \sigma_t^2$。就像  中一样，我们计算负对数 $\mathrm{SNR}$ 曲线定义为 $\gamma(t) = -(\log \alpha_t^2 - \log \sigma_t^2)$，其中 $\sigma_t^2 = 1 - \alpha_t^2$。$\gamma(t)$ 是一个单调递增的函数，可以用高数值精度计算出所有所需的分量。例如，$\alpha_t^2 = \mathrm{sigmoid}(-\gamma(t))$，$\sigma_t^2 = \mathrm{sigmoid}(\gamma(t))$，以及 $\mathrm{SNR}(t) = \exp(-\gamma(t))$。
+为避免数值不稳定情况，序列的数值精度$s$取 $10^{-5}$。该序列设定与\cite{impddpm_nichol_21}中引入的余弦噪声序列较为相似，但本文使用的序列在形式上更为简洁。为了避免采样过程中的数值不稳定性，我们遵循先前研究的\cite{impddpm_nichol_21}的剪切过程，并得到$\alpha_{t|t-1} = \alpha_t / \alpha_{t-1}$，其中$\alpha_{-1} = 1$。在剪切过程中，$\alpha_{t|t-1}^2$的值被剪切到下限$0.001$。这样做确保了$1 / \alpha_{t|t-1}$现在在采样过程中有界，避免采样过程中数值不稳定性。而后，$\alpha_t$ 的值可以使用累积乘积 $\alpha_t = \prod_{\tau=0}^t \alpha_{\tau|\tau-1}$来重新计算。
 
-在提出的GFMDiff的前向过程中，位置、原子序数和原子价逐渐被噪声先验分布所扰动。通过具有预定义方差序列$\beta_t \in (0, 1), t=0, 1, ..., T$的马尔可夫链将真实构象$G_0 = (P_0, X_0, A_0, V_0)$进行转换。后验分布定义为：
+在方差序列中，$\mathrm{SNR}(t) = \alpha_t^2 / \sigma_t^2$。参照相关研究\cite{vaediff_kingma_21}，本文计算负对数$\mathrm{SNR}$曲线为$\gamma(t) = -(\log \alpha_t^2 - \log \sigma_t^2)$，其作为一个单调递增的函数，对高精度数值计算由重要作用。例如，$\alpha_t^2 = \mathrm{sigmoid}(-\gamma(t))$，$\sigma_t^2 = \mathrm{sigmoid}(\gamma(t))$，以及 $\mathrm{SNR}(t) = \exp(-\gamma(t))$，都可以通过对$\gamma(t)$变形得到。
+
+通过具有预定义方差序列$\beta_t \in (0, 1), t=0, 1, ..., T$的马尔可夫链将真实构象$G_0 = (P_0, X_0, A_0, V_0)$进行转换。后验分布定义为：
 \begin{eqnarray}
     &q(G_{1:T}|G_0) = \prod^T_{t=1} q(G_t|G_{t-1}),& \\
     &q(G_t|G_{t-1}) = \mathcal{N}_p(p_t;\sqrt{\alpha_t} p_{t-1}, \beta_t I) \cdot \mathcal{N}_h(h_t;\sqrt{\alpha_t} h_{t-1}, \beta_t I),&
