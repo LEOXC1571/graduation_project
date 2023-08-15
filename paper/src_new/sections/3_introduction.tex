@@ -27,35 +27,68 @@
 
 基于扩散模型的药物分子设计作为一个新兴的研究方向，此领域最早的研究为EDM \cite{edm_hoogeboom_22}，其基于EGNN \cite{egnn_satorras_21}设计去噪过程内核，通过生成点云，再根据预设定的化学性质生成连接原子的键。MDM \cite{mdm_huang_23}在此基础上，提出了全新的去噪内核，通过两个SchNet \cite{schnet_schutt_17}分别对局部节点和全局节点特征进行学习。由于这种扩散模型更擅长在连续样本空间上的学习，故主流方法并不直接预测分子图中边的存在性，针对这一问题，DiGress \cite{digress_vignac_22}和MiDi \cite{midi_vignac_23}提出将图邻接矩阵引入扩散过程，并相应将马尔可夫状态转移矩阵引入噪声序列而非传统的高斯噪声。GCDM \cite{gcdm_morehead_23}针对对空间几何信息提取不足的问题，引入ColfNet \cite{colfnet_du_22}相似的空间几何学习范式，实现了对几何信息的充分学习。
 
-\subsection{扩散模型}
+\subsection{基于扩散模型的图生成模型}
 在图学习领域中，一个图可以被表示为一个元组 $\mathcal{G} = (\mathcal{V}, \mathcal{E})$，其中包含了一个节点集合 $\mathcal{V}$ 和一个边集合 $\mathcal{E}$。在训练阶段，模型学习图在扩散过程中的概率分布，并被用于后续的采样阶段，以迭代地方式生成新的图。基于扩散的生成模型因其在多个领域的生成任务中表现出色而受到广泛关注，例如计算机视觉 \cite{blendeddiffusion_avrahami_22,cascadeddiff_ho_22,gradforshapegen_cai_20,sgmpointcloud_luo_21}，自然语言处理 \cite{struccddpm_austin_21,argmaxflow_hoogeboom_21,stepunrolled_savinov_22}，以及其他各种跨学科任务等 \cite{cdvae_xie_22,housediffusion_shabani_23,nap_lei_23}。
 
-人体骨架的表示形式与分子类似，都是表示为被边连接起的点云。不同之处在于生成人体骨架动作时，不需要对边的存在性进行预测。基于扩散模型，MoFusion \cite{mofusion_dabral_22}在人体动作生成中使用U-Net \cite{unet_ronneberger_15}作为扩散模型中去噪核心的架构。MoDi \cite{modi_raab_22} 利用结构感知神经滤波器和3D卷积，实现对每个关节的精确控制。
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figures/targetdiff.pdf}
+  \caption{基于扩散模型的分子生成的示意 \cite{targetdiff_guan_23}}
+  \label{fig:targetdiff}
+\end{figure}
 
-除了在分子设计和人体动作生成上的应用外，许多研究工作致力于将扩散过程用于其他形式的图数据生成。SaGess \cite{sagess_limnios_23}通过引入广义分治框架来增强DiGress \cite{digress_vignac_22}。对于2D图生成，EDP-GNN \cite{edpgnn_niu_20}将Score SDEs结合到离散图邻接矩阵生成中。在此基础上，GraphGDP \cite{graphgdp_huang_22}提出了名为Position-enhanced图得分网络的去噪核心，以实现对位置信息的进一步利用。GSDM \cite{gsdm_luo_22}不仅仅在边属性上进行采样，还利用了节点特征和图谱空间上的Score SDE高效地生成图，这在通用数据集和分子数据集上得到了验证。受VAEs启发，NVDiff \cite{nvdiff_chen_22}采用VGAE结构，首先对图在隐变量空间上的特征进行采样，然后将其解码为节点或边特征。SLD \cite{sld_yang_23}以类似的方式进行图生成任务。GraphARM \cite{ardiff_kong_23}通过引入节点吸收扩散过程，将自回归模型与扩散模型结合起来。EDGE \cite{edge_chen_23}将扩散模型引入大图生成，扩散过程中逐渐移除边，直到图为空。该模型还通过仅关注部分节点来避免生成过多的边。专为双曲图设计的HGDM \cite{hgdm_wen_23}在提取双曲嵌入的复杂几何特征方面表现出优良的性能。
+除去创新药物分子设计这一子领域，扩散模型在计算化学和计算医药领域也有其他广泛应用。图~\ref{fig:targetdiff}~是一个基于扩散模型的分子生成模型的典型范式的示意。分子构象生成要求根据给定的分子式，生成对应的三维分子构象。由于不要求对边的形成进行建模，故这也是一个较为简单的任务。ConfGF \cite{confgf_shi_21}是最早将扩散模型引入构象生成的模型，该模型学习原子坐标的对数似然的梯度场，并将其视作作用在原子上的赝力，随后根据朗之万动力学采样生成样本。于其他对原子坐标进行扩散/去噪的范式不同，Torsion Diffusion \cite{tordiff_jing_22}仅通过对扭转角进行建模实现对分子构象的预测，这一范式极大减小了采样空间的大小。该方法提出了一个显式到隐式的得分模型，将三维显式坐标转换为扭转角空间上的隐式得分。最终，分子构象通过一个Boltzmann生成器预测。在更下游的任务中，一些研究致力于研究蛋白质靶向嵌合体生成，即在给定蛋白质靶点的条件下，生成能够与之稳定连接的药物分子。先前基于其他ARs \cite{graphbp_liu_22, arligand_luo_21, pocket2mol_peng_22}的研究以序列的方式生成配体，这可能导致对全局多体交互信息提取不充分与不一致以及生成过程的早停现象。针对这一缺陷，DiffBP \cite{diffbp_lin_22} 提出了一个靶点感知的扩散模型并直接生成完整的蛋白质配体。尽管该方法显著提升了生成样本的有效性，但在子结构的药物特性方面仍存在欠缺。TargetDiff \cite{targetdiff_guan_23}提出了一个SE(3)等变的GNN去噪内核，将生成模型与嵌合体的结合亲和力排序联系起来，用于评价生成样本的特性。该方法被证明能够通过无监督的方式提升药物和靶标的结合亲和力。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figures/modiff.png}
+  \caption{基于扩散模型的人体动作生成的示意 \cite{modiff_zhao_23}}
+  \label{fig:modiff}
+\end{figure}
+
+人体骨架的表示形式与分子类似，都是表示为在三维空间内被边连接起的点云。不同之处在于生成人体骨架动作时，不需要对边的存在性进行预测。图~\ref{fig:modiff}~是一个基于扩散模型的人体动作生成的典型范式示意。MoFusion \cite{mofusion_dabral_22}在人体动作生成中使用U-Net \cite{unet_ronneberger_15}作为扩散模型中去噪核心的架构。MoDi \cite{modi_raab_22} 利用结构感知神经滤波器和3D卷积，实现对每个关节的精确控制。
+
+除了在分子设计和人体动作生成上的应用外，许多研究工作致力于将扩散过程用于一般形式的图拓扑结构生成。SaGess \cite{sagess_limnios_23}通过引入广义分治框架来增强DiGres \cite{digress_vignac_22}在图生成任务中的表现。对于图拓扑结构生成，EDP-GNN \cite{edpgnn_niu_20}将Score SDEs结合到离散图邻接矩阵生成中。在此基础上，GraphGDP \cite{graphgdp_huang_22}提出了名为Position-enhanced图得分网络的去噪核心，以实现对位置信息的进一步利用。GSDM \cite{gsdm_luo_22}不仅仅在边属性上进行采样，还利用了节点特征和图谱空间上的Score SDE高效地生成图，这在通用数据集和分子数据集上得到了验证。受VAEs启发，NVDiff \cite{nvdiff_chen_22}采用变分图自编码器（VGAE）结构，首先对图在隐变量空间上的特征进行采样，然后将其解码为节点或边特征。SLD \cite{sld_yang_23}以类似的方式进行图生成任务。GraphARM \cite{ardiff_kong_23}通过引入节点吸收扩散过程，将自回归模型与扩散模型结合起来。EDGE \cite{edge_chen_23}将扩散模型引入大图生成，扩散过程中逐渐移除边，直到图为空。该模型还通过仅关注部分节点来避免生成过多的边。专为双曲图设计的HGDM \cite{hgdm_wen_23}在提取双曲嵌入的复杂几何特征方面表现出优良的性能。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1.0\linewidth]{figures/housediffusion.pdf}
+  \caption{HouseDiffusion模型框架示意 \cite{housediffusion_shabani_23}}
+  \label{fig:housediffusion}
+\end{figure}
+
+除了在图的拓扑结构生成上的基础研究，有一些研究进一步将扩散模型引入实际的图数据生成的应用中。HouseDiffusion \cite{housediffusion_shabani_23}将基于扩散的图生成引入户型设计领域。该方法将房间视为图中节点，将门视为连接节点的边。每个节点都由一个2D坐标序列环组成，序列中的每个坐标代表着房间角落所处的位置。实验结果显示模型能够生成精确且多样的户型。图~\ref{fig:housediffusion}~为HouseDiffusion的模型框架示意。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1.0\linewidth]{figures/nap.jpg}
+  \caption{NAP模型框架示意 \cite{nap_lei_23}}
+  \label{fig:nap}
+\end{figure}
+
+NAP \cite{nap_lei_23}将基于扩散的图生成方法用于铰接体生成，图~\ref{fig:nap}~为其结构示意。该方法将铰接体中的子结构视为节点，将各子结构间的旋转或是抽拉的几何关系视为节点间的边。NAP基于DDPM，构建铰接体树结构，并通过采样节点和边特征，生成3D铰接体。为了更好促进的阿尔茨海默病等疾病诊断，Brain Diffuser \cite{braindiffuser_chen_23}利用扩散模型，根据大脑张量图片生成对应的大脑网络结构。 Lu等人 \cite{modeling_lu_23}提出模拟离散扩散模型，利用节点特征生成创新的仿生蜘蛛网结构及类似物。Diff-POI \cite{diffpoi_qin_23}对用户局部偏好进行采样，并将其用于兴趣点推荐。
 
 \section{研究内容}
-
 近年来，深度生成模型，特别是基于扩散模型的生成模型 \cite{ddpm_ho_20,sgm_song_19,scoresde_song_21}在各个生成式人工智能研究领域中都取得了广泛且重大的进展。与生成方法的发展趋势相一致，分子发现领域的主流方法已经从之前的生成模型转变为基于扩散的模型，并从设计2D图形转变为3D构象。然而，创新三维药物分子设计面临两个主要挑战。第一个挑战是在预测准确稳定的分子构象方面，而另一个挑战则是充分利用几何信息以促进离散图结构的生成。在本文中，我们提出了几何促进的分子扩散（Geometric-facilitated Molecular Diffusion / GFMDiff），这是一种解决上述挑战的全新的3D药物分子设计方法。GFMDiff能够生成准确的3D几何构型，同时解决图自身离散性带来的诸多问题。
 
 作为扩散模型中广泛采用的范式，去噪扩散概率模型（Denoising Diffusion Probabilistic Models / DDPMs） \cite{ddpm_ho_20,dpm_jascha_15}在各种生成任务中表现出色。通过在前向过程中逐渐添加高斯噪声，将输入数据转换为预定义的噪声分布，并在采样阶段迭代去噪，最终得到生成结果。与VAEs \cite{vae_kingma_13}和GANs \cite{gan_goodfellow_14}等端到端方法相比，这种在每个时间步训练扩散模型的方法在准确性、效率和训练难度方面表现更好。扩散模型在计算化学 \cite{edm_hoogeboom_22,targetdiff_guan_23}和生物学 \cite{diffab_luo_22,protseed_shi_23}等领域的应用已经显示出卓越的性能。在药物分子设计任务的背景下，逐步调整分子构象与分子动力学的核心原理高度一致。
 
 创新药物分子设计是分子生成领域一个重要的任务，该任务要求生成有效、新颖且结构稳定的分子。为了解决生成的3D构象所要求的等变性条件，一些基于扩散的方法 \cite{edm_hoogeboom_22,mdm_huang_23}通过原子间距离间接对分子进行建模，这直接反映了原子间相互作用力的强度。然而，早期的方法 \cite{edm_hoogeboom_22}没有解决多个原子之间的复杂原子间关系。而MDM \cite{mdm_huang_23}只是简单地使用阈值区分化学键和原子间力所造成的影响，而不考虑具体的原子和键的类型。最近的研究 \cite{moleformer_yuan_23}表明，键角之于分子学习与原子对间相互距离同样重要，但只有少数方法充分利用了空间信息。此外，由于分子扩散方法只作用于点云，传统的图卷积无法区分不同原子的重要性。鉴于这些挑战，我们设计了一种新颖的双轨分子学习框架，命名为双轨Transformer网络（Dual-track Transformer Network / DTN）。通过集成全局Transformer架构，本文将DTN作为扩散模型的去噪核函数，实现对空间几何信息的充分学习。
 
-% 在分子生成领域，基于自回归模型（ARs）\cite{gschnet_wallach_19,gshperenet_luo_22}、正则化流（NFs）\cite{moflow_zang_20,graphaf_shi_20}、变分自编码器（VAEs）\cite{jtvae_jin_18,cgvae_liu_18}、能量模型（EBMs）\cite{graphebm_liu_21}等方法已经有了一些尝试。
-鉴于扩散模型在连续数据上的出色性能，大多数分子图生成模型采用了在笛卡尔坐标和特征上采用扩散和去噪方法，然后基于预定义的规则生成分子图，而不是直接通过模型预测键的存在。间接生成图形的方式可能导致生成样本的稳定性和有效性有所下降。为了使扩散模型适用于分子的多模态数据，一些研究 \cite{edpgnn_niu_20,digress_vignac_22,midi_vignac_23}在扩散和去噪过程中引入了邻接矩阵。然而，将图和边嵌入模型中会导致计算成本的增加。在我们的研究中，我们将扩散模型视为一个过程，即在每个时间步根据局部多体原子间关系逐步更新原子信息。准确的特征学习有助于对分子构型进行精确预测。为了预测准确的分子构象，我们设计了一种在训练过程中减少嵌入和局部几何之间差距的方法。在本文中，我们通过精心设计的损失函数几何促进的损失函数（Geometric-facilitate Loss / GFLoss），在训练过程中积极的干预模型学习，促使模型生成稳定且合理的化学键。
+在分子生成领域，基于自回归模型（ARs）\cite{gschnet_wallach_19,gshperenet_luo_22}，流型模型（NFs）\cite{moflow_zang_20,graphaf_shi_20}，变分自编码器（VAEs）\cite{jtvae_jin_18,cgvae_liu_18}和基于能量模型（EBMs）\cite{graphebm_liu_21}等方法已经有了一些成功尝试。鉴于扩散模型在连续数据上的出色性能，大多数分子图生成模型采用了在笛卡尔坐标和特征上采用扩散和去噪方法，然后基于预定义的规则生成分子图，而不是直接通过模型预测键的存在。间接生成图形的方式可能导致生成样本的稳定性和有效性有所下降。为了使扩散模型适用于分子的多模态数据，一些研究 \cite{edpgnn_niu_20,digress_vignac_22,midi_vignac_23}在扩散和去噪过程中引入了邻接矩阵。然而，将图和边嵌入模型中会导致计算成本的增加。在我们的研究中，我们将扩散模型视为一个过程，即在每个时间步根据局部多体原子间关系逐步更新原子信息。准确的特征学习有助于对分子构型进行精确预测。为了预测准确的分子构象，我们设计了一种在训练过程中减少嵌入和局部几何之间差距的方法。在本文中，我们通过精心设计的损失函数几何促进的损失函数（Geometric-facilitate Loss / GFLoss），在训练过程中积极的干预模型学习，促使模型生成稳定且合理的化学键。
 
 在实验部分中，本文测试了GFMDiff在药物分子设计任务上，和去噪内核DTN在分子性质预测任务上的表现。在药物分子设计任务中，本文在GEOM-QM9 \cite{qm9_ramakrishnan_14}和GEOM-Drugs \cite{drugs_axelrod_22}上测试了GFMDiff和时下最优的基线模型的性能，并进行消融实验验证了GFMDiff各创新模块的有效性。同时，为进一步检验去噪内核DTN对空间几何信息的提取能力，本文在GEOM-QM9和OC20 \cite{oc20_chanussot_21}数据集上对比了DTN和时下最优的几何图神经网络在分子性质预测任务上的性能。结果显示，本文的GFMDiff是时下表现最好的创新药物分子设计模型，同时DTN也在多个基准测试中证明了其对几何图结构的优异学习能力。
 
 \section{创新点}
-在本文中，我们提出了用于创新药物分子设计的几何促进的分子扩散（Geometric-facilitated Molecular Diffusion / GFMDiff）框架。与先前的方法主要基于原子对距离学习原子特征不同，本文成功地将三元几何信息与原子对距离有效地结合到分子学习中。本领域大多数研究在生成式直接生成点云，并根据预设规则完成3D图结构的搭建。然而这种方法存在两个主要问题。首先，间接的图生成方式导致样本的稳定性和有效性下降。其次，传统的图卷积不足以区分局部和全局信息。为了解决第一个约束，本文设计了一个精巧的几何促进的损失函数（Geometric-facilitate Loss / GFLoss），在训练阶段主动引导键的形成。至于第二个约束，我们引入了双轨Transformer网络（Dual-track Transformer Network / DTN），这是一个基于全局Transformer的神经网络，以促进全面的几何学习和局部特征学习。最后在试验阶段，本文进一步在分子性质预测任务上检验了本文提出的DTN神经网络的有效性。总而言之，本文的创新点如下：
+在本文中，我们提出了用于创新药物分子设计的几何促进的分子扩散（Geometric-facilitated Molecular Diffusion / GFMDiff）框架。与先前的方法主要基于原子对距离学习原子特征不同，本文成功地将三元几何信息与原子对距离有效地结合到分子学习中。本领域大多数研究在生成式直接生成点云，并根据预设规则完成3D图结构的搭建。然而这种方法存在两个主要问题。首先，间接的图生成方式导致样本的稳定性和有效性下降。其次，传统的图卷积不足以区分局部和全局信息。为了解决第一个约束，本文设计了一个精巧的几何促进的损失函数（Geometric-facilitate Loss / GFLoss），在训练阶段主动以自监督的方式引导键的形成。至于第二个约束，我们引入了双轨Transformer网络（Dual-track Transformer Network / DTN），这是一个基于全局Transformer的神经网络，以促进全面的几何学习和局部特征学习。最后在试验阶段，本文进一步在分子性质预测任务上检验了本文提出的DTN神经网络的有效性。总而言之，本文的创新点如下：
 
 $\bullet$ 本文提出的GFMDiff框架及其中的DTN网络，能够综合且全面的利用空间信息，以捕捉原子之间的多体相互作用，这对生成有效且稳定的全新分子至关重要。
 
-$\bullet$ 为了解决图形的离散性问题，引入了一个精心设计的GFLoss，以促进键的形成，高效的处理由图内在离散性与扩散模型不兼容带来的挑战。
+$\bullet$ 为了解决图形的离散性问题，引入了一个精心设计的GFLoss，以促进键的形成，并以自监督的方式处理由图内在离散性与扩散模型不兼容带来的挑战。
 
 $\bullet$ 提出了DTN作为全局图卷积的替代方案，可以有效地捕捉全局和局部信息，并在后续的分子性质预测任务中进一步验证其有效性。
 
+\section{基本框架}
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{figures/overall_structure.png}
@@ -63,7 +96,6 @@ $\bullet$ 提出了DTN作为全局图卷积的替代方案，可以有效地捕�
     \label{fig:oa_struc}
   \end{figure}
 
-\section{基本框架}
 在图~\ref{fig:oa_struc}~中，本文展示了本文的总体框架。在图学习，分子学习和生成模型这三个基础研究领域的基础上，出现了分子图学习和分子生成这两个交叉研究领域。本文提出的几何促进的3D分子图生成（GFMDiff）模型基于扩散模型中的去噪扩散概率模型（Denoising diffusion probabilistic models / DDPMs），构建了双轨Transformer网络作为去噪内核。同时，为了实现更好的药物分子设计性能，本文提出了GFLoss损失函数项。本文的GFMDiff模型能用于作药物分子设计的下游任务，同时DTN也能被用作分子性质预测下游任务。本文可分为五章，每章的主要内容如下：
 
 第一章为引言，本文在该部分介绍了药物分子设计的研究背景及意义，以及分子学习，分子设计和扩散模型等相关研究领域的研究现状。随后，本文阐述了现有基于扩散的药物分子设计面临的主要问题，针对性的解决方法和本文主要创新点。
