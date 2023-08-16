@@ -23,6 +23,7 @@
 \usepackage{enumitem}
 \usepackage{float}
 \usepackage{listings}
+\usepackage{xcolor}
 \usepackage{newtxmath}
 % \usepackage{amssymb}
 \usepackage{etoolbox}
@@ -50,3 +51,40 @@
 % \usepackage{mathrsfs}
 \usepackage{amsmath}
 % \usepackage{setspace}
+
+
+\lstdefinestyle{lfonts}{
+  basicstyle   = \footnotesize\ttfamily,
+  stringstyle  = \color{purple},
+  keywordstyle = \color{blue!60!black}\bfseries,
+  commentstyle = \color{olive}\scshape,
+}
+\lstdefinestyle{lnumbers}{
+  numbers     = left,
+  numberstyle = \tiny,
+  numbersep   = 1em,
+  firstnumber = 1,
+  stepnumber  = 1,
+}
+\lstdefinestyle{llayout}{
+  breaklines       = true,
+  tabsize          = 2,
+  columns          = flexible,
+}
+\lstdefinestyle{lgeometry}{
+  xleftmargin      = 20pt,
+  xrightmargin     = 0pt,
+  frame            = tb,
+  framesep         = \fboxsep,
+  framexleftmargin = 20pt,
+}
+\lstdefinestyle{lgeneral}{
+  style = lfonts,
+  style = lnumbers,
+  style = llayout,
+  style = lgeometry,
+}
+\lstdefinestyle{python}{
+    language = {Python},
+    style    = lgeneral,
+}
