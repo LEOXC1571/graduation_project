@@ -48,8 +48,10 @@ DTN的每一层由以下组件组成：原子-原子对轨道、原子对-三元
 
 原子-原子对轨道预测其他原子和原子之间相互作用力对目标原子的影响。该轨道将原子嵌入$e_i$和原子对嵌入$e_{ij}$作为输入，其中用于更新原子特征的多头注意力机制模块为：
 \begin{eqnarray}
-    &e_i = {\rm LayerNorm}(e_i), \ e_{ij} = {\rm LayerNorm}(e_{ij}),& \\
-    &\mathbf{Q}_i = {\rm Linear}(e_i), \ \mathbf{K}_i = {\rm Linear}(e_i) + {\rm Linear}(e_{ij}),& \\
+    &e_i = {\rm LayerNorm}(e_i),& \\
+    &e_{ij} = {\rm LayerNorm}(e_{ij}),& \\
+    &\mathbf{Q}_i = {\rm Linear}(e_i),& \\ 
+    &\mathbf{K}_i = {\rm Linear}(e_i) + {\rm Linear}(e_{ij}),& \\
     &a_i = {\rm Dropout} \left({\rm softmax} \frac{\mathbf{Q}_i \mathbf{K}_i^T}{\sqrt{d_h}} \right), & \\
     &\mathbf{V}_i = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{i}) + {\rm Linear}(e_{j}),& \\
     &\hat{e}_i = {\rm Linear}(a_i \mathbf{V}_i^T),&
@@ -60,7 +62,8 @@ DTN的每一层由以下组件组成：原子-原子对轨道、原子对-三元
 \begin{eqnarray}
     &e_{ij} = {\rm LayerNorm}(e_{ij}),&\\
     &e_{ijk} = {\rm LayerNorm}(e_{ijk}),&\\
-    &\mathbf{Q}_{ij} = {\rm Linear}(e_{ij}), \ \mathbf{K}_{ij} = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{ijk}),& \\
+    &\mathbf{Q}_{ij} = {\rm Linear}(e_{ij}),& \\ 
+    &\mathbf{K}_{ij} = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{ijk}),& \\
     &a_{ij}= {\rm Dropout} \left({\rm softmax} \frac{\mathbf{Q}_{ij} \mathbf{K}_{ij}^T}{\sqrt{d_h}} \right), & \\
     &\mathbf{V}_{ij} = {\rm Linear}(e_{ij}) + {\rm Linear}(e_{ijk}),& \\
     &\hat{e}_{ij} = {\rm Linear}(a_{ij} \mathbf{V}_{ij}^T).&
