@@ -213,7 +213,6 @@ DTN在11个性质预测任务上取得了最佳性能，并在1个性质预测�
 Open Catalyst 2020（OC20）数据集\cite{oc20_chanussot_21}是一个新发布的大规模数据集，其被用于催化剂的发现和优化。该数据集包含了数百万个DFT弛豫计算结果，涵盖了巨大的化学结构空间，以便可以完全训练机器学习模型。
 
 本研究专注于IS2RE任务。Chanussot等\cite{oc20_chanussot_21}的研究中的研究中提供了CGCNN、SchNet和DimeNet++的结果。原始的GemNet论文中没有其在OC20数据集的结果，故本文使用OC项目网站上公开可用的代码\footnote{\url{https://github.com/Open-Catalyst-Project/ocp}}来生成GemNet-T的结果。本文对DTN的实验设置直接采用与基线模型一致的设定，以实现公平的性能对比。此外，本文使用的评估指标是能量的平均绝对误差（MAE）和能量阈值内的占比（EwT）。
-虑的是基于边缘的2跳信息，时间复杂度极高，在大型催化剂分子上可能配置不当。
 
 \begin{table}[h]
     \begin{center}
