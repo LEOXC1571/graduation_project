@@ -1,0 +1,252 @@
+\cleardoublepage
+{
+\chapternonum{附录}
+
+\appendixsecmajornumbering
+
+% \section{负对数似然估计}
+
+% \begin{algorithm}[H]
+%     \caption{Log-likelihood estimator for EDMs}
+%     \label{alg:likelihood_edm}
+%     \begin{algorithmic}
+%     \STATE {\bfseries Input:} Data point $x$, neural network $\phi$
+%     \STATE Sample $t \sim \mathcal{U}(1, \ldots, T)$, $\varepsilon_t \sim \mathcal{N}(\mathbf{0}, I)$, subtract center of gravity from $\varepsilon^{(x)}_t$ in $\varepsilon_t = [\varepsilon^{(x)}_t, ~\varepsilon^{(h)}_t$]
+%     \STATE $z_t = \alpha_t [x, h] + \sigma_t \varepsilon_t$
+%     \STATE $\mathcal{L}_t = \frac{1}{2}(1 - \mathrm{SNR}(t-1) / \mathrm{SNR}(t)) ||\varepsilon_t - \phi(z_t, t)||^2$
+%     \STATE Sample $\varepsilon_0 \sim \mathcal{N}(\mathbf{0}, I)$, subtract center of gravity from $\varepsilon^{(x)}_0$ in $\varepsilon_0 = [\varepsilon^{(x)}_0, \varepsilon^{(h)}_0]$
+%     \STATE $z_0 = \alpha_0 [x, h] + \sigma_0 \varepsilon_0$
+%     \STATE $\mathcal{L}_0 = \mathcal{L}_0^{(x)} + \mathcal{L}_0^{(h)} = -\frac{1}{2} ||\varepsilon - \phi(z_0, 0)||^2 - \log Z + \log p(h | z_0^{(h)})$
+%     \STATE $\mathcal{L}_{\text{base}} = -\mathrm{KL}(q(z_T | x, h) | p(z_T)) = -\mathrm{KL}(\mathcal{N}_{xh}(\alpha_T [x, h], \sigma_T^2 I) | \mathcal{N}_{xh}(\mathbf{0}, I))$
+%     \STATE Return $\hat{\mathcal{L}} = T \cdot \mathcal{L}_t + \mathcal{L}_0 + \mathcal{L}_{\text{base}}$
+%     \end{algorithmic}
+% \end{algorithm}
+
+% \begin{algorithm}[H]
+%     \caption{新方法1}%{新方法1(modified EM algorithm 1, MEM1)}
+%     \label{alg:New method 1}
+%     \begin{algorithmic} %Display per line number
+%     %   \Require 数据集$\{x_1, x_2, \cdots, x_n\}$, 成分数$K$;
+%     %   \Ensure 参数$G$的估计值;
+%       \State 参数初始值$G^{(0)}$;
+%     %   \Repeat
+%         % \State 计算$\tilde{\pi}_{ik}^{(m+1)}=\frac{f(x_i;\theta_k^{(m)})}{\sum_{j=1}^{K}f(x_i;\theta_j^{(m)})}$;
+%         % \State 计算$\tilde{E}[z_{ik}|x_i;G^{(m)}]=\frac{\tilde{\pi}_{ik}^{(m+1)}f(x_{i}; \theta_{k}^{(m)})}{\sum_{j=1}^{K}\tilde{\pi}_{ij}^{(m+1)}f(x_{i}; \theta_{j}^{(m)})}$;
+%         % \State 计算$G^{(m+1)}=\mathop{\arg\max}_{G} Q(G;G^{(m)})$,其中
+%         % \begin{equation}
+%         % \label{equ:Q function in new method 1}
+%         %   Q(G;G^{(m)})=\sum_{i=1}^{n} \sum_{k=1}^{K} \tilde{E}[z_{ik}|x_i;G^{(m)}] [ \log\pi_{k} + \log\{f(x_{i}; \theta_{k})\} ];
+%         % \end{equation}
+%         % LaTeX: For the non numbered interline formula, why we use \[ … \] but $$ … $$?  see: https://www.zhihu.com/question/27589739/answer/37237684
+%         %$\bm{\hat{\theta}}^{(m)}=\mathop{\arg\max}_{\bm{\theta}}\prod_{i=1}^{n}\{\sum_{j=1}^{K}\pi_{ij}^{(m-1)}f(x_i;\theta_j)\}$;
+%         %\State compute $\pi_{ik}^{(m)}=\frac{f(x_i;\theta_k^{(m)})}{\sum_{j=1}^{K}f(x_i;\theta_j^{(m)})}$;
+%         %\State compute $\pi_{k}^{(m)}=\sum_{i=1}^{n}\pi_{ik}^{(m)}/n$;
+%     %   \Until{收敛}.
+%     \end{algorithmic}
+%   \end{algorithm}
+
+\section{化学键长}
+本文在生成药物分子中的化学键时，依据计算化学领域常见的原子键长作为参考。表~\ref{tab:single_bond_typ_dist}~，表~\ref{tab:double_bond_typ_dist}~和表~\ref{tab:tri_bond_typ_dist}~列出了出现在GEOM-QM9和GEOM-Drugs中原子类型间所有可能的化学键的典型键长。表中数值代表对应化学键的典型长度（皮米），而横线代表该两种原子间不可能存在稳定的对应化学键连接，原子间距离短于典型键长则可以被认为被对应的键连接。在实际计算中，对单键，双键和三键典型键长分别有10，5和3皮米的冗余。例如，对于两个距离136皮米的碳原子，他们之间距离虽然大于134皮米，小于154皮米，但鉴于136皮米小于134+5皮米，则认为这两个碳原子由双键连接。
+
+\begin{table}[!h]
+    \footnotesize
+    \centering
+    \caption{典型单键键长}
+    \label{tab:single_bond_typ_dist}
+    \begin{tabular}{l | r r r r r r r r r r r r r r r r r}
+    \toprule
+    & H & C & O & N & P & S & F & Si & Cl & Br & I & B & As \\ \midrule
+    H & 74 & 109 & 96 & 101 & 144 & 134 & 92 & 148 & 127 & 141 & 161 & 119 & 152 \\
+    C & 109 & 154 & 143 & 147 & 184 & 182 & 135 & 185 & 177 & 194 & 214 & - & - \\
+    O & 96 & 143 & 148 & 140 & 163 & 151 & 142 & 163 & 164 & 172 & 194 & - & - \\
+    N & 101 & 147 & 140 & 145 & 177 & 168 & 136 & - & 175 & 214 & 222 & - & - \\
+    P & 144 & 184 & 163 & 177 & 221 & 210 & 156 & - & 203 & 222 & - & - & - \\
+    S & 134 & 182 & 151 & 168 & 210 & 204 & 158 & 200 & 207 & 225 & 234 & - & - \\
+    F & 92 & 135 & 142 & 136 & 156 & 158 & 142 & 160 & 166 & 178 & 187 & - & - \\
+    Si & 148 & 185 & 163 & - & - & 200 & 160 & 233 & 202 & 215 & 243 & - & - \\
+    Cl & 127 & 177 & 164 & 175 & 203 & 207 & 166 & 202 & 199 & 214 & - & 175 & - \\
+    Br & 141 & 194 & 172 & 214 & 222 & 225 & 178 & 215 & 214 & 228 & - & - & - \\
+    I & 161 & 214 & 194 & 222 & - & 234 & 187 & 243 & - & - & 266 & - & - \\
+    B & 119 & - & - & - & - & - & - & - & 175 & - & - & - & - \\
+    As & 152 & - & - & - & - & - & - & - & - & - & - & - & - \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+    
+\begin{table}[H]
+    \centering
+    \begin{minipage}[t]{.5\textwidth}
+    \begin{table}[H]
+    \footnotesize
+        \centering
+        \caption{典型双键键长}
+        \label{tab:double_bond_typ_dist}
+        \begin{tabular}{l | r r r r r r r r r r r r r r r r r}
+        \toprule
+        & C & O & N & P & S \\ \midrule
+        C & 134 & 120 & 129 & - & 160 \\
+        O & 120 & 121 & 121 & 150 & - \\
+        N & 129 & 121 & 125 & - & - \\
+        P & - & 150 & - & - & 186 \\
+        S & - & - & - & 186 & - \\
+        \bottomrule
+        \end{tabular}
+    \end{table}
+    \end{minipage}
+    \begin{minipage}[t]{.4\textwidth}
+    \begin{table}[H]
+    \footnotesize
+        \centering
+        \caption{典型三键键长}
+        \label{tab:tri_bond_typ_dist}
+        \begin{tabular}{l | r r r r r r r r r r r r r r r r r}
+        \toprule
+        & C & O & N \\ \midrule
+        C & 120 & 113 & 116 \\
+        O & 113 & - & - \\
+        N & 116 & - & 110 \\
+        \bottomrule
+        \end{tabular}
+    \end{table}
+    \end{minipage}
+\end{table}
+
+    % \begin{figure}[htb]
+    %     \centering
+    %     \includegraphics{example-image}
+    %     \caption{附录中的图片}
+    %     \label{fig:test-appendix}
+    % \end{figure}
+    % \clearpage
+    
+\section{超参数设置}
+由于完整跑完一轮训练所需时间较长，本文未对超参数设置进行完整的实验。但经过初步实验，本文确定了实验的相关超参数。在QM9和Drugs数据集上的模型训练时，学习率设定为0.001，DTN层数设定为5层，特征维度设定为256，注意力头数设定为8，神经元遗忘率为0.1，独热编码原子类型标准化系数为0.25，原子序数标准化系数为0.1，化合价标准化系数为0.1。在QM9数据集上的模型训练中，扩散步数为500，每批样本数量设定为32，而在Drugs上的训练中，扩散步数为1000，每批样本数量为1，这一设定受制于GPU显存容量限制。为实现等效训练的效果，本文通过梯度累积的方式，实现了等效批样本数量64的训练效果。
+
+\section{DTN代码示意}
+\begin{lstlisting}[style=python]
+    import torch
+    import torch.nn as nn
+    import numpy as np
+    from .utils import (atom_pos_to_pair_dist, remove_mean_with_mask, 
+                           local_geometry_calc, RBF_Emb)
+    from .layers import InterBlock, DistEncoder
+    
+    
+    class DualTrackTransformer(nn.Module):
+        def __init__(self, model_config, data_config):
+            super(DualTrackTransformer, self).__init__()
+            self.num_layers = model_config['num_layers']
+            self.emb_dim = model_config['emb_dim']
+            self.hidden_dim = model_config['hidden_dim']
+            self.num_heads = model_config['num_heads']
+            self.dropout = model_config['dropout']
+            self.pair_scale = model_config['pair_loss_scale']
+            self.context_dim = (len(model_config['context_col']) * 
+                                   int(model_config['context']))
+            self.x_class, self.v_class = data_config['x_class'], data_config['v_class']
+            self.include_an = model_config['include_an']
+            self.include_vl = model_config['include_vl']
+            self.node_nf = data_config['x_class'] + self.include_an + self.include_vl
+            self.act = nn.ReLU()
+            self.edge_emb = DistEncoder(self.emb_dim)
+            self.angle_emb = RBF_Emb(int(self.emb_dim/2), (np.arange(0, np.pi, 0.1), 10))
+    
+            self.convs = nn.ModuleList()
+            for i in range(self.num_layers):
+                self.convs.append(InterBlock(
+                    emb_dim=self.emb_dim,
+                    hidden_dim=self.hidden_dim,
+                    num_heads=self.num_heads,
+                    dropout=self.dropout,
+                    dataset_name=data_config['name']
+                ))
+    
+            atom_feat = self.node_nf + self.context_dim + 1
+            self.xh_embedding = nn.Linear(atom_feat, self.emb_dim)
+            self.node_pair_fuse = nn.Linear(3 * self.emb_dim, self.emb_dim)
+            self.edge_emb_fuse = nn.Linear(2 * self.emb_dim, self.emb_dim)
+            self.trip_emb_fuse = nn.Linear(self.emb_dim, int(self.emb_dim/2))
+            self.xh_embedding_out = nn.Sequential(
+                nn.Linear(self.emb_dim, self.hidden_dim),
+                self.act,
+                nn.Linear(self.hidden_dim, self.emb_dim),
+                self.act,
+                nn.Linear(self.emb_dim, atom_feat, bias=False)
+            )
+    
+        def forward(self, z_t, t, node_mask, pair_mask, context=None):
+            raise NotImplementedError
+    
+        def _forward(self, z_t, t, node_mask, pair_mask, context):
+            pos, xh = z_t[:, :, :3], z_t[:, :, 3:]
+            batch_size, max_node = xh.shape[0], xh.shape[1]
+            if np.prod(t.size()) == 1:
+                xh_time = torch.empty_like(xh[:, :, 0:1]).fill_(t.item())
+            else:
+                xh_time = t.view(batch_size, 1).repeat(1, max_node).unsqueeze(-1)
+            xh = torch.cat([xh, xh_time], dim=2) * node_mask
+            if context is not None:
+                xh = torch.cat([xh, context], dim=2)
+            xh_emb = self.act(self.xh_embedding(xh))
+            xh_emb = xh_emb * node_mask
+    
+            _, radial, coord_diff = atom_pos_to_pair_dist(pos)
+            radial = (radial.unsqueeze(-1) * pair_mask).squeeze(-1)
+            coord_diff = coord_diff * pair_mask
+            pair_emb = self.edge_emb(radial)
+            pair_emb = self.node_pair_fuse(torch.cat([xh_emb.unsqueeze(1) * pair_mask,
+                                                            xh_emb.unsqueeze(2) * pair_mask, 
+                                                            pair_emb], dim=3))
+            angle = local_geometry_calc(pos, pair_mask)
+            tri_emb = self.act(self.angle_emb(angle))
+
+            for layer in self.convs:
+                pair_emb = pair_emb * pair_mask
+                xh_emb, pair_emb, pos = layer(xh_emb, pair_emb, pos, coord_diff, node_mask, 
+                                                   pair_mask, batch_size,
+                                                   max_node, tri_emb=tri_emb)
+                _, radial, coord_diff = atom_pos_to_pair_dist(pos)
+                angle = local_geometry_calc(pos, pair_mask)
+                tri_emb = self.act(self.trip_emb_fuse(torch.cat([self.angle_emb(angle), 
+                                                                        tri_emb], dim=4)))     
+                pair_emb = self.act(self.edge_emb_fuse(torch.cat([self.edge_emb(radial), 
+                                                                         pair_emb], dim=3)))
+                pair_emb = self.node_pair_fuse(torch.cat([xh_emb.unsqueeze(1) * pair_mask, 
+                                                                xh_emb.unsqueeze(2) * pair_mask, 
+                                                                pair_emb], dim=3))
+    
+            xh_emb = self.xh_embedding_out(xh_emb) * node_mask
+            xh_final = xh_emb[:, :, :self.node_nf]
+            vel = (pos - z_t[:, :, :3])
+            vel = remove_mean_with_mask(vel, node_mask)
+    
+            return torch.cat([vel, xh_final], dim=2)
+\end{lstlisting}
+
+
+\section{GFLoss代码示意}
+
+\begin{lstlisting}[style=python]
+    def calc_gfloss(eps_t, eps, pair_mask=None, alpha=None):
+        pos_t, x_t, a_t, v_t = eps_t[:, :, :3], eps_t[:, :, 3:3+self.x_class], 
+                                   eps_t[:, :, -2], eps_t[:, :, -1]
+        pos, x, a, v = eps[:, :, :3], eps[:, :, 3:3+self.x_class], 
+                         eps[:, :, -2], eps[:, :, -1]
+        x_prob = softmax(x_t.detach(), dim=-1)
+        dist = (pos_t.unsqueeze(1) - pos_t.unsqueeze(2)).norm(dim=-1)
+        pair_prob = (x_prob.unsqueeze(1).unsqueeze(-2) * x_prob.unsqueeze(2).unsqueeze(-1) *
+                       self.norm_values[0])
+        dist = dist.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1).expand(x.shape[0], x.shape[1],
+                x.shape[1], x.shape[2], x.shape[2], 3)
+        dist_mar = (dist - self.bond.to(dist.device)) * self.bond_mask.to(dist.device)
+        is_bond = (dist_mar.min(-1)[0] < 0).long() * pair_mask.unsqueeze(-1)
+        bond_prob = pair_prob * is_bond
+        valency = bond_prob.sum(-1).sum(-2).sum(-1) / self.norm_values[2]
+        error = (((valency - v_t) ** 2) * alpha).sum(-1) / eps.shape[1]
+        gfloss = self.loss_weight['degree'] * error
+        return gfloss
+\end{lstlisting}
+
+
+% \section{难度可控的多项选择题生成实例}
+}

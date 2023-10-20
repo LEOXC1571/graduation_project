@@ -1,0 +1,11 @@
+% 切换封面
+\ifthenelse{\equal{\BlindReview}{true}}
+{
+    % \includepdf{sections/cover/blind-review.pdf}
+    \input{sections/cover/blind-review.tex}
+}
+{
+    \input{sections/cover/cover-chn.tex}
+    \clearpage
+    \input{sections/cover/cover-eng.tex}
+}
