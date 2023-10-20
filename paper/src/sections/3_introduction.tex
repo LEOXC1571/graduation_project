@@ -9,8 +9,6 @@
 
 深度学习在计算化学领域近年来也有着诸多成功的实践。以分子学习为例，化学分子常以简化分子线性输入规范字符串（Simplified molecular-input line-entry system / SMILES） \cite{smiles_weinberger_88}的格式存储和计算，每一个分子式对应一个SMILES字符串。随着早期深度学习方法的出现与发展，诸如卷积神经网络（Convolutional neural networks / CNNs） \cite{cnnsmiles_hirohara_18}和循环神经网络（Recurrent neural networks / RNNs） \cite{rnnsmiles_bjerrum_17,practicalmodel_liu_19,deeppurpose_huang_20}等模型在图像和文本任务中展现出良好的表现。一些研究试图运用这些深度学习算法，对以字符串形式存储的分子式进行学习，以获得预测特定原子或是整个分子的性质的能力。随着图神经网络（Graph neural networks / GNNs） \cite{semisupervised_kipf_17,inductive_hamilton_17,howpowerful_xu_18}的出现，其对非结构化数据的建模能力和对节点间拓扑关系学习的能力被证明十分优异。分子作为自然界中天然存在的图结构，原子和键对应着图中的节点和边，这为分子学习提供了新的方法与范式。从最早的图卷积神经网络开始，相关研究致力于针对分子学习的典型特征，提出新的图学习算法，以提升对分子图学习的性能。随着相关化学模拟技术的发展，让三维分子建模成为可能。这也在拓扑结构信息以外，提供了更丰富的几何构型信息，这也驱动着相关研究拓展至几何图神经网络上。分子三维构象允许研究者对分子进行更准确的研究，同时也推动更多复杂任务的出现，包括分子设计，蛋白质配体（Ligand）设计，药物亲和力预测，蛋白质生成与性质等。
 
-% 具体的任务包括药物分子设计，药物分子构象设计，蛋白质靶向嵌合体设计，蛋白质设计等，而本文聚焦的药物分子设计是其中的基础应用。本文的目标是提出一个能够批量设计具备特定性质药物分子的生成模型，相关成过能够帮助药物企业加快药物研发。同时，本文提出的模型具备对空间几何信息的优异学习能力，故将该模型也具备迁移至材料科学领域的潜力。
-
 \section{国内外研究现状}
 \subsection{基于深度学习的分子学习}
 分子最早被表示为简化分子线性输入规范字符串，即SMILES字符串  \cite{smiles_weinberger_88}，随着早期深度学习模型卷积神经网络和循环神经网络的发展，相关模型利用CNNs和RNNs对分子性质做出学习。Hirohara等 \cite{cnnsmiles_hirohara_18}的研究提出使用CNN对分子级别的特征和分子基团性质进行有效学习。由于RNNs在早期自然语言护理任务上有良好表现，Bjerrum \cite{rnnsmiles_bjerrum_17}提出LSTM-QSAR模型用于学习分子性质。
