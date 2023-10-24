@@ -1,6 +1,6 @@
 # The Graduation Project
 
-The templete of graduation project for master degree cadidates of Zhejiang Gongshang University. This project is built upon the previous version from [Yin Zhang's](https://github.com/MIracleyin) graduation paper.
+The templete of graduation project for master degree candidates of Zhejiang Gongshang University. This project is built upon the previous version from [Yin Zhang's](https://github.com/MIracleyin) graduation paper.
 
 此为浙江工商大学硕士学位论文模板，基于[章寅](https://github.com/MIracleyin)同学的模板整理而来。
 
